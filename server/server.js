@@ -22,6 +22,7 @@ app.use(express.urlencoded({ extended: true }));
 // Routes
 app.use('/api/test', require('./routes/testRoutes'));
 app.use('/api/auth', require('./routes/authRoutes'));
+app.use('/api/profiles', require('./routes/workerProfileRoutes'));
 
 // Start server
 const PORT = process.env.PORT || 5000;
