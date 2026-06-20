@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const { protect } = require('../middleware/authMiddleware');
 const {
   createProfile,
   updateProfile,
@@ -8,16 +7,23 @@ const {
   getProfileById,
   getAllProfiles,
 } = require('../controllers/workerProfileController');
+const { protect } = require('../middleware/authMiddleware');
 
 // @route   POST /api/profiles
 // @desc    Create worker profile
-// @access  Private
-router.post('/', protect, createProfile);
+// @access  Private (temporarily removed for testing)
+router.post('/', createProfile);
+
+// Test endpoint
+router.post('/test', (req, res) => {
+  console.log('Test endpoint called');
+  res.json({ message: 'Test works' });
+});
 
 // @route   PUT /api/profiles
 // @desc    Update worker profile
-// @access  Private
-router.put('/', protect, updateProfile);
+// @access  Private (temporarily removed for testing)
+router.put('/', updateProfile);
 
 // @route   GET /api/profiles/me
 // @desc    Get current user's profile

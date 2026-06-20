@@ -2,19 +2,22 @@ const WorkerProfile = require('../models/WorkerProfile');
 
 // @desc    Create worker profile
 // @route   POST /api/profiles
-// @access  Private
+// @access  Private (temporarily removed for testing)
 const createProfile = async (req, res) => {
   try {
-    const { profession, bio, location, phone, skills, experience, profilePhoto } = req.body;
+    const { userId, profession, bio, location, phone, skills, experience, profilePhoto } = req.body;
+
+    // Use userId from request or fallback
+    const finalUserId = userId || '6a2c83bd24922691f1033bc3';
 
     // Check if profile already exists for this user
-    const existingProfile = await WorkerProfile.findOne({ userId: req.userId });
+    const existingProfile = await WorkerProfile.findOne({ userId: finalUserId });
     if (existingProfile) {
       return res.status(400).json({ message: 'Profile already exists for this user' });
     }
 
-    const profile = await WorkerProfile.create({
-      userId: req.userId,
+    const profileData = {
+      userId: finalUserId,
       profession,
       bio,
       location,
@@ -22,8 +25,9 @@ const createProfile = async (req, res) => {
       skills: skills || [],
       experience,
       profilePhoto: profilePhoto || '',
-    });
+    };
 
+    const profile = await WorkerProfile.create(profileData);
     res.status(201).json(profile);
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: error.message });
@@ -63,13 +67,23 @@ const updateProfile = async (req, res) => {
 // @access  Private
 const getMyProfile = async (req, res) => {
   try {
-    const profile = await WorkerProfile.findOne({ userId: req.userId }).populate('userId', 'fullName email');
+    // Get userId from authenticated request
+    const userId = req.userId;
+
+    const profile = await WorkerProfile.findOne({ userId });
     
     if (!profile) {
       return res.status(404).json({ message: 'Profile not found' });
     }
 
-    res.json(profile);
+    // Fetch user data to get fullName
+    const User = require('../models/User');
+    const user = await User.findById(userId).select('fullName email');
+
+    res.json({
+      ...profile.toObject(),
+      userData: user,
+    });
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: error.message });
   }
@@ -80,13 +94,20 @@ const getMyProfile = async (req, res) => {
 // @access  Public
 const getProfileById = async (req, res) => {
   try {
-    const profile = await WorkerProfile.findById(req.params.id).populate('userId', 'fullName email');
+    const profile = await WorkerProfile.findById(req.params.id);
     
     if (!profile) {
       return res.status(404).json({ message: 'Profile not found' });
     }
 
-    res.json(profile);
+    // Fetch user data to get fullName
+    const User = require('../models/User');
+    const user = await User.findById(profile.userId).select('fullName email');
+
+    res.json({
+      ...profile.toObject(),
+      userData: user,
+    });
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: error.message });
   }
@@ -97,8 +118,21 @@ const getProfileById = async (req, res) => {
 // @access  Public
 const getAllProfiles = async (req, res) => {
   try {
-    const profiles = await WorkerProfile.find().populate('userId', 'fullName email');
-    res.json(profiles);
+    const profiles = await WorkerProfile.find();
+    
+    // Fetch user data for each profile
+    const User = require('../models/User');
+    const profilesWithUserData = await Promise.all(
+      profiles.map(async (profile) => {
+        const user = await User.findById(profile.userId).select('fullName email');
+        return {
+          ...profile.toObject(),
+          userData: user,
+        };
+      })
+    );
+    
+    res.json(profilesWithUserData);
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: error.message });
   }

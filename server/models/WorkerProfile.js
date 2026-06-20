@@ -2,8 +2,7 @@ const mongoose = require('mongoose');
 
 const workerProfileSchema = new mongoose.Schema({
   userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
+    type: String,
     required: true,
   },
   profession: {
@@ -40,6 +39,17 @@ const workerProfileSchema = new mongoose.Schema({
     type: String,
     default: '',
   },
+  averageRating: {
+    type: Number,
+    default: 0,
+    min: 0,
+    max: 5,
+  },
+  totalReviews: {
+    type: Number,
+    default: 0,
+    min: 0,
+  },
   createdAt: {
     type: Date,
     default: Date.now,
@@ -48,12 +58,6 @@ const workerProfileSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-});
-
-// Update the updatedAt timestamp before saving
-workerProfileSchema.pre('save', function (next) {
-  this.updatedAt = Date.now();
-  next();
 });
 
 module.exports = mongoose.model('WorkerProfile', workerProfileSchema);

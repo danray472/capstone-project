@@ -6,10 +6,13 @@ const RegisterPage = () => {
     fullName: '',
     email: '',
     password: '',
+    confirmPassword: '',
     role: 'client',
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -19,25 +22,65 @@ const RegisterPage = () => {
     });
   };
 
+  const getPasswordStrength = (password) => {
+    let strength = 0;
+    if (password.length >= 8) strength += 1;
+    if (password.length >= 12) strength += 1;
+    if (/[A-Z]/.test(password)) strength += 1;
+    if (/[a-z]/.test(password)) strength += 1;
+    if (/[0-9]/.test(password)) strength += 1;
+    if (/[^A-Za-z0-9]/.test(password)) strength += 1;
+    return strength;
+  };
+
+  const getStrengthColor = (strength) => {
+    if (strength <= 2) return 'bg-red-500';
+    if (strength <= 4) return 'bg-yellow-500';
+    return 'bg-green-500';
+  };
+
+  const getStrengthText = (strength) => {
+    if (strength <= 2) return 'Weak';
+    if (strength <= 4) return 'Medium';
+    return 'Strong';
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+
+    if (formData.password !== formData.confirmPassword) {
+      setError('Passwords do not match');
+      return;
+    }
+
+    if (formData.password.length < 6) {
+      setError('Password must be at least 6 characters');
+      return;
+    }
+
     setLoading(true);
 
     try {
+      const { confirmPassword, ...submitData } = formData;
       const response = await fetch('http://localhost:5000/api/auth/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(submitData),
       });
 
       const data = await response.json();
 
       if (response.ok) {
         localStorage.setItem('userInfo', JSON.stringify(data));
-        navigate('/');
+        // Redirect workers to create profile, clients to home
+        if (data.role === 'worker') {
+          navigate('/profile/create');
+        } else {
+          navigate('/');
+        }
       } else {
         setError(data.message || 'Registration failed');
       }
@@ -102,17 +145,77 @@ const RegisterPage = () => {
               <label htmlFor="password" className="block text-sm font-medium text-text-secondary mb-2">
                 Password
               </label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                required
-                minLength="6"
-                className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
-                placeholder="Create a password (min 6 characters)"
-              />
+              <div className="relative">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  id="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  required
+                  minLength="6"
+                  className="w-full px-4 py-3 pr-12 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+                  placeholder="Create a password (min 6 characters)"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-text-secondary hover:text-text-primary transition-colors"
+                >
+                  {showPassword ? '👁️' : '👁️‍🗨️'}
+                </button>
+              </div>
+              {formData.password && (
+                <div className="mt-2">
+                  <div className="flex items-center gap-2 mb-1">
+                    <div className="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
+                      <div
+                        className={`h-full transition-all duration-300 ${getStrengthColor(getPasswordStrength(formData.password))}`}
+                        style={{ width: `${(getPasswordStrength(formData.password) / 6) * 100}%` }}
+                      />
+                    </div>
+                    <span className="text-xs text-text-secondary">{getStrengthText(getPasswordStrength(formData.password))}</span>
+                  </div>
+                  <ul className="text-xs text-text-secondary space-y-1">
+                    <li className={formData.password.length >= 8 ? 'text-green-600' : ''}>• At least 8 characters</li>
+                    <li className={/[A-Z]/.test(formData.password) ? 'text-green-600' : ''}>• Uppercase letter</li>
+                    <li className={/[a-z]/.test(formData.password) ? 'text-green-600' : ''}>• Lowercase letter</li>
+                    <li className={/[0-9]/.test(formData.password) ? 'text-green-600' : ''}>• Number</li>
+                    <li className={/[^A-Za-z0-9]/.test(formData.password) ? 'text-green-600' : ''}>• Special character</li>
+                  </ul>
+                </div>
+              )}
+            </div>
+
+            <div>
+              <label htmlFor="confirmPassword" className="block text-sm font-medium text-text-secondary mb-2">
+                Confirm Password
+              </label>
+              <div className="relative">
+                <input
+                  type={showConfirmPassword ? 'text' : 'password'}
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  required
+                  minLength="6"
+                  className="w-full px-4 py-3 pr-12 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+                  placeholder="Confirm your password"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-text-secondary hover:text-text-primary transition-colors"
+                >
+                  {showConfirmPassword ? '👁️' : '👁️‍🗨️'}
+                </button>
+              </div>
+              {formData.confirmPassword && (
+                <p className={`text-xs mt-1 ${formData.password === formData.confirmPassword ? 'text-green-600' : 'text-red-600'}`}>
+                  {formData.password === formData.confirmPassword ? '✓ Passwords match' : '✗ Passwords do not match'}
+                </p>
+              )}
             </div>
 
             <div>

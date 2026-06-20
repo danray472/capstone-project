@@ -68,7 +68,7 @@ const Footer = () => {
             &copy; {currentYear} Vibarua Marketplace. All rights reserved.
           </p>
           <p className="text-xs text-gray-500">
-            Built with ❤️ for the community
+            Built with ❤️ for the community by Dan, Daniel and Rennlyne.
           </p>
         </div>
       </div>
@@ -77,3 +77,6 @@ const Footer = () => {
 };
 
 export default Footer;
+
+
+
