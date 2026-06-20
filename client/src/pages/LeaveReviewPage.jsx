@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import API_BASE_URL from '../services/api';
 
 const LeaveReviewPage = () => {
   const [rating, setRating] = useState(0);
@@ -56,7 +57,7 @@ const LeaveReviewPage = () => {
     };
 
     try {
-      const response = await fetch('http://localhost:5000/api/reviews', {
+      const response = await fetch(`${API_BASE_URL}/reviews`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

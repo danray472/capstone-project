@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import API_BASE_URL from '../services/api';
 
 const ClientJobsPage = () => {
   const [requests, setRequests] = useState([]);
@@ -21,7 +22,7 @@ const ClientJobsPage = () => {
       }
 
       setLoading(true);
-      const response = await fetch(`http://localhost:5000/api/requests/client/${userInfo._id}`);
+      const response = await fetch(`${API_BASE_URL}/requests/client/${userInfo._id}`);
 
       if (response.ok) {
         const data = await response.json();
@@ -30,7 +31,7 @@ const ClientJobsPage = () => {
         // Fetch reviews for completed jobs
         const completedJobs = data.filter(r => r.status === 'completed');
         const reviewPromises = completedJobs.map(job =>
-          fetch(`http://localhost:5000/api/reviews/job/${job._id}`).then(res => res.ok ? res.json() : null)
+          fetch(`${API_BASE_URL}/reviews/job/${job._id}`).then(res => res.ok ? res.json() : null)
         );
         const reviewResults = await Promise.all(reviewPromises);
         const reviewsMap = {};
@@ -52,7 +53,7 @@ const ClientJobsPage = () => {
 
   const handleCancelRequest = async (requestId) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/requests/${requestId}/status`, {
+      const response = await fetch(`${API_BASE_URL}/requests/${requestId}/status`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -72,7 +73,7 @@ const ClientJobsPage = () => {
 
   const handleMarkComplete = async (requestId) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/requests/${requestId}/status`, {
+      const response = await fetch(`${API_BASE_URL}/requests/${requestId}/status`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -212,7 +213,7 @@ const ClientJobsPage = () => {
                         onClick={async () => {
                           // Fetch worker profile to get profile._id
                           try {
-                            const response = await fetch(`http://localhost:5000/api/profiles`);
+                            const response = await fetch(`${API_BASE_URL}/profiles`);
                             if (response.ok) {
                               const profiles = await response.json();
                               const workerProfile = profiles.find(p => p.userId === request.workerId);

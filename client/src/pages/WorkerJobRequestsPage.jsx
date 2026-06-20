@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import API_BASE_URL from '../services/api';
 
 const WorkerJobRequestsPage = () => {
   const [requests, setRequests] = useState([]);
@@ -23,7 +24,7 @@ const WorkerJobRequestsPage = () => {
       setLoading(true);
       
       // First fetch the worker's profile to get the userId
-      const profileResponse = await fetch('http://localhost:5000/api/profiles/me', {
+      const profileResponse = await fetch(`${API_BASE_URL}/profiles/me`, {
         headers: {
           'Authorization': `Bearer ${userInfo.token}`,
         },
@@ -37,7 +38,7 @@ const WorkerJobRequestsPage = () => {
       const profileData = await profileResponse.json();
       
       // Then fetch job requests using the userId (not profile._id)
-      const response = await fetch(`http://localhost:5000/api/requests/worker/${profileData.userId}`, {
+      const response = await fetch(`${API_BASE_URL}/requests/worker/${profileData.userId}`, {
         headers: {
           'Authorization': `Bearer ${userInfo.token}`,
         },
@@ -50,7 +51,7 @@ const WorkerJobRequestsPage = () => {
         // Fetch reviews for completed jobs
         const completedJobs = data.filter(r => r.status === 'completed');
         const reviewPromises = completedJobs.map(job =>
-          fetch(`http://localhost:5000/api/reviews/job/${job._id}`).then(res => res.ok ? res.json() : null)
+          fetch(`${API_BASE_URL}/reviews/job/${job._id}`).then(res => res.ok ? res.json() : null)
         );
         const reviewResults = await Promise.all(reviewPromises);
         const reviewsMap = {};
@@ -73,7 +74,7 @@ const WorkerJobRequestsPage = () => {
   const handleStatusUpdate = async (requestId, newStatus) => {
     try {
       const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-      const response = await fetch(`http://localhost:5000/api/requests/${requestId}/status`, {
+      const response = await fetch(`${API_BASE_URL}/requests/${requestId}/status`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

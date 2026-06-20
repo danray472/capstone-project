@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import API_BASE_URL from '../services/api';
 
 const ViewProfilePage = () => {
   const { id } = useParams();
@@ -16,9 +17,9 @@ const ViewProfilePage = () => {
         
         let url;
         if (id === 'me') {
-          url = `http://localhost:5000/api/profiles/me`;
+          url = `${API_BASE_URL}/profiles/me`;
         } else {
-          url = `http://localhost:5000/api/profiles/${id}`;
+          url = `${API_BASE_URL}/profiles/${id}`;
         }
 
         const headers = {};
@@ -35,7 +36,7 @@ const ViewProfilePage = () => {
           
           // Fetch reviews for this worker
           if (data._id) {
-            const reviewsResponse = await fetch(`http://localhost:5000/api/reviews/worker/${data._id}`);
+            const reviewsResponse = await fetch(`${API_BASE_URL}/reviews/worker/${data._id}`);
             if (reviewsResponse.ok) {
               const reviewsData = await reviewsResponse.json();
               setReviews(reviewsData);

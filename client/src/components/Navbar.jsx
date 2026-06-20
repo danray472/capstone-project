@@ -1,5 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import API_BASE_URL from '../services/api';
 
 const Navbar = () => {
   const [userInfo, setUserInfo] = useState(null);
@@ -28,7 +29,7 @@ const Navbar = () => {
 
   const checkWorkerProfile = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/profiles/me');
+      const response = await fetch(`${API_BASE_URL}/profiles/me`);
       setHasProfile(response.ok);
     } catch (err) {
       setHasProfile(false);

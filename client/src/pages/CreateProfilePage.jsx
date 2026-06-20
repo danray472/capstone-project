@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import API_BASE_URL from '../services/api';
 
 const CreateProfilePage = () => {
   const [formData, setFormData] = useState({
@@ -50,7 +51,7 @@ const CreateProfilePage = () => {
       }
 
       try {
-        const response = await fetch(`http://localhost:5000/api/profiles/me?userId=${userInfo._id}`, {
+        const response = await fetch(`${API_BASE_URL}/profiles/me?userId=${userInfo._id}`, {
           headers: {
             'Authorization': `Bearer ${userInfo.token}`,
           },
@@ -100,7 +101,7 @@ const CreateProfilePage = () => {
     uploadFormData.append('image', imageFile);
 
     try {
-      const response = await fetch('http://localhost:5000/api/upload/image', {
+      const response = await fetch(`${API_BASE_URL}/upload/image`, {
         method: 'POST',
         body: uploadFormData,
       });
@@ -151,7 +152,7 @@ const CreateProfilePage = () => {
     };
 
     try {
-      const url = existingProfile ? 'http://localhost:5000/api/profiles' : 'http://localhost:5000/api/profiles';
+      const url = existingProfile ? `${API_BASE_URL}/profiles` : `${API_BASE_URL}/profiles`;
       const method = existingProfile ? 'PUT' : 'POST';
 
       const response = await fetch(url, {

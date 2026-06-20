@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import API_BASE_URL from '../services/api';
 
 const CreateJobRequestPage = () => {
   const [formData, setFormData] = useState({
@@ -76,7 +77,7 @@ const CreateJobRequestPage = () => {
     };
 
     try {
-      const response = await fetch('http://localhost:5000/api/requests', {
+      const response = await fetch(`${API_BASE_URL}/requests`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

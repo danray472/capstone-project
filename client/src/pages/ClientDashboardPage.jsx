@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import API_BASE_URL from '../services/api';
 
 const ClientDashboardPage = () => {
   const [profile, setProfile] = useState(null);
@@ -23,7 +24,7 @@ const ClientDashboardPage = () => {
       setLoading(true);
 
       // Fetch client's job requests
-      const requestsResponse = await fetch(`http://localhost:5000/api/requests/client/${userInfo._id}`);
+      const requestsResponse = await fetch(`${API_BASE_URL}/requests/client/${userInfo._id}`);
       if (requestsResponse.ok) {
         const requestsData = await requestsResponse.json();
         setRequests(requestsData);

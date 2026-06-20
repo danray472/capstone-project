@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import API_BASE_URL from '../services/api';
 
 const WorkerDiscoveryPage = () => {
   const [workers, setWorkers] = useState([]);
@@ -40,7 +41,7 @@ const WorkerDiscoveryPage = () => {
   const fetchWorkers = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:5000/api/profiles');
+      const response = await fetch(`${API_BASE_URL}/profiles`);
       
       if (response.ok) {
         const data = await response.json();
