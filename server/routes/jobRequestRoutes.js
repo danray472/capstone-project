@@ -7,16 +7,17 @@ const {
   getWorkerJobRequests,
   getJobRequestById,
 } = require('../controllers/jobRequestController');
+const { strictLimiter } = require('../middleware/rateLimiter');
 
 // @route   POST /api/requests
 // @desc    Create job request
 // @access  Private (temporarily removed for testing)
-router.post('/', createJobRequest);
+router.post('/', strictLimiter, createJobRequest);
 
 // @route   PUT /api/requests/:id/status
 // @desc    Update job request status
 // @access  Private (temporarily removed for testing)
-router.put('/:id/status', updateJobRequestStatus);
+router.put('/:id/status', strictLimiter, updateJobRequestStatus);
 
 // @route   GET /api/requests/client/:clientId
 // @desc    Get client's job requests

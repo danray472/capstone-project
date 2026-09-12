@@ -20,8 +20,35 @@ const userSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ['client', 'worker'],
+    enum: ['client', 'worker', 'admin'],
     default: 'client',
+  },
+  idNumber: {
+    type: String,
+    trim: true,
+    default: '',
+  },
+  isActive: {
+    type: Boolean,
+    default: true,
+  },
+  isBlocked: {
+    type: Boolean,
+    default: false,
+  },
+  blockReason: {
+    type: String,
+    default: '',
+    trim: true,
+  },
+  blockedAt: {
+    type: Date,
+    default: null,
+  },
+  blockedBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    default: null,
   },
   createdAt: {
     type: Date,

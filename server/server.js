@@ -2,6 +2,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const connectDB = require('./config/db');
+const { generalLimiter } = require('./middleware/rateLimiter');
 
 // Load environment variables
 dotenv.config();
@@ -19,6 +20,9 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Apply general rate limiting to all API routes
+app.use('/api/', generalLimiter);
+
 // Routes
 app.use('/api/test', require('./routes/testRoutes'));
 app.use('/api/auth', require('./routes/authRoutes'));
@@ -26,6 +30,7 @@ app.use('/api/profiles', require('./routes/workerProfileRoutes'));
 app.use('/api/requests', require('./routes/jobRequestRoutes'));
 app.use('/api/reviews', require('./routes/reviewRoutes'));
 app.use('/api/upload', require('./routes/uploadRoutes'));
+app.use('/api/admin', require('./routes/adminRoutes'));
 
 // Start server
 const PORT = process.env.PORT || 5000;

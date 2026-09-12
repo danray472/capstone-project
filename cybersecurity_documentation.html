@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Cybersecurity Architecture & Security Controls Documentation - Vibarua Marketplace</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+    @page {
+      size: A4;
+      margin: 16mm 15mm;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      line-height: 1.5;
+      color: #1e293b;
+      background: #ffffff;
+      margin: 0;
+      padding: 0;
+      font-size: 10pt;
+    }
+
+    .header-card {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: #ffffff;
+      padding: 22px 26px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+    }
+
+    .header-badge {
+      display: inline-block;
+      background: rgba(37, 99, 235, 0.3);
+      color: #60a5fa;
+      border: 1px solid rgba(96, 165, 250, 0.4);
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 8pt;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+
+    .header-title {
+      font-size: 18pt;
+      font-weight: 800;
+      margin: 0 0 6px 0;
+      letter-spacing: -0.5px;
+      color: #ffffff;
+    }
+
+    .header-subtitle {
+      font-size: 10.5pt;
+      color: #94a3b8;
+      margin: 0 0 12px 0;
+    }
+
+    .meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+      font-size: 8.5pt;
+      color: #cbd5e1;
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+      padding-top: 10px;
+    }
+
+    .meta-item strong {
+      color: #f8fafc;
+    }
+
+    h2 {
+      font-size: 12.5pt;
+      font-weight: 700;
+      color: #0f172a;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 5px;
+      margin: 20px 0 12px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      page-break-after: avoid;
+    }
+
+    .section-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      background: #eff6ff;
+      color: #2563eb;
+      border-radius: 6px;
+      font-size: 10pt;
+      font-weight: 800;
+    }
+
+    h3 {
+      font-size: 10.5pt;
+      font-weight: 700;
+      color: #1e293b;
+      margin: 12px 0 5px 0;
+      page-break-after: avoid;
+    }
+
+    p {
+      margin: 0 0 6px 0;
+      color: #334155;
+    }
+
+    ul {
+      margin: 4px 0 10px 0;
+      padding-left: 20px;
+    }
+
+    li {
+      margin-bottom: 3px;
+      color: #334155;
+    }
+
+    li strong {
+      color: #0f172a;
+    }
+
+    .card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 11px 14px;
+      margin-bottom: 10px;
+      page-break-inside: avoid;
+    }
+
+    .card-title {
+      font-weight: 700;
+      color: #0f172a;
+      font-size: 9.5pt;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-size: 7pt;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    .badge-blue { background: #dbeafe; color: #1d4ed8; }
+    .badge-green { background: #d1fae5; color: #065f46; }
+    .badge-red { background: #fee2e2; color: #991b1b; }
+    .badge-purple { background: #f3e8ff; color: #6b21a8; }
+    .badge-amber { background: #fef3c7; color: #92400e; }
+    .badge-slate { background: #f1f5f9; color: #475569; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 8pt;
+      margin: 12px 0 16px 0;
+      page-break-inside: avoid;
+    }
+
+    th {
+      background: #f1f5f9;
+      color: #0f172a;
+      font-weight: 700;
+      text-align: left;
+      padding: 7px 9px;
+      border: 1px solid #cbd5e1;
+      text-transform: uppercase;
+      font-size: 7pt;
+      letter-spacing: 0.4px;
+    }
+
+    td {
+      padding: 6px 9px;
+      border: 1px solid #e2e8f0;
+      color: #334155;
+      vertical-align: top;
+    }
+
+    tr:nth-child(even) td {
+      background: #f8fafc;
+    }
+
+    .page-break {
+      page-break-before: always;
+    }
+
+    .footer-note {
+      text-align: center;
+      font-size: 7.5pt;
+      color: #94a3b8;
+      border-top: 1px solid #e2e8f0;
+      padding-top: 10px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Title / Header -->
+  <div class="header-card">
+    <div class="header-badge">Comprehensive Cybersecurity & AppSec Specification</div>
+    <div class="header-title">Cybersecurity Architecture & Defensive Controls</div>
+    <div class="header-subtitle">Vibarua Marketplace Platform - Technical Defense & Security Engineering Documentation</div>
+    <div class="meta-row">
+      <div class="meta-item"><strong>Focus Domain:</strong> Application Security (AppSec) & Secure SDLC</div>
+      <div class="meta-item"><strong>Framework Alignment:</strong> OWASP Top 10 (2021) & NIST CSF</div>
+      <div class="meta-item"><strong>Technology Stack:</strong> Node.js, Express, MongoDB, Cloudinary, React 19</div>
+      <div class="meta-item"><strong>Document Scope:</strong> End-to-End Defensive Controls Specification</div>
+    </div>
+  </div>
+
+  <!-- Section 1 -->
+  <h2><span class="section-icon">1</span> Identity & Access Management (IAM)</h2>
+
+  <div class="card">
+    <div class="card-title">
+      <span>User Authentication & Stateful Access Verification</span>
+      <span class="badge badge-blue">Authentication</span>
+    </div>
+    <p>Guarantees that actors authenticate with valid credentials before accessing protected operations.</p>
+    <ul>
+      <li><strong>Credential Verification:</strong> Handled via <code>/api/auth/login</code> with email and password checks.</li>
+      <li><strong>Pre-Authentication Account Standing Check:</strong> Prior to generating a token, the backend inspects account standing. Suspended accounts (<code>isBlocked: true</code>) or deactivated accounts (<code>isActive: false</code>) are rejected with an explicit <code>403 Forbidden</code> and audit logged, preventing suspended users from obtaining fresh access tokens.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      <span>Cryptographic Password Security & Hashing</span>
+      <span class="badge badge-green">Cryptographic Storage</span>
+    </div>
+    <p>Eliminates plaintext credential storage and defends against offline brute-force attacks.</p>
+    <ul>
+      <li><strong>Algorithm:</strong> Implemented via <code>bcryptjs</code> using a salt cost factor of <strong>10 rounds</strong> with cryptographically secure random salt generation.</li>
+      <li><strong>Threats Mitigated:</strong> Rainbow table lookups, dictionary attacks, and credential exposure in the event of database exfiltration.</li>
+      <li><strong>Query Projection:</strong> Mongoose queries systematically exclude password hashes using <code>.select('-password')</code> across all user and admin endpoints.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      <span>Role-Based Access Control (RBAC) & Principle of Least Privilege</span>
+      <span class="badge badge-purple">Authorization</span>
+    </div>
+    <p>Enforces least privilege by separating system roles into three distinct authorization tiers.</p>
+    <ul>
+      <li><strong>Defined Roles:</strong> <code>client</code>, <code>worker</code>, and <code>admin</code>.</li>
+      <li><strong>Route Middleware Enforcement:</strong> Enforced via <code>authorize('admin')</code> middleware. Non-admin roles attempting to access administrative controllers receive an immediate <code>403 Forbidden</code>.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      <span>JWT Authorization & Live Database Revocation Check</span>
+      <span class="badge badge-amber">Session Security</span>
+    </div>
+    <p>Provides stateless token authorization augmented with real-time database validation.</p>
+    <ul>
+      <li><strong>Signature:</strong> Tokens are digitally signed using HMAC-SHA256 (<code>HS256</code>) with a 30-day expiration window.</li>
+      <li><strong>Live Invalidation Check:</strong> Standard stateless JWTs suffer from "token linger" (tokens remain valid even after an admin bans a user until token expiry). In this system, the <code>protect</code> middleware checks the live MongoDB record on <strong>every request</strong>:
+        <ul>
+          <li>Validates user existence in the database.</li>
+          <li>Ensures <code>user.isBlocked === false</code> and <code>user.isActive !== false</code>.</li>
+          <li><strong>Outcome:</strong> When an admin blocks an account, active sessions and tokens are <strong>immediately neutralized</strong>.</li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Section 2: Input Validation -->
+  <h2><span class="section-icon">2</span> Input Validation, Data Sanitization & Type Enforcement</h2>
+
+  <div class="card">
+    <div class="card-title">
+      <span>Server-Side Schema Validation & Type Constraints (Mongoose)</span>
+      <span class="badge badge-green">Injection Prevention</span>
+    </div>
+    <p>Authoritative server-side validation rejecting invalid, malformed, or malicious data payloads before reaching database storage:</p>
+    <ul>
+      <li><strong>Normalization (<code>lowercase: true</code>):</strong> Normalizes email addresses to lowercase, preventing case-sensitivity authentication bypasses and duplicate account spoofing (e.g. <code>User@domain.com</code> vs <code>user@domain.com</code>).</li>
+      <li><strong>Whitespace Sanitization (<code>trim: true</code>):</strong> Trims leading/trailing whitespace across all text fields (full name, email, bio, profession, comments), neutralizing whitespace manipulation attacks.</li>
+      <li><strong>Length Boundaries:</strong> Enforces minimum password length (<code>minlength: 6</code>) and maximum string length limits (<code>maxlength: 500</code> on bio and review comments), preventing buffer stuffing and database payload exhaustion.</li>
+      <li><strong>Strict Value Enumeration (Whitelisting):</strong> Restricts user roles to <code>['client', 'worker', 'admin']</code> and review ratings to numeric values between <code>1</code> and <code>5</code>. Any unexpected value triggers a Mongoose validation rejection.</li>
+      <li><strong>Numeric Range Guards:</strong> Restricts experience to <code>min: 0</code> and rating calculations to <code>min: 0, max: 5</code>, eliminating negative integer manipulation.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      <span>Client-Side Form Validation & Real-Time Strength Metering</span>
+      <span class="badge badge-blue">Client-Side Defense</span>
+    </div>
+    <ul>
+      <li><strong>Interactive Password Strength Meter:</strong> Evaluates passwords against 6 criteria (length &ge; 8, length &ge; 12, uppercase letters, lowercase letters, numbers, and special symbols) with real-time visual color feedback.</li>
+      <li><strong>Confirmation Matching:</strong> Validates password confirmation equality prior to network dispatch (<code>password === confirmPassword</code>).</li>
+      <li><strong>Input Bounds:</strong> HTML5 input types (<code>type="email"</code>, <code>type="number"</code>) and native field constraints.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      <span>Query Parameter Sanitization & Boundary Handling</span>
+      <span class="badge badge-slate">Parameter Defense</span>
+    </div>
+    <ul>
+      <li><strong>Safe Integer Parsing:</strong> Query parameters for pagination are defensively parsed with strict fallback limits (<code>parseInt(req.query.page) || 1</code>, <code>parseInt(req.query.limit) || 10</code>) preventing NaN or infinite pagination queries.</li>
+      <li><strong>Search Sanitization:</strong> Administrative user and audit searches sanitize user input strings before regex evaluation.</li>
+    </ul>
+  </div>
+
+  <!-- Page Break for Clean Printing -->
+  <div class="page-break"></div>
+
+  <!-- Section 3: Threat Mitigation -->
+  <h2><span class="section-icon">3</span> Threat Mitigation & Defensive Architecture</h2>
+
+  <div class="card">
+    <div class="card-title">
+      <span>Multi-Tiered Rate Limiting & Brute-Force Defense</span>
+      <span class="badge badge-red">DoS / Anti-Brute-Force</span>
+    </div>
+    <p>Configured using <code>express-rate-limit</code> with tiered thresholds mapped to endpoint sensitivity:</p>
+    <ul>
+      <li><strong>Authentication Limiter (<code>authLimiter</code>):</strong> Imposes a strict limit of <strong>5 requests per 15 minutes</strong> per IP address on authentication endpoints (<code>/api/auth/login</code> and <code>/api/auth/register</code>). Prevents automated credential stuffing, password spraying, and dictionary attacks.</li>
+      <li><strong>General API Limiter (<code>generalLimiter</code>):</strong> Restricts traffic across all API endpoints to <strong>100 requests per 15 minutes</strong> per IP, protecting the Node.js event loop against Layer-7 resource starvation and Denial of Service (DoS).</li>
+      <li><strong>Automated Threat Event Trigger:</strong> Exceeding the authentication threshold automatically generates a security audit log (<code>RATE_LIMIT_EXCEEDED</code>) capturing the offending IP address, requested path, method, and User-Agent.</li>
+    </ul>
+  </div>
+
+  <!-- Section 4: Secure File Uploads -->
+  <h2><span class="section-icon">4</span> Secure File Uploads & Media Handling</h2>
+
+  <div class="card">
+    <div class="card-title">
+      <span>Cloud-Isolated File Uploads & MIME Whitelisting</span>
+      <span class="badge badge-purple">File Upload Security</span>
+    </div>
+    <p>Prevents file upload vulnerabilities, Remote Code Execution (RCE), and server filesystem compromise:</p>
+    <ul>
+      <li><strong>Strict Extension / Format Whitelist:</strong> Only image formats are accepted (<code>['jpg', 'jpeg', 'png', 'gif', 'webp']</code>). Executable extensions (<code>.exe</code>, <code>.php</code>, <code>.sh</code>, <code>.js</code>, <code>.py</code>, <code>.html</code>) are strictly rejected.</li>
+      <li><strong>Decoupled Cloud Storage:</strong> Uploaded media is streamed directly to Cloudinary CDN storage rather than stored on the local web server filesystem, completely eliminating <strong>Local File Inclusion (LFI)</strong> and web shell attacks.</li>
+      <li><strong>Image Re-encoding & Neutralization:</strong> Images undergo server-side transformation (<code>{ width: 500, height: 500, crop: 'fill', quality: 'auto' }</code>). Re-encoding strips embedded EXIF metadata payloads, malicious polyglot scripts, and ImageTragick exploits.</li>
+      <li><strong>Multer Error Boundary:</strong> Dedicated error handling middleware intercepts file size and upload exceptions gracefully without crashing the server process.</li>
+    </ul>
+  </div>
+
+  <!-- Section 5: Account Integrity -->
+  <h2><span class="section-icon">5</span> Account Integrity, Suspension & Soft Deactivation</h2>
+
+  <div class="card">
+    <div class="card-title">
+      <span>Administrative Account Suspension (Block / Unblock)</span>
+      <span class="badge badge-red">Incident Containment</span>
+    </div>
+    <p>Enables administrators to immediately isolate compromised or abusive user accounts.</p>
+    <ul>
+      <li><strong>Granular Tracking:</strong> Persists <code>isBlocked</code> (Boolean), <code>blockReason</code> (administrative reason), <code>blockedAt</code> (timestamp), and <code>blockedBy</code> (administrator ID).</li>
+      <li><strong>Self-Lockout Prevention:</strong> Hardcoded logic prevents administrators from suspending or deactivating their own account (<code>req.userId === targetId</code>), preventing administrative lockout.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      <span>Soft Deactivation / Soft Deletion (Forensics & Non-Repudiation)</span>
+      <span class="badge badge-blue">Data Preservation</span>
+    </div>
+    <p>Adopts an account deactivation pattern (<code>isActive: false</code>) rather than permanent database deletion (<code>findByIdAndDelete</code>).</p>
+    <ul>
+      <li><strong>Preservation of Forensic Evidence:</strong> Hard deletion destroys historical relational integrity. Soft deactivation preserves job records, review logs, and audit trails for post-incident investigation.</li>
+      <li><strong>Non-Repudiation:</strong> Malicious actors cannot erase evidence of illicit transactions or policy violations by attempting account deletion.</li>
+    </ul>
+  </div>
+
+  <!-- Section 6: Auditing & Redaction -->
+  <h2><span class="section-icon">6</span> Security Auditing, Observability & Sensitive Data Redaction</h2>
+
+  <div class="card">
+    <div class="card-title">
+      <span>Centralized Security Audit Logging Subsystem (<code>AuditLog</code>)</span>
+      <span class="badge badge-purple">Accountability & SIEM</span>
+    </div>
+    <p>An immutable audit logging subsystem capturing security-significant lifecycle events into MongoDB.</p>
+    <ul>
+      <li><strong>Tracked Actions:</strong> <code>LOGIN_SUCCESS</code>, <code>LOGIN_FAILED</code>, <code>USER_REGISTERED</code>, <code>LOGOUT</code>, <code>ACCOUNT_BLOCKED</code>, <code>ACCOUNT_UNBLOCKED</code>, <code>ACCOUNT_DEACTIVATED</code>, <code>ACCOUNT_REACTIVATED</code>, <code>RATE_LIMIT_EXCEEDED</code>, <code>ADMIN_ACTION</code>.</li>
+      <li><strong>Captured Forensic Telemetry:</strong> Actor User ID, real client IP address (supporting proxy/load-balancer headers via <code>x-forwarded-for</code>), User-Agent header, UTC timestamp, outcome status (<code>success</code>, <code>failure</code>, <code>warning</code>), and context metadata.</li>
+      <li><strong>Compound Database Indexing:</strong> Indexed on <code>(userId, timestamp)</code> and <code>(action, timestamp)</code> for high-performance forensic querying.</li>
+      <li><strong>Append-Only Integrity:</strong> Audit logs can only be created by system events; there are no public or administrative update/delete endpoints.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      <span>Automated Recursive Credential Redaction (<code>sanitizeDetails</code>)</span>
+      <span class="badge badge-amber">Privacy & Defense in Depth</span>
+    </div>
+    <p>Mitigates log poisoning and accidental credential exposure in persistent storage or log drains:</p>
+    <ul>
+      <li><strong>Recursive Inspection:</strong> Recursively traverses nested objects and arrays.</li>
+      <li><strong>Key Sanitization:</strong> Masks keys matching <code>/password|token|jwt|secret|apiKey|auth|bearer|cookie|credential/i</code> to <code>[REDACTED]</code>.</li>
+      <li><strong>Signature Detection:</strong> Identifies raw Bearer authorization strings and JWT signatures (<code>eyJ...</code>) and replaces them with <code>[REDACTED_TOKEN]</code>.</li>
+    </ul>
+  </div>
+
+  <!-- Section 7: Network & Configuration -->
+  <h2><span class="section-icon">7</span> Network, Transport & Configuration Hardening</h2>
+
+  <div class="card">
+    <div class="card-title">
+      <span>CORS Whitelisting, Error Masking & Environment Isolation</span>
+      <span class="badge badge-slate">Infrastructure Hardening</span>
+    </div>
+    <ul>
+      <li><strong>Strict CORS Policy:</strong> Restricted to explicit trusted client origins (<code>http://localhost:5173</code>, production Vercel frontend) with <code>credentials: true</code>.</li>
+      <li><strong>Information Leakage Prevention:</strong> Generic error responses ("Invalid credentials", "Server error") prevent user enumeration and conceal internal stack traces.</li>
+      <li><strong>Secret Isolation:</strong> All credentials (MongoDB URI, JWT secret, Cloudinary keys) are isolated in <code>.env</code> and excluded from version control via <code>.gitignore</code>.</li>
+      <li><strong>DNS Security:</strong> Explicit DNS resolution (<code>8.8.8.8</code>, <code>8.8.4.4</code>) with IPv4 priority prevents DNS rebinding vulnerabilities during Atlas SRV queries.</li>
+    </ul>
+  </div>
+
+  <!-- Page Break for Clean Summary Table -->
+  <div class="page-break"></div>
+
+  <!-- Section 8: Summary Table -->
+  <h2><span class="section-icon">8</span> Cybersecurity Master Matrix (Presentation Reference)</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 20%;">Security Control</th>
+        <th style="width: 40%;">Implementation Mechanism in Project</th>
+        <th style="width: 40%;">Threat / Vulnerability Mitigated</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Input Validation & Sanitization</strong></td>
+        <td>Mongoose schema constraints (<code>lowercase</code>, <code>trim</code>, <code>minlength</code>, <code>maxlength</code>, strict <code>enums</code>, numeric ranges)</td>
+        <td>Injection attacks, unexpected data tampering, buffer stuffing, casing bypasses</td>
+      </tr>
+      <tr>
+        <td><strong>Password Hashing</strong></td>
+        <td><code>bcryptjs</code> (Cost factor 10 rounds) + schema <code>.select('-password')</code></td>
+        <td>Plaintext credential exposure, rainbow table lookups, database breach cracking</td>
+      </tr>
+      <tr>
+        <td><strong>Authentication & Session Tokens</strong></td>
+        <td>HMAC-SHA256 JWT + Live database standing verification in <code>protect</code></td>
+        <td>Unauthorized access, session hijacking, stale token lingering post-ban</td>
+      </tr>
+      <tr>
+        <td><strong>Role-Based Access Control (RBAC)</strong></td>
+        <td>Role segregation (<code>client</code>, <code>worker</code>, <code>admin</code>) via route middleware</td>
+        <td>Privilege escalation, Broken Object Level Authorization (BOLA)</td>
+      </tr>
+      <tr>
+        <td><strong>Brute-Force & DoS Mitigation</strong></td>
+        <td><code>authLimiter</code> (5 req / 15 min) + <code>generalLimiter</code> (100 req / 15 min)</td>
+        <td>Credential stuffing, password spraying, automated dictionary attacks, Layer-7 DoS</td>
+      </tr>
+      <tr>
+        <td><strong>Secure File Uploads</strong></td>
+        <td>Extension whitelist (<code>jpg, png, webp</code>) + Cloudinary CDN + image re-encoding</td>
+        <td>Remote Code Execution (RCE), Local File Inclusion (LFI), web shells, EXIF malware</td>
+      </tr>
+      <tr>
+        <td><strong>Account Suspension</strong></td>
+        <td>Administrative block toggle + immediate token invalidation</td>
+        <td>Compromised/abusive account containment, terms enforcement</td>
+      </tr>
+      <tr>
+        <td><strong>Soft Deactivation</strong></td>
+        <td>Soft deletion pattern (<code>isActive: false</code>) preserving records</td>
+        <td>Evidence tampering, anti-forensics, loss of relational audit integrity</td>
+      </tr>
+      <tr>
+        <td><strong>Security Audit Logging</strong></td>
+        <td>Indexed, append-only <code>AuditLog</code> collection with IP & User-Agent</td>
+        <td>Lack of accountability, non-repudiation vulnerabilities</td>
+      </tr>
+      <tr>
+        <td><strong>Sensitive Data Redaction</strong></td>
+        <td>Recursive regex pattern matching in <code>sanitizeDetails()</code></td>
+        <td>Log poisoning, sensitive credential leakage in server logs or monitoring</td>
+      </tr>
+      <tr>
+        <td><strong>Self-Lockout Protection</strong></td>
+        <td>Hardcoded check prohibiting admins from suspending/deactivating self</td>
+        <td>Administrative privilege suicide, management plane DoS</td>
+      </tr>
+      <tr>
+        <td><strong>CORS & Transport Hardening</strong></td>
+        <td>Whitelisted trusted origins + <code>.env</code> secret isolation + error masking</td>
+        <td>Cross-Origin data theft, credential leakage, user enumeration</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="footer-note">
+    Vibarua Marketplace Platform • Academic & Technical Cybersecurity Defense Documentation • SSDLC Specification
+  </div>
+
+</body>
+</html>

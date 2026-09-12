@@ -39,6 +39,36 @@ const workerProfileSchema = new mongoose.Schema({
     type: String,
     default: '',
   },
+  idNumber: {
+    type: String,
+    default: '',
+    trim: true,
+  },
+  idDocument: {
+    type: String,
+    default: '',
+  },
+  documents: [
+    {
+      title: {
+        type: String,
+        required: true,
+        trim: true,
+      },
+      url: {
+        type: String,
+        required: true,
+      },
+      fileType: {
+        type: String,
+        default: 'document',
+      },
+      uploadedAt: {
+        type: Date,
+        default: Date.now,
+      },
+    },
+  ],
   averageRating: {
     type: Number,
     default: 0,

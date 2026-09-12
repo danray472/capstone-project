@@ -212,6 +212,18 @@ const WorkerDiscoveryPage = () => {
                         {'☆'.repeat(5 - Math.round(worker.averageRating || 0))}
                       </span>
                     </div>
+                    <div className="flex items-center gap-1.5 mt-2 flex-wrap">
+                      {(worker.idNumber || worker.userData?.idNumber || worker.idDocument) && (
+                        <span className="inline-flex items-center gap-1 text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-full">
+                          <span>✓</span> ID Verified
+                        </span>
+                      )}
+                      {worker.documents && worker.documents.length > 0 && (
+                        <span className="inline-flex items-center gap-1 text-[10px] font-bold bg-purple-50 text-purple-700 border border-purple-200 px-2 py-0.5 rounded-full">
+                          <span>🎓</span> {worker.documents.length} {worker.documents.length === 1 ? 'Doc' : 'Docs'}
+                        </span>
+                      )}
+                    </div>
                   </div>
                 </div>
 

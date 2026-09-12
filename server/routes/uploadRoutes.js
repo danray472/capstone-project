@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
-const { storage } = require('../config/cloudinary');
+const { storage, documentStorage } = require('../config/cloudinary');
 
 const upload = multer({ storage });
+const uploadDocument = multer({ storage: documentStorage });
 
 // @route   POST /api/upload/image
 // @desc    Upload image to Cloudinary
@@ -21,6 +22,22 @@ router.post('/image', upload.single('image'), (req, res) => {
   res.json({
     url: req.file.path,
     publicId: req.file.filename,
+  });
+});
+
+// @route   POST /api/upload/document
+// @desc    Upload supportive document or scanned ID (PDF, JPG, PNG, WEBP)
+// @access  Public
+router.post('/document', uploadDocument.single('document'), (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ message: 'No document file uploaded' });
+  }
+
+  res.json({
+    url: req.file.path,
+    publicId: req.file.filename,
+    originalName: req.file.originalname,
+    format: req.file.format,
   });
 });
 

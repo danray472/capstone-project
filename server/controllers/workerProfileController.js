@@ -1,19 +1,42 @@
 const WorkerProfile = require('../models/WorkerProfile');
 
+const User = require('../models/User');
+
 // @desc    Create worker profile
 // @route   POST /api/profiles
 // @access  Private (temporarily removed for testing)
 const createProfile = async (req, res) => {
   try {
-    const { userId, profession, bio, location, phone, skills, experience, profilePhoto } = req.body;
+    const {
+      userId,
+      profession,
+      bio,
+      location,
+      phone,
+      skills,
+      experience,
+      profilePhoto,
+      idNumber,
+      idDocument,
+      documents,
+    } = req.body;
 
     // Use userId from request or fallback
-    const finalUserId = userId || '6a2c83bd24922691f1033bc3';
+    const finalUserId = userId || (req.userId ? req.userId.toString() : '6a2c83bd24922691f1033bc3');
 
     // Check if profile already exists for this user
     const existingProfile = await WorkerProfile.findOne({ userId: finalUserId });
     if (existingProfile) {
       return res.status(400).json({ message: 'Profile already exists for this user' });
+    }
+
+    // Resolve idNumber: use provided or fallback to User record
+    let resolvedIdNumber = idNumber ? idNumber.trim() : '';
+    if (!resolvedIdNumber) {
+      const user = await User.findById(finalUserId);
+      if (user && user.idNumber) {
+        resolvedIdNumber = user.idNumber;
+      }
     }
 
     const profileData = {
@@ -25,6 +48,9 @@ const createProfile = async (req, res) => {
       skills: skills || [],
       experience,
       profilePhoto: profilePhoto || '',
+      idNumber: resolvedIdNumber,
+      idDocument: idDocument || '',
+      documents: Array.isArray(documents) ? documents : [],
     };
 
     const profile = await WorkerProfile.create(profileData);
@@ -39,20 +65,34 @@ const createProfile = async (req, res) => {
 // @access  Private
 const updateProfile = async (req, res) => {
   try {
-    const { profession, bio, location, phone, skills, experience, profilePhoto } = req.body;
+    const {
+      profession,
+      bio,
+      location,
+      phone,
+      skills,
+      experience,
+      profilePhoto,
+      idNumber,
+      idDocument,
+      documents,
+    } = req.body;
 
     const profile = await WorkerProfile.findOne({ userId: req.userId });
     if (!profile) {
       return res.status(404).json({ message: 'Profile not found' });
     }
 
-    profile.profession = profession || profile.profession;
-    profile.bio = bio || profile.bio;
-    profile.location = location || profile.location;
-    profile.phone = phone || profile.phone;
-    profile.skills = skills || profile.skills;
-    profile.experience = experience || profile.experience;
-    profile.profilePhoto = profilePhoto || profile.profilePhoto;
+    if (profession !== undefined) profile.profession = profession;
+    if (bio !== undefined) profile.bio = bio;
+    if (location !== undefined) profile.location = location;
+    if (phone !== undefined) profile.phone = phone;
+    if (skills !== undefined) profile.skills = skills;
+    if (experience !== undefined) profile.experience = experience;
+    if (profilePhoto !== undefined) profile.profilePhoto = profilePhoto;
+    if (idNumber !== undefined) profile.idNumber = idNumber;
+    if (idDocument !== undefined) profile.idDocument = idDocument;
+    if (documents !== undefined) profile.documents = Array.isArray(documents) ? documents : profile.documents;
 
     await profile.save();
 
@@ -76,9 +116,8 @@ const getMyProfile = async (req, res) => {
       return res.status(404).json({ message: 'Profile not found' });
     }
 
-    // Fetch user data to get fullName
-    const User = require('../models/User');
-    const user = await User.findById(userId).select('fullName email');
+    // Fetch user data to get fullName and idNumber
+    const user = await User.findById(userId).select('fullName email idNumber');
 
     res.json({
       ...profile.toObject(),
@@ -100,9 +139,8 @@ const getProfileById = async (req, res) => {
       return res.status(404).json({ message: 'Profile not found' });
     }
 
-    // Fetch user data to get fullName
-    const User = require('../models/User');
-    const user = await User.findById(profile.userId).select('fullName email');
+    // Fetch user data to get fullName and idNumber
+    const user = await User.findById(profile.userId).select('fullName email idNumber');
 
     res.json({
       ...profile.toObject(),
@@ -121,10 +159,9 @@ const getAllProfiles = async (req, res) => {
     const profiles = await WorkerProfile.find();
     
     // Fetch user data for each profile
-    const User = require('../models/User');
     const profilesWithUserData = await Promise.all(
       profiles.map(async (profile) => {
-        const user = await User.findById(profile.userId).select('fullName email');
+        const user = await User.findById(profile.userId).select('fullName email idNumber');
         return {
           ...profile.toObject(),
           userData: user,

@@ -9,6 +9,7 @@ const RegisterPage = () => {
     password: '',
     confirmPassword: '',
     role: 'client',
+    idNumber: '',
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -57,6 +58,11 @@ const RegisterPage = () => {
 
     if (formData.password.length < 6) {
       setError('Password must be at least 6 characters');
+      return;
+    }
+
+    if (formData.role === 'worker' && (!formData.idNumber || !formData.idNumber.trim())) {
+      setError('National ID / Passport Number is required for worker accounts');
       return;
     }
 
@@ -234,6 +240,28 @@ const RegisterPage = () => {
                 <option value="worker">Worker (offering services)</option>
               </select>
             </div>
+
+            {formData.role === 'worker' && (
+              <div className="bg-primary/5 border border-primary/20 rounded-xl p-4 transition-all">
+                <label htmlFor="idNumber" className="block text-sm font-medium text-text-primary mb-1.5 flex items-center justify-between">
+                  <span>National ID / Passport Number <span className="text-red-500">*</span></span>
+                  <span className="text-xs text-primary font-semibold">Required for Workers</span>
+                </label>
+                <input
+                  type="text"
+                  id="idNumber"
+                  name="idNumber"
+                  value={formData.idNumber}
+                  onChange={handleChange}
+                  required={formData.role === 'worker'}
+                  className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all bg-white text-text-primary"
+                  placeholder="e.g. 12345678"
+                />
+                <p className="text-xs text-text-secondary mt-1.5">
+                  You will upload a scanned copy of this ID during profile verification.
+                </p>
+              </div>
+            )}
 
             <button
               type="submit"

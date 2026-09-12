@@ -8,11 +8,12 @@ const {
   getAllProfiles,
 } = require('../controllers/workerProfileController');
 const { protect } = require('../middleware/authMiddleware');
+const { strictLimiter } = require('../middleware/rateLimiter');
 
 // @route   POST /api/profiles
 // @desc    Create worker profile
 // @access  Private (temporarily removed for testing)
-router.post('/', createProfile);
+router.post('/', strictLimiter, createProfile);
 
 // Test endpoint
 router.post('/test', (req, res) => {
@@ -23,7 +24,7 @@ router.post('/test', (req, res) => {
 // @route   PUT /api/profiles
 // @desc    Update worker profile
 // @access  Private (temporarily removed for testing)
-router.put('/', updateProfile);
+router.put('/', strictLimiter, updateProfile);
 
 // @route   GET /api/profiles/me
 // @desc    Get current user's profile

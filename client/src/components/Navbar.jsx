@@ -36,9 +36,25 @@ const Navbar = () => {
     }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem('userInfo');
-    window.location.href = '/';
+  const handleLogout = async () => {
+    try {
+      const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+      if (userInfo && userInfo.token) {
+        await fetch(`${API_BASE_URL}/auth/logout`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${userInfo.token}`
+          },
+          body: JSON.stringify({ email: userInfo.email })
+        });
+      }
+    } catch (err) {
+      console.error('Logout error:', err);
+    } finally {
+      localStorage.removeItem('userInfo');
+      window.location.href = '/';
+    }
   };
 
   return (
@@ -70,12 +86,21 @@ const Navbar = () => {
             
             {userInfo ? (
               <>
-                <Link
-                  to={userInfo.role === 'client' ? '/dashboard/client' : '/dashboard/worker'}
-                  className="text-gray-300 hover:text-white transition-colors duration-200 text-sm font-medium"
-                >
-                  Dashboard
-                </Link>
+                {userInfo.role === 'admin' ? (
+                  <Link
+                    to="/dashboard/admin"
+                    className="text-gray-300 hover:text-white transition-colors duration-200 text-sm font-medium"
+                  >
+                    Admin Panel
+                  </Link>
+                ) : (
+                  <Link
+                    to={userInfo.role === 'client' ? '/dashboard/client' : '/dashboard/worker'}
+                    className="text-gray-300 hover:text-white transition-colors duration-200 text-sm font-medium"
+                  >
+                    Dashboard
+                  </Link>
+                )}
                 {userInfo.role === 'client' && (
                   <Link
                     to="/workers"
@@ -109,7 +134,7 @@ const Navbar = () => {
                   </Link>
                 )}
                 <button
-                  onClick={handleLogout}
+                  onClick={async () => await handleLogout()}
                   className="text-gray-300 hover:text-white transition-colors duration-200 text-sm font-medium"
                 >
                   Logout
@@ -162,13 +187,23 @@ const Navbar = () => {
               
               {userInfo ? (
                 <>
-                  <Link
-                    to={userInfo.role === 'client' ? '/dashboard/client' : '/dashboard/worker'}
-                    className="block text-gray-300 hover:text-white transition-colors duration-200 text-sm font-medium py-2"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    Dashboard
-                  </Link>
+                  {userInfo.role === 'admin' ? (
+                    <Link
+                      to="/dashboard/admin"
+                      className="block text-gray-300 hover:text-white transition-colors duration-200 text-sm font-medium py-2"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      Admin Panel
+                    </Link>
+                  ) : (
+                    <Link
+                      to={userInfo.role === 'client' ? '/dashboard/client' : '/dashboard/worker'}
+                      className="block text-gray-300 hover:text-white transition-colors duration-200 text-sm font-medium py-2"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      Dashboard
+                    </Link>
+                  )}
                   {userInfo.role === 'client' && (
                     <Link
                       to="/workers"
@@ -206,8 +241,8 @@ const Navbar = () => {
                     </Link>
                   )}
                   <button
-                    onClick={() => {
-                      handleLogout();
+                    onClick={async () => {
+                      await handleLogout();
                       setMobileMenuOpen(false);
                     }}
                     className="block text-gray-300 hover:text-white transition-colors duration-200 text-sm font-medium py-2 w-full text-left"

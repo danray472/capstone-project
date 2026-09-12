@@ -12,6 +12,7 @@ import ClientJobsPage from './pages/ClientJobsPage';
 import LeaveReviewPage from './pages/LeaveReviewPage';
 import ClientDashboardPage from './pages/ClientDashboardPage';
 import WorkerDashboardPage from './pages/WorkerDashboardPage';
+import AdminDashboardPage from './pages/AdminDashboardPage';
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
           <Route path="reviews/leave" element={<LeaveReviewPage />} />
           <Route path="dashboard/client" element={<ClientDashboardPage />} />
           <Route path="dashboard/worker" element={<WorkerDashboardPage />} />
+          <Route path="dashboard/admin" element={<AdminDashboardPage />} />
           <Route path="profile/create" element={<CreateProfilePage />} />
           <Route path="profile/:id" element={<ViewProfilePage />} />
         </Route>
