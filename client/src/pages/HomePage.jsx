@@ -465,7 +465,7 @@ const HomePage = () => {
           {/* Bottom Bar */}
           <div className="border-t border-border pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-text-secondary text-sm">
-              &copy; 2024 Vibarua Marketplace. All rights reserved.
+              &copy; {new Date().getFullYear()} Vibarua Marketplace. All rights reserved.
             </p>
             <div className="flex gap-6 text-sm text-text-secondary">
               <a href="#" className="hover:text-primary transition-colors">Terms</a>
