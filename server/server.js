@@ -12,6 +12,9 @@ connectDB();
 
 const app = express();
 
+// Trust proxy for Render deployment
+app.set('trust proxy', true);
+
 // Middleware
 app.use(cors({
   origin: ['http://localhost:5173', 'http://localhost:5174', 'https://capstone-project-ebon-three.vercel.app'],
@@ -32,15 +35,7 @@ app.use('/api/reviews', require('./routes/reviewRoutes'));
 app.use('/api/upload', require('./routes/uploadRoutes'));
 
 // Admin routes
-console.log('Loading admin routes...');
-try {
-  const adminRoutes = require('./routes/adminRoutes');
-  app.use('/api/admin', adminRoutes);
-  console.log('Admin routes loaded successfully');
-} catch (error) {
-  console.error('Failed to load admin routes:', error.message);
-  console.error('Stack:', error.stack);
-}
+app.use('/api/admin', require('./routes/adminRoutes'));
 
 // Start server
 const PORT = process.env.PORT || 5000;
