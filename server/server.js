@@ -15,9 +15,23 @@ const app = express();
 // Trust proxy for Render deployment
 app.set('trust proxy', true);
 
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://localhost:5174',
+  'https://capstone-project-ebon-three.vercel.app',
+  'https://capstone-project-pojk.onrender.com',
+];
+
 // Middleware
 app.use(cors({
-  origin: ['http://localhost:5173', 'http://localhost:5174', 'https://capstone-project-ebon-three.vercel.app'],
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin) || /\.vercel\.app$/i.test(origin)) {
+      callback(null, true);
+      return;
+    }
+
+    callback(null, false);
+  },
   credentials: true,
 }));
 app.use(express.json());

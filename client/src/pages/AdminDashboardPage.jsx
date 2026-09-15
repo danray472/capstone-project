@@ -433,11 +433,10 @@ const AdminDashboardPage = () => {
         <div className="flex items-center border-b border-border mb-8 gap-2">
           <button
             onClick={() => setActiveTab('users')}
-            className={`flex items-center gap-2 pb-3 px-4 font-semibold text-sm transition-all border-b-2 ${
-              activeTab === 'users'
+            className={`flex items-center gap-2 pb-3 px-4 font-semibold text-sm transition-all border-b-2 ${activeTab === 'users'
                 ? 'border-primary text-primary font-bold'
                 : 'border-transparent text-text-secondary hover:text-text-primary hover:border-border'
-            }`}
+              }`}
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
@@ -452,11 +451,10 @@ const AdminDashboardPage = () => {
 
           <button
             onClick={() => setActiveTab('audit-logs')}
-            className={`flex items-center gap-2 pb-3 px-4 font-semibold text-sm transition-all border-b-2 ${
-              activeTab === 'audit-logs'
+            className={`flex items-center gap-2 pb-3 px-4 font-semibold text-sm transition-all border-b-2 ${activeTab === 'audit-logs'
                 ? 'border-primary text-primary font-bold'
                 : 'border-transparent text-text-secondary hover:text-text-primary hover:border-border'
-            }`}
+              }`}
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
@@ -807,11 +805,10 @@ const AdminDashboardPage = () => {
                                   {/* Soft Deactivate Button */}
                                   <button
                                     onClick={() => openDeactivateModal(u)}
-                                    className={`inline-flex items-center gap-1 text-xs font-medium px-2.5 py-1.5 rounded-lg border transition-colors ${
-                                      isDeactivated
+                                    className={`inline-flex items-center gap-1 text-xs font-medium px-2.5 py-1.5 rounded-lg border transition-colors ${isDeactivated
                                         ? 'bg-slate-100 text-slate-700 border-slate-300 hover:bg-slate-200'
                                         : 'bg-white text-text-secondary border-border hover:bg-surface-light hover:text-red-700'
-                                    }`}
+                                      }`}
                                     title={isDeactivated ? 'Reactivate account' : 'Soft deactivate account'}
                                   >
                                     {isDeactivated ? 'Reactivate' : 'Deactivate'}
@@ -1142,11 +1139,10 @@ const AdminDashboardPage = () => {
                 ].map((reason) => (
                   <label
                     key={reason}
-                    className={`flex items-center gap-3 p-2.5 rounded-xl border text-xs font-medium cursor-pointer transition-colors ${
-                      suspensionReason === reason
+                    className={`flex items-center gap-3 p-2.5 rounded-xl border text-xs font-medium cursor-pointer transition-colors ${suspensionReason === reason
                         ? 'border-red-400 bg-red-50/50 text-red-900'
                         : 'border-border hover:bg-surface-light text-text-primary'
-                    }`}
+                      }`}
                   >
                     <input
                       type="radio"
@@ -1260,11 +1256,10 @@ const AdminDashboardPage = () => {
                 <button
                   onClick={handleDeactivateUser}
                   disabled={isSubmittingDeactivate}
-                  className={`px-4 py-2 rounded-xl text-white text-xs font-semibold transition-colors shadow-sm disabled:opacity-50 flex items-center gap-1.5 ${
-                    selectedUserForDeactivate.isActive
+                  className={`px-4 py-2 rounded-xl text-white text-xs font-semibold transition-colors shadow-sm disabled:opacity-50 flex items-center gap-1.5 ${selectedUserForDeactivate.isActive
                       ? 'bg-slate-700 hover:bg-slate-800'
                       : 'bg-emerald-600 hover:bg-emerald-700'
-                  }`}
+                    }`}
                 >
                   {isSubmittingDeactivate ? (
                     <>
