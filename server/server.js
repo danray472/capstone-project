@@ -12,8 +12,8 @@ connectDB();
 
 const app = express();
 
-// Trust proxy for Render deployment
-app.set('trust proxy', true);
+// Trust proxy for Render deployment - MUST be set before rate limiter
+app.set('trust proxy', 1); // Use 1 instead of true for better compatibility
 
 const allowedOrigins = [
   'http://localhost:5173',

@@ -11,6 +11,13 @@ const generalLimiter = rateLimit({
   },
   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+  // Trust proxy headers when behind reverse proxy (Render)
+  trustProxy: true,
+  handler: (req, res) => {
+    res.status(429).json({
+      error: 'Too many requests from this IP, please try again after 15 minutes'
+    });
+  },
 });
 
 // Strict rate limiter for authentication routes
