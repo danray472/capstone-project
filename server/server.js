@@ -32,7 +32,15 @@ app.use('/api/reviews', require('./routes/reviewRoutes'));
 app.use('/api/upload', require('./routes/uploadRoutes'));
 
 // Admin routes
-app.use('/api/admin', require('./routes/adminRoutes'));
+console.log('Loading admin routes...');
+try {
+  const adminRoutes = require('./routes/adminRoutes');
+  app.use('/api/admin', adminRoutes);
+  console.log('Admin routes loaded successfully');
+} catch (error) {
+  console.error('Failed to load admin routes:', error.message);
+  console.error('Stack:', error.stack);
+}
 
 // Start server
 const PORT = process.env.PORT || 5000;
