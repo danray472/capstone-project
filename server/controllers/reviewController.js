@@ -74,7 +74,7 @@ const updateWorkerRating = async (workerId) => {
     const updatedProfile = await WorkerProfile.findByIdAndUpdate(workerId, {
       averageRating: Math.round(averageRating * 10) / 10, // Round to 1 decimal place
       totalReviews,
-    }, { new: true });
+    }, { returnDocument: 'after' });
 
     if (!updatedProfile) {
       console.error(`[updateWorkerRating] Profile not found with workerId: ${workerId}`);

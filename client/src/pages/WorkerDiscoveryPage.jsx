@@ -89,20 +89,36 @@ const WorkerDiscoveryPage = () => {
   }
 
   return (
-    <div className="min-h-[calc(100vh-8rem)] px-4 py-8">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-text-primary mb-2">Find Workers</h1>
-          <p className="text-text-secondary">Discover skilled professionals for your needs</p>
+    <div className="min-h-[calc(100vh-8rem)] relative overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+      {/* Decorative background elements */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-0 left-0 w-96 h-96 bg-primary/20 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-accent/20 rounded-full blur-3xl translate-x-1/2 translate-y-1/2"></div>
+        <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-primary/10 rounded-full blur-2xl -translate-x-1/2 -translate-y-1/2"></div>
+      </div>
+
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
+        <div className="text-center">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-4 leading-tight">
+            Find Trusted{' '}
+            <span className="bg-gradient-to-r from-white to-accent bg-clip-text text-transparent">
+              Workers
+            </span>
+          </h1>
+          <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
+            Discover skilled professionals for your needs
+          </p>
         </div>
+      </div>
+
+      <div className="relative max-w-7xl mx-auto px-4 py-8 pb-16">
 
         {/* Search and Filters */}
-        <div className="bg-white rounded-xl shadow-lg border border-border p-6 mb-8">
+        <div className="bg-white/10 backdrop-blur-md rounded-xl shadow-lg border border-white/30 p-6 mb-8">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {/* Search */}
             <div className="lg:col-span-2">
-              <label htmlFor="search" className="block text-sm font-medium text-text-secondary mb-2">
+              <label htmlFor="search" className="block text-sm font-medium text-white/90 mb-2">
                 Search
               </label>
               <input
@@ -111,42 +127,42 @@ const WorkerDiscoveryPage = () => {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="Search by profession, skills, or bio..."
-                className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+                className="w-full px-4 py-3 border border-white/30 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all bg-white/5 text-white placeholder-white/60"
               />
             </div>
 
             {/* Profession Filter */}
             <div>
-              <label htmlFor="profession" className="block text-sm font-medium text-text-secondary mb-2">
+              <label htmlFor="profession" className="block text-sm font-medium text-white/90 mb-2">
                 Profession
               </label>
               <select
                 id="profession"
                 value={filterProfession}
                 onChange={(e) => setFilterProfession(e.target.value)}
-                className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all bg-white"
+                className="w-full px-4 py-3 border border-white/30 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all bg-slate-700 text-white"
               >
-                <option value="">All Professions</option>
+                <option value="" className="bg-slate-700 text-white">All Professions</option>
                 {professionCategories.map(category => (
-                  <option key={category} value={category}>{category}</option>
+                  <option key={category} value={category} className="bg-slate-700 text-white">{category}</option>
                 ))}
               </select>
             </div>
 
             {/* Location Filter */}
             <div>
-              <label htmlFor="location" className="block text-sm font-medium text-text-secondary mb-2">
+              <label htmlFor="location" className="block text-sm font-medium text-white/90 mb-2">
                 Location
               </label>
               <select
                 id="location"
                 value={filterLocation}
                 onChange={(e) => setFilterLocation(e.target.value)}
-                className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all bg-white"
+                className="w-full px-4 py-3 border border-white/30 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all bg-slate-700 text-white"
               >
-                <option value="">All Locations</option>
+                <option value="" className="bg-slate-700 text-white">All Locations</option>
                 {uniqueLocations.map(location => (
-                  <option key={location} value={location}>{location}</option>
+                  <option key={location} value={location} className="bg-slate-700 text-white">{location}</option>
                 ))}
               </select>
             </div>
@@ -154,32 +170,32 @@ const WorkerDiscoveryPage = () => {
 
           {/* Sort */}
           <div className="mt-4 flex items-center gap-4">
-            <label htmlFor="sort" className="text-sm font-medium text-text-secondary">
+            <label htmlFor="sort" className="text-sm font-medium text-white/90">
               Sort by:
             </label>
             <select
               id="sort"
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="px-4 py-2 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all bg-white"
+              className="px-4 py-2 border border-white/30 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all bg-slate-700 text-white"
             >
-              <option value="experience">Experience (High to Low)</option>
-              <option value="experience-asc">Experience (Low to High)</option>
+              <option value="experience" className="bg-slate-700 text-white">Experience (High to Low)</option>
+              <option value="experience-asc" className="bg-slate-700 text-white">Experience (Low to High)</option>
             </select>
           </div>
         </div>
 
         {/* Error Message */}
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg mb-6">
+          <div className="bg-red-500/20 backdrop-blur-sm border border-red-400/30 text-white px-4 py-3 rounded-lg mb-6">
             {error}
           </div>
         )}
 
         {/* Workers Grid */}
         {filteredWorkers.length === 0 ? (
-          <div className="bg-white rounded-xl shadow-lg border border-border p-12 text-center">
-            <p className="text-text-secondary text-lg">No workers found matching your criteria.</p>
+          <div className="bg-white/10 backdrop-blur-sm rounded-xl shadow-lg border border-white/30 p-12 text-center">
+            <p className="text-white/90 text-lg">No workers found matching your criteria.</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -187,74 +203,79 @@ const WorkerDiscoveryPage = () => {
               <div
                 key={worker._id}
                 onClick={() => navigate(`/profile/${worker._id}`)}
-                className="bg-white rounded-xl shadow-lg border border-border p-6 cursor-pointer hover:shadow-xl transition-all duration-300 hover:border-primary/30"
+                className="group rounded-2xl overflow-hidden cursor-pointer hover:shadow-2xl transition-all duration-300 border border-white/20 bg-white/10 backdrop-blur-md hover:bg-white/15"
               >
-                {/* Profile Photo */}
-                <div className="flex items-center gap-4 mb-4">
-                  {worker.profilePhoto ? (
-                    <img
-                      src={worker.profilePhoto}
-                      alt="Profile"
-                      className="w-16 h-16 rounded-full object-cover border-2 border-border"
-                    />
-                  ) : (
-                    <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center border-2 border-border">
-                      <span className="text-2xl font-bold text-primary">W</span>
-                    </div>
-                  )}
-                  <div className="flex-1">
-                    <h3 className="text-lg font-bold text-text-primary">{worker.userData?.fullName || worker.profession}</h3>
-                    <p className="text-sm text-text-secondary">{worker.profession}</p>
-                    <div className="flex items-center gap-2 mt-1">
-                      <span className="text-sm text-text-secondary">📍 {worker.location}</span>
-                      <span className="text-yellow-500">
-                        {'★'.repeat(Math.round(worker.averageRating || 0))}
-                        {'☆'.repeat(5 - Math.round(worker.averageRating || 0))}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-1.5 mt-2 flex-wrap">
-                      {(worker.idNumber || worker.userData?.idNumber || worker.idDocument) && (
-                        <span className="inline-flex items-center gap-1 text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-full">
-                          <span>✓</span> ID Verified
+                {/* Content */}
+                <div className="p-6 h-full flex flex-col min-h-[320px]">
+                  {/* Profile Photo */}
+                  <div className="flex items-center gap-4 mb-4">
+                    {worker.profilePhoto ? (
+                      <img
+                        src={worker.profilePhoto}
+                        alt="Profile"
+                        className="w-16 h-16 rounded-full object-cover border-2 border-white/50"
+                      />
+                    ) : (
+                      <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center border-2 border-white/50">
+                        <span className="text-2xl font-bold text-white">{(worker.userData?.fullName || worker.profession || 'W')[0].toUpperCase()}</span>
+                      </div>
+                    )}
+                    <div className="flex-1">
+                      <h3 className="text-lg font-bold text-white">{worker.userData?.fullName || worker.profession}</h3>
+                      <p className="text-sm text-white/90">{worker.profession}</p>
+                      <div className="flex items-center gap-2 mt-1">
+                        <span className="text-sm text-white/80">📍 {worker.location}</span>
+                        <span className="text-yellow-400">
+                          {'★'.repeat(Math.round(worker.averageRating || 0))}
+                          {'☆'.repeat(5 - Math.round(worker.averageRating || 0))}
                         </span>
-                      )}
-                      {worker.documents && worker.documents.length > 0 && (
-                        <span className="inline-flex items-center gap-1 text-[10px] font-bold bg-purple-50 text-purple-700 border border-purple-200 px-2 py-0.5 rounded-full">
-                          <span>🎓</span> {worker.documents.length} {worker.documents.length === 1 ? 'Doc' : 'Docs'}
-                        </span>
-                      )}
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                {/* Bio */}
-                <p className="text-text-secondary text-sm mb-4 line-clamp-2">
-                  {worker.bio}
-                </p>
-
-                {/* Skills */}
-                {worker.skills && worker.skills.length > 0 && (
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {worker.skills.slice(0, 3).map((skill, index) => (
-                      <span
-                        key={index}
-                        className="px-2 py-1 bg-primary/10 text-primary rounded-full text-xs font-medium"
-                      >
-                        {skill}
+                  {/* Verification Badges */}
+                  <div className="flex items-center gap-1.5 mb-4 flex-wrap">
+                    {(worker.idNumber || worker.userData?.idNumber || worker.idDocument) && (
+                      <span className="inline-flex items-center gap-1 text-[10px] font-bold bg-emerald-500/20 backdrop-blur-sm text-emerald-300 border border-emerald-400/30 px-2 py-0.5 rounded-full">
+                        <span>✓</span> ID Verified
                       </span>
-                    ))}
-                    {worker.skills.length > 3 && (
-                      <span className="text-xs text-text-secondary">+{worker.skills.length - 3} more</span>
+                    )}
+                    {worker.documents && worker.documents.length > 0 && (
+                      <span className="inline-flex items-center gap-1 text-[10px] font-bold bg-purple-500/20 backdrop-blur-sm text-purple-300 border border-purple-400/30 px-2 py-0.5 rounded-full">
+                        <span>🎓</span> {worker.documents.length} {worker.documents.length === 1 ? 'Doc' : 'Docs'}
+                      </span>
                     )}
                   </div>
-                )}
 
-                {/* Experience */}
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-text-secondary">
-                    💼 {worker.experience} {worker.experience === 1 ? 'year' : 'years'} experience
-                  </span>
-                  <span className="text-primary font-medium">View Profile →</span>
+                  {/* Bio */}
+                  <p className="text-white/90 text-sm mb-4 line-clamp-2 flex-grow">
+                    {worker.bio}
+                  </p>
+
+                  {/* Skills */}
+                  {worker.skills && worker.skills.length > 0 && (
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {worker.skills.slice(0, 3).map((skill, index) => (
+                        <span
+                          key={index}
+                          className="px-2 py-1 bg-white/20 backdrop-blur-sm text-white rounded-full text-xs font-medium border border-white/30"
+                        >
+                          {skill}
+                        </span>
+                      ))}
+                      {worker.skills.length > 3 && (
+                        <span className="text-xs text-white/80">+{worker.skills.length - 3} more</span>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Experience */}
+                  <div className="flex items-center justify-between text-sm mt-auto">
+                    <span className="text-white/90">
+                      💼 {worker.experience} {worker.experience === 1 ? 'year' : 'years'} experience
+                    </span>
+                    <span className="text-white font-medium">View Profile →</span>
+                  </div>
                 </div>
               </div>
             ))}

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import API_BASE_URL from '../services/api';
+import welder4Image from '../assets/welder4.jpg';
 
 const WorkerJobRequestsPage = () => {
   const [requests, setRequests] = useState([]);
@@ -122,29 +123,40 @@ const WorkerJobRequestsPage = () => {
   }
 
   return (
-    <div className="min-h-[calc(100vh-8rem)] px-4 sm:px-8 md:px-16 lg:px-24 py-8 sm:py-12 md:py-16">
-      <div className="max-w-5xl mx-auto">
-        <div className="mb-8 sm:mb-12">
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-text-primary mb-3">Job Requests</h1>
-          <p className="text-base sm:text-lg text-text-secondary">Manage incoming job requests from clients</p>
-        </div>
+    <div className="min-h-[calc(100vh-8rem)] relative overflow-hidden">
+      {/* Background Image */}
+      <div className="absolute inset-0">
+        <img
+          src={welder4Image}
+          alt="Worker Jobs Background"
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/75 via-black/60 to-black/80"></div>
+      </div>
+
+      <div className="relative px-4 sm:px-8 md:px-16 lg:px-24 py-8 sm:py-12 md:py-16">
+        <div className="max-w-5xl mx-auto">
+          <div className="mb-8 sm:mb-12">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-3">Job Requests</h1>
+            <p className="text-base sm:text-lg text-white/90">Manage incoming job requests from clients</p>
+          </div>
 
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 sm:px-5 sm:py-4 rounded-xl mb-8 sm:mb-10 text-sm">
+          <div className="bg-red-500/20 backdrop-blur-sm border border-red-400/30 text-white px-4 py-3 sm:px-5 sm:py-4 rounded-xl mb-8 sm:mb-10 text-sm">
             {error}
           </div>
         )}
 
         {requests.length === 0 ? (
-          <div className="bg-white rounded-2xl shadow-lg border border-border p-8 sm:p-12 md:p-16 text-center">
-            <p className="text-text-secondary text-base sm:text-lg">No job requests yet.</p>
+          <div className="bg-white/10 backdrop-blur-md rounded-2xl shadow-lg border border-white/30 p-8 sm:p-12 md:p-16 text-center">
+            <p className="text-white/80 text-base sm:text-lg">No job requests yet.</p>
           </div>
         ) : (
           <div className="space-y-4 sm:space-y-6">
             {requests.map((request) => (
               <div
                 key={request._id}
-                className="bg-white rounded-2xl shadow-lg border border-border p-4 sm:p-6 md:p-10 hover-card"
+                className="bg-white/10 backdrop-blur-md rounded-2xl shadow-lg border border-white/30 p-4 sm:p-6 md:p-10 hover-card"
               >
                 <div className="flex flex-col sm:flex-row items-start justify-between mb-4 sm:mb-6 gap-4">
                   <div className="flex-1">
@@ -152,21 +164,21 @@ const WorkerJobRequestsPage = () => {
                       <span className={`px-3 py-1 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium ${getStatusColor(request.status)}`}>
                         {request.status.charAt(0).toUpperCase() + request.status.slice(1)}
                       </span>
-                      <span className="text-xs sm:text-sm text-text-secondary">
+                      <span className="text-xs sm:text-sm text-white/80">
                         {new Date(request.createdAt).toLocaleDateString()}
                       </span>
                     </div>
-                    <p className="text-text-secondary mb-2 text-sm sm:text-base">{request.description}</p>
+                    <p className="text-white/90 mb-2 text-sm sm:text-base">{request.description}</p>
                     
                     {/* Location with Google Maps link */}
                     <div className="mb-3">
-                      <p className="text-xs sm:text-sm text-text-secondary mb-1">📍 {request.location}</p>
+                      <p className="text-xs sm:text-sm text-white/80 mb-1">📍 {request.location}</p>
                       {request.locationCoordinates && request.locationCoordinates.lat && request.locationCoordinates.lng && (
                         <a
                           href={`https://www.google.com/maps/search/?api=1&query=${request.locationCoordinates.lat},${request.locationCoordinates.lng}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1 text-primary hover:text-primary-dark text-xs sm:text-sm font-medium"
+                          className="inline-flex items-center gap-1 text-white hover:text-white/80 text-xs sm:text-sm font-medium"
                         >
                           <span>🗺️</span> Open in Google Maps
                         </a>
@@ -175,25 +187,25 @@ const WorkerJobRequestsPage = () => {
 
                     {/* Client Contact Information */}
                     {request.clientContact && (request.clientContact.name || request.clientContact.email || request.clientContact.phone) && (
-                      <div className="bg-surface-light/50 rounded-lg p-3 sm:p-4 mt-3">
-                        <h4 className="text-xs sm:text-sm font-semibold text-text-primary mb-2">Client Contact Information</h4>
+                      <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3 sm:p-4 mt-3 border border-white/20">
+                        <h4 className="text-xs sm:text-sm font-semibold text-white mb-2">Client Contact Information</h4>
                         {request.clientContact.name && (
-                          <p className="text-xs sm:text-sm text-text-secondary mb-1">
+                          <p className="text-xs sm:text-sm text-white/80 mb-1">
                             <span className="font-medium">Name:</span> {request.clientContact.name}
                           </p>
                         )}
                         {request.clientContact.email && (
-                          <p className="text-xs sm:text-sm text-text-secondary mb-1">
+                          <p className="text-xs sm:text-sm text-white/80 mb-1">
                             <span className="font-medium">Email:</span> 
-                            <a href={`mailto:${request.clientContact.email}`} className="text-primary hover:underline ml-1">
+                            <a href={`mailto:${request.clientContact.email}`} className="text-white hover:underline ml-1">
                               {request.clientContact.email}
                             </a>
                           </p>
                         )}
                         {request.clientContact.phone && (
-                          <p className="text-xs sm:text-sm text-text-secondary">
+                          <p className="text-xs sm:text-sm text-white/80">
                             <span className="font-medium">Phone:</span> 
-                            <a href={`tel:${request.clientContact.phone}`} className="text-primary hover:underline ml-1">
+                            <a href={`tel:${request.clientContact.phone}`} className="text-white hover:underline ml-1">
                               {request.clientContact.phone}
                             </a>
                           </p>
@@ -204,16 +216,16 @@ const WorkerJobRequestsPage = () => {
                 </div>
 
                 {request.status === 'pending' && (
-                  <div className="flex flex-col sm:flex-row gap-3 mt-4 sm:mt-5 pt-4 sm:pt-5 border-t border-border">
+                  <div className="flex flex-col sm:flex-row gap-3 mt-4 sm:mt-5 pt-4 sm:pt-5 border-t border-white/30">
                     <button
                       onClick={() => handleStatusUpdate(request._id, 'accepted')}
-                      className="flex-1 bg-green-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-green-700 transition-colors text-xs sm:text-sm"
+                      className="flex-1 bg-green-500 text-white py-2 px-4 rounded-lg font-medium hover:bg-green-600 transition-colors text-xs sm:text-sm"
                     >
                       Accept
                     </button>
                     <button
                       onClick={() => handleStatusUpdate(request._id, 'rejected')}
-                      className="flex-1 bg-red-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-red-700 transition-colors text-xs sm:text-sm"
+                      className="flex-1 bg-red-500 text-white py-2 px-4 rounded-lg font-medium hover:bg-red-600 transition-colors text-xs sm:text-sm"
                     >
                       Reject
                     </button>
@@ -221,10 +233,10 @@ const WorkerJobRequestsPage = () => {
                 )}
 
                 {request.status === 'accepted' && (
-                  <div className="flex gap-3 mt-4 sm:mt-5 pt-4 sm:pt-5 border-t border-border">
+                  <div className="flex gap-3 mt-4 sm:mt-5 pt-4 sm:pt-5 border-t border-white/30">
                     <button
                       onClick={() => handleStatusUpdate(request._id, 'completed')}
-                      className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-blue-700 transition-colors text-xs sm:text-sm"
+                      className="flex-1 bg-blue-500 text-white py-2 px-4 rounded-lg font-medium hover:bg-blue-600 transition-colors text-xs sm:text-sm"
                     >
                       Mark as Completed
                     </button>
@@ -232,18 +244,18 @@ const WorkerJobRequestsPage = () => {
                 )}
 
                 {request.status === 'completed' && reviews[request._id] && (
-                  <div className="mt-4 sm:mt-5 pt-4 sm:pt-5 border-t border-border">
-                    <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 sm:p-4">
+                  <div className="mt-4 sm:mt-5 pt-4 sm:pt-5 border-t border-white/30">
+                    <div className="bg-yellow-500/20 backdrop-blur-sm border border-yellow-400/30 rounded-lg p-3 sm:p-4">
                       <div className="flex items-center gap-2 mb-2">
-                        <span className="text-yellow-500 text-base sm:text-lg">
+                        <span className="text-yellow-300 text-base sm:text-lg">
                           {'★'.repeat(reviews[request._id].rating)}
                           {'☆'.repeat(5 - reviews[request._id].rating)}
                         </span>
-                        <span className="text-xs sm:text-sm text-text-secondary">
+                        <span className="text-xs sm:text-sm text-white/80">
                           Client Review
                         </span>
                       </div>
-                      <p className="text-text-secondary text-sm sm:text-base">{reviews[request._id].comment}</p>
+                      <p className="text-white/90 text-sm sm:text-base">{reviews[request._id].comment}</p>
                     </div>
                   </div>
                 )}
@@ -251,6 +263,7 @@ const WorkerJobRequestsPage = () => {
             ))}
           </div>
         )}
+      </div>
       </div>
     </div>
   );

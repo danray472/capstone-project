@@ -4,15 +4,13 @@ const { createAuditLog, extractIpAddress, extractUserAgent } = require('../utils
 // General rate limiter for all API routes
 // Limits: 100 requests per 15 minutes per IP
 const generalLimiter = rateLimit({
-  windowMs: 1 * 60 * 1000, // 15 minutes
+  windowMs: 1 * 60 * 1000,
   max: 100, // Limit each IP to 100 requests per windowMs
   message: {
     error: 'Too many requests from this IP, please try again after 15 minutes'
   },
   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers
-  // Trust proxy headers when behind reverse proxy (Render)
-  trustProxy: true,
   handler: (req, res) => {
     res.status(429).json({
       error: 'Too many requests from this IP, please try again after 15 minutes'

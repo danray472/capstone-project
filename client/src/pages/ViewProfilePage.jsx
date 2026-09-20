@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import API_BASE_URL from '../services/api';
+import manImage from '../assets/man.jpg';
 
 const ViewProfilePage = () => {
   const { id } = useParams();
@@ -104,22 +105,40 @@ const ViewProfilePage = () => {
   }
 
   const workerIdNumber = profile.idNumber || profile.userData?.idNumber;
+  const currentUser = JSON.parse(localStorage.getItem('userInfo') || 'null');
+  const isOwnProfile = id === 'me' || (
+    Boolean(currentUser) && Boolean(profile) && (
+      String(profile.userId) === String(currentUser._id) ||
+      String(profile._id) === String(currentUser._id)
+    )
+  );
 
   return (
-    <div className="flex items-center justify-center min-h-[calc(100vh-8rem)] px-4 sm:px-8 md:px-16 lg:px-24 py-8 sm:py-12 md:py-16">
-      <div className="w-full max-w-4xl">
-        <div className="bg-white rounded-2xl shadow-lg border border-border p-6 sm:p-8 md:p-12">
+    <div className="min-h-[calc(100vh-8rem)] relative overflow-hidden">
+      {/* Background Image */}
+      <div className="absolute inset-0">
+        <img
+          src={manImage}
+          alt="Profile Background"
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/75 via-black/60 to-black/80"></div>
+      </div>
+
+      <div className="relative flex items-center justify-center min-h-[calc(100vh-8rem)] px-4 sm:px-8 md:px-16 lg:px-24 py-8 sm:py-12 md:py-16">
+        <div className="w-full max-w-4xl">
+          <div className="bg-white/10 backdrop-blur-md rounded-2xl shadow-2xl border border-white/30 p-6 sm:p-8 md:p-12">
           {/* Profile Header */}
           <div className="flex flex-col sm:flex-row items-start gap-6 sm:gap-8 mb-8 sm:mb-12">
             {profile.profilePhoto ? (
               <img
                 src={profile.profilePhoto}
                 alt={profile.userData?.fullName || 'Profile'}
-                className="w-24 h-24 sm:w-32 sm:h-32 rounded-full object-cover border-4 border-primary/20 mx-auto sm:mx-0 shadow-md"
+                className="w-24 h-24 sm:w-32 sm:h-32 rounded-full object-cover border-4 border-white/30 mx-auto sm:mx-0 shadow-md"
               />
             ) : (
-              <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full bg-primary/10 flex items-center justify-center border-4 border-border mx-auto sm:mx-0 shadow-sm">
-                <span className="text-3xl sm:text-4xl font-bold text-primary">
+              <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full bg-white/20 flex items-center justify-center border-4 border-white/30 mx-auto sm:mx-0 shadow-sm">
+                <span className="text-3xl sm:text-4xl font-bold text-white">
                   {profile.userData?.fullName?.charAt(0) || 'W'}
                 </span>
               </div>
@@ -127,14 +146,14 @@ const ViewProfilePage = () => {
 
             <div className="flex-1 text-center sm:text-left">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
-                <h1 className="text-2xl sm:text-3xl font-bold text-text-primary">
+                <h1 className="text-2xl sm:text-3xl font-bold text-white">
                   {profile.userData?.fullName || 'Unknown Worker'}
                 </h1>
 
                 {/* ID Badge in Header */}
                 {workerIdNumber && (
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-50 text-emerald-800 border border-emerald-200 rounded-full text-xs font-semibold mx-auto sm:mx-0">
-                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-500/20 backdrop-blur-sm text-emerald-300 border border-emerald-400/30 rounded-full text-xs font-semibold mx-auto sm:mx-0">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
                     ID: {workerIdNumber} (Verified)
                   </div>
                 )}
@@ -144,14 +163,14 @@ const ViewProfilePage = () => {
                 {profile.profession}
               </p>
 
-              <div className="flex flex-wrap justify-center sm:justify-start gap-3 text-sm text-text-secondary mb-3">
-                <span className="flex items-center gap-1.5 bg-surface-light px-3 py-1 rounded-lg border border-border/50">
+              <div className="flex flex-wrap justify-center sm:justify-start gap-3 text-sm text-white/80 mb-3">
+                <span className="flex items-center gap-1.5 bg-white/5 backdrop-blur-sm px-3 py-1 rounded-lg border border-white/20">
                   📍 {profile.location}
                 </span>
-                <span className="flex items-center gap-1.5 bg-surface-light px-3 py-1 rounded-lg border border-border/50">
+                <span className="flex items-center gap-1.5 bg-white/5 backdrop-blur-sm px-3 py-1 rounded-lg border border-white/20">
                   📞 {profile.phone}
                 </span>
-                <span className="flex items-center gap-1.5 bg-surface-light px-3 py-1 rounded-lg border border-border/50">
+                <span className="flex items-center gap-1.5 bg-white/5 backdrop-blur-sm px-3 py-1 rounded-lg border border-white/20">
                   💼 {profile.experience} {profile.experience === 1 ? 'year' : 'years'} experience
                 </span>
               </div>
@@ -161,7 +180,7 @@ const ViewProfilePage = () => {
                   {'★'.repeat(Math.round(profile.averageRating || 0))}
                   {'☆'.repeat(5 - Math.round(profile.averageRating || 0))}
                 </span>
-                <span className="text-text-secondary font-medium">
+                <span className="text-white/80 font-medium">
                   {profile.averageRating || 0} ({profile.totalReviews || 0}{' '}
                   {profile.totalReviews === 1 ? 'review' : 'reviews'})
                 </span>
@@ -171,8 +190,8 @@ const ViewProfilePage = () => {
 
           {/* About / Bio */}
           <div className="mb-6 sm:mb-8">
-            <h2 className="text-lg sm:text-xl font-bold text-text-primary mb-3">About</h2>
-            <p className="text-text-secondary leading-relaxed text-base">
+            <h2 className="text-lg sm:text-xl font-bold text-white mb-3">About</h2>
+            <p className="text-white/90 leading-relaxed text-base">
               {profile.bio}
             </p>
           </div>
@@ -180,12 +199,12 @@ const ViewProfilePage = () => {
           {/* Skills */}
           {profile.skills && profile.skills.length > 0 && (
             <div className="mb-6 sm:mb-8">
-              <h2 className="text-lg sm:text-xl font-bold text-text-primary mb-3">Skills & Expertise</h2>
+              <h2 className="text-lg sm:text-xl font-bold text-white mb-3">Skills & Expertise</h2>
               <div className="flex flex-wrap gap-2 sm:gap-2.5 justify-center sm:justify-start">
                 {profile.skills.map((skill, index) => (
                   <span
                     key={index}
-                    className="px-3.5 py-1.5 bg-primary/10 text-primary border border-primary/20 rounded-full text-xs sm:text-sm font-semibold"
+                    className="px-3.5 py-1.5 bg-white/10 backdrop-blur-sm text-white border border-white/30 rounded-full text-xs sm:text-sm font-semibold"
                   >
                     {skill}
                   </span>
@@ -195,36 +214,36 @@ const ViewProfilePage = () => {
           )}
 
           {/* ================= VERIFICATION & SUPPORTIVE DOCUMENTS ================= */}
-          <div className="mb-8 p-5 sm:p-6 bg-slate-50 border border-slate-200 rounded-2xl">
-            <div className="flex items-center justify-between mb-4 pb-3 border-b border-slate-200">
+          <div className="mb-8 p-5 sm:p-6 bg-white/5 backdrop-blur-sm border border-white/20 rounded-2xl">
+            <div className="flex items-center justify-between mb-4 pb-3 border-b border-white/20">
               <div className="flex items-center gap-2.5">
                 <span className="text-2xl">🪪</span>
                 <div>
-                  <h2 className="text-lg font-bold text-text-primary">Credentials & Supportive Documents</h2>
-                  <p className="text-xs text-text-secondary">Official identification and verified supportive certifications</p>
+                  <h2 className="text-lg font-bold text-white">Credentials & Supportive Documents</h2>
+                  <p className="text-xs text-white/70">Official identification and verified supportive certifications</p>
                 </div>
               </div>
-              <span className="text-xs font-semibold px-2.5 py-1 bg-emerald-100 text-emerald-800 rounded-full border border-emerald-200">
+              <span className="text-xs font-semibold px-2.5 py-1 bg-emerald-500/20 backdrop-blur-sm text-emerald-300 rounded-full border border-emerald-400/30">
                 Verified Identity
               </span>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* National ID Card */}
-              <div className="bg-white p-4 rounded-xl border border-border shadow-sm flex flex-col justify-between">
+              <div className="bg-white/5 backdrop-blur-sm p-4 rounded-xl border border-white/20 shadow-sm flex flex-col justify-between">
                 <div>
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs font-bold text-text-secondary uppercase tracking-wider">
+                    <span className="text-xs font-bold text-white/70 uppercase tracking-wider">
                       National ID / Passport
                     </span>
-                    <span className="text-[10px] bg-emerald-100 text-emerald-800 font-semibold px-2 py-0.5 rounded-full">
+                    <span className="text-[10px] bg-emerald-500/20 backdrop-blur-sm text-emerald-300 font-semibold px-2 py-0.5 rounded-full">
                       Mandatory Verified
                     </span>
                   </div>
-                  <p className="text-base font-bold text-text-primary font-mono mb-1">
+                  <p className="text-base font-bold text-white font-mono mb-1">
                     {workerIdNumber || 'ID Number Registered'}
                   </p>
-                  <p className="text-xs text-text-secondary mb-3">
+                  <p className="text-xs text-white/70 mb-3">
                     Government issued identification submitted for client verification
                   </p>
                 </div>
@@ -234,33 +253,33 @@ const ViewProfilePage = () => {
                     href={profile.idDocument}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center justify-center gap-1.5 w-full px-3 py-2 bg-primary/10 text-primary hover:bg-primary/20 font-semibold rounded-lg text-xs transition-colors"
+                    className="inline-flex items-center justify-center gap-1.5 w-full px-3 py-2 bg-white/15 hover:bg-white/25 border border-white/30 backdrop-blur-sm text-white font-semibold rounded-lg text-xs transition-colors shadow-sm"
                   >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                     </svg>
                     View Scanned ID Document
                   </a>
                 ) : (
-                  <span className="text-xs text-amber-600 bg-amber-50 p-2 rounded-lg block text-center font-medium">
+                  <span className="text-xs text-amber-300 bg-amber-500/20 backdrop-blur-sm p-2 rounded-lg block text-center font-medium">
                     Physical ID on file
                   </span>
                 )}
               </div>
 
               {/* Supportive Academic & Professional Documents */}
-              <div className="bg-white p-4 rounded-xl border border-border shadow-sm flex flex-col justify-between">
+              <div className="bg-white/5 backdrop-blur-sm p-4 rounded-xl border border-white/20 shadow-sm flex flex-col justify-between">
                 <div>
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs font-bold text-text-secondary uppercase tracking-wider">
+                    <span className="text-xs font-bold text-white/70 uppercase tracking-wider">
                       Academic & Supportive Certificates
                     </span>
-                    <span className="text-[10px] bg-purple-100 text-purple-800 font-semibold px-2 py-0.5 rounded-full">
+                    <span className="text-[10px] bg-purple-500/20 backdrop-blur-sm text-purple-300 font-semibold px-2 py-0.5 rounded-full">
                       {profile.documents?.length || 0} Attached
                     </span>
                   </div>
-                  <p className="text-xs text-text-secondary mb-3">
+                  <p className="text-xs text-white/70 mb-3">
                     Diplomas, vocational licenses, and academic certificates
                   </p>
                 </div>
@@ -270,11 +289,11 @@ const ViewProfilePage = () => {
                     {profile.documents.map((doc, idx) => (
                       <div
                         key={idx}
-                        className="flex items-center justify-between p-2 bg-surface-light rounded-lg border border-border/50 text-xs"
+                        className="flex items-center justify-between p-2 bg-white/5 backdrop-blur-sm rounded-lg border border-white/20 text-xs"
                       >
                         <div className="flex items-center gap-2 truncate pr-2">
                           <span className="text-sm">📜</span>
-                          <span className="font-semibold text-text-primary truncate" title={doc.title}>
+                          <span className="font-semibold text-white truncate" title={doc.title}>
                             {doc.title}
                           </span>
                         </div>
@@ -282,7 +301,7 @@ const ViewProfilePage = () => {
                           href={doc.url}
                           target="_blank"
                           rel="noreferrer"
-                          className="text-primary hover:underline font-bold flex-shrink-0 text-[11px]"
+                          className="text-white hover:text-white/80 underline font-bold flex-shrink-0 text-[11px]"
                         >
                           View Document &rarr;
                         </a>
@@ -290,7 +309,7 @@ const ViewProfilePage = () => {
                     ))}
                   </div>
                 ) : (
-                  <p className="text-xs text-text-secondary italic py-2 text-center bg-surface-light rounded-lg">
+                  <p className="text-xs text-white/70 italic py-2 text-center bg-white/5 backdrop-blur-sm rounded-lg">
                     No additional certificates uploaded yet
                   </p>
                 )}
@@ -301,22 +320,22 @@ const ViewProfilePage = () => {
           {/* Reviews */}
           {reviews.length > 0 && (
             <div className="mb-6 sm:mb-8">
-              <h2 className="text-lg sm:text-xl font-bold text-text-primary mb-4">
+              <h2 className="text-lg sm:text-xl font-bold text-white mb-4">
                 Client Reviews ({reviews.length})
               </h2>
               <div className="space-y-4">
                 {reviews.map((review) => (
-                  <div key={review._id} className="bg-surface-light rounded-xl p-4 sm:p-5 border border-border">
+                  <div key={review._id} className="bg-white/5 backdrop-blur-sm rounded-xl p-4 sm:p-5 border border-white/20">
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-yellow-400 text-base">
                         {'★'.repeat(review.rating)}
                         {'☆'.repeat(5 - review.rating)}
                       </span>
-                      <span className="text-xs text-text-secondary">
+                      <span className="text-xs text-white/70">
                         {new Date(review.createdAt).toLocaleDateString()}
                       </span>
                     </div>
-                    <p className="text-text-secondary text-sm leading-relaxed">{review.comment}</p>
+                    <p className="text-white/90 text-sm leading-relaxed">{review.comment}</p>
                   </div>
                 ))}
               </div>
@@ -324,8 +343,8 @@ const ViewProfilePage = () => {
           )}
 
           {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-6 border-t border-border">
-            {id !== 'me' && (
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-6 border-t border-white/20">
+            {!isOwnProfile && (
               <>
                 <button
                   onClick={() => navigate(`/jobs/create?workerId=${profile.userId}`)}
@@ -335,13 +354,13 @@ const ViewProfilePage = () => {
                 </button>
                 <button
                   onClick={() => navigate(`/reviews/leave?workerId=${profile._id}`)}
-                  className="w-full sm:flex-1 border border-border text-text-primary py-3 px-4 sm:px-5 rounded-xl font-semibold hover:bg-surface-light transition-colors text-sm sm:text-base"
+                  className="w-full sm:flex-1 border border-white/30 text-white py-3 px-4 sm:px-5 rounded-xl font-semibold hover:bg-white/10 transition-colors text-sm sm:text-base"
                 >
                   Leave Review
                 </button>
               </>
             )}
-            {id === 'me' && (
+            {isOwnProfile && (
               <button
                 onClick={() => navigate('/profile/create')}
                 className="w-full sm:flex-1 bg-primary text-white py-3 px-4 sm:px-5 rounded-xl font-semibold hover:bg-primary-hover transition-colors text-sm sm:text-base shadow-sm"
@@ -351,12 +370,13 @@ const ViewProfilePage = () => {
             )}
             <button
               onClick={() => navigate(-1)}
-              className="w-full sm:flex-1 border border-border text-text-secondary py-3 px-4 sm:px-5 rounded-xl font-medium hover:bg-surface-light transition-colors text-sm sm:text-base"
+              className="w-full sm:flex-1 border border-white/30 text-white/80 py-3 px-4 sm:px-5 rounded-xl font-medium hover:bg-white/10 transition-colors text-sm sm:text-base"
             >
               Go Back
             </button>
           </div>
         </div>
+      </div>
       </div>
     </div>
   );

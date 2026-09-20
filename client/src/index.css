@@ -64,7 +64,6 @@ a {
 .hover-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-  background-color: #f8fafc;
 }
 
 /* Improved Input Focus States */
@@ -74,6 +73,17 @@ select:focus {
   outline: none;
   box-shadow: 0 0 0 2px var(--color-primary);
   border-color: var(--color-primary);
+}
+
+/* Select & Option Styling for Dark / Glass Backgrounds */
+select {
+  color-scheme: dark;
+}
+
+select option {
+  background-color: #0f172a;
+  color: #ffffff;
+  padding: 8px;
 }
 
 /* Scrollbar Styling */
@@ -106,4 +116,37 @@ select:focus {
   body {
     font-size: 13px;
   }
+}
+
+/* ── Subtle Background Patterns ──────────────────────────────────── */
+
+/* Small dot grid — for white / light sections */
+.bg-pattern-dots {
+  background-image: radial-gradient(circle, rgba(59, 130, 246, 0.13) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+/* Fine grid lines — Emmerce-style for light grey sections */
+.bg-pattern-grid {
+  background-image:
+    linear-gradient(rgba(59, 130, 246, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59, 130, 246, 0.07) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Diagonal stripes — for gradient / accent sections */
+.bg-pattern-diagonal {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    rgba(255, 255, 255, 0.04) 0px,
+    rgba(255, 255, 255, 0.04) 1px,
+    transparent 1px,
+    transparent 14px
+  );
+}
+
+/* Dot grid variant for dark / coloured backgrounds */
+.bg-pattern-dots-dark {
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.09) 1px, transparent 1px);
+  background-size: 28px 28px;
 }

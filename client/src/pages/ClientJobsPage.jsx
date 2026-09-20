@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import API_BASE_URL from '../services/api';
+import gardener3Image from '../assets/gardener3.jpg';
 
 const ClientJobsPage = () => {
   const [requests, setRequests] = useState([]);
@@ -120,25 +121,36 @@ const ClientJobsPage = () => {
   }
 
   return (
-    <div className="min-h-[calc(100vh-8rem)] px-4 sm:px-8 md:px-16 lg:px-24 py-8 sm:py-12 md:py-16">
-      <div className="max-w-5xl mx-auto">
-        <div className="mb-8 sm:mb-12">
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-text-primary mb-3">My Job Requests</h1>
-          <p className="text-base sm:text-lg text-text-secondary">View and manage your job requests</p>
-        </div>
+    <div className="min-h-[calc(100vh-8rem)] relative overflow-hidden">
+      {/* Background Image */}
+      <div className="absolute inset-0">
+        <img
+          src={gardener3Image}
+          alt="Jobs Background"
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/75 via-black/60 to-black/80"></div>
+      </div>
+
+      <div className="relative px-4 sm:px-8 md:px-16 lg:px-24 py-8 sm:py-12 md:py-16">
+        <div className="max-w-5xl mx-auto">
+          <div className="mb-8 sm:mb-12">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-3">My Job Requests</h1>
+            <p className="text-base sm:text-lg text-white/90">View and manage your job requests</p>
+          </div>
 
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 sm:px-5 sm:py-4 rounded-xl mb-8 sm:mb-10 text-sm">
+          <div className="bg-red-500/20 backdrop-blur-sm border border-red-400/30 text-white px-4 py-3 sm:px-5 sm:py-4 rounded-xl mb-8 sm:mb-10 text-sm">
             {error}
           </div>
         )}
 
         {requests.length === 0 ? (
-          <div className="bg-white rounded-2xl shadow-lg border border-border p-8 sm:p-12 md:p-16 text-center">
-            <p className="text-text-secondary text-base sm:text-lg mb-6">No job requests yet.</p>
+          <div className="bg-white/10 backdrop-blur-md rounded-2xl shadow-lg border border-white/30 p-8 sm:p-12 md:p-16 text-center">
+            <p className="text-white/80 text-base sm:text-lg mb-6">No job requests yet.</p>
             <button
               onClick={() => navigate('/workers')}
-              className="bg-primary text-white py-3 px-6 sm:py-4 sm:px-8 rounded-xl font-medium hover:bg-primary-hover transition-colors text-sm sm:text-base"
+              className="bg-white text-primary py-3 px-6 sm:py-4 sm:px-8 rounded-xl font-medium hover:bg-surface-light transition-colors text-sm sm:text-base"
             >
               Find Workers
             </button>
@@ -148,7 +160,7 @@ const ClientJobsPage = () => {
             {requests.map((request) => (
               <div
                 key={request._id}
-                className="bg-white rounded-2xl shadow-lg border border-border p-4 sm:p-6 md:p-10 hover-card"
+                className="bg-white/10 backdrop-blur-md rounded-2xl shadow-lg border border-white/30 p-4 sm:p-6 md:p-10 hover-card"
               >
                 <div className="flex flex-col sm:flex-row items-start justify-between mb-4 sm:mb-6 gap-4">
                   <div className="flex-1">
@@ -156,20 +168,20 @@ const ClientJobsPage = () => {
                       <span className={`px-3 py-1 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium ${getStatusColor(request.status)}`}>
                         {request.status.charAt(0).toUpperCase() + request.status.slice(1)}
                       </span>
-                      <span className="text-xs sm:text-sm text-text-secondary">
+                      <span className="text-xs sm:text-sm text-white/80">
                         {new Date(request.createdAt).toLocaleDateString()}
                       </span>
                     </div>
-                    <p className="text-text-secondary mb-2 text-sm sm:text-base">{request.description}</p>
-                    <p className="text-xs sm:text-sm text-text-secondary">📍 {request.location}</p>
+                    <p className="text-white/90 mb-2 text-sm sm:text-base">{request.description}</p>
+                    <p className="text-xs sm:text-sm text-white/80">📍 {request.location}</p>
                   </div>
                 </div>
 
                 {request.status === 'pending' && (
-                  <div className="flex gap-3 mt-4 sm:mt-5 pt-4 sm:pt-5 border-t border-border">
+                  <div className="flex gap-3 mt-4 sm:mt-5 pt-4 sm:pt-5 border-t border-white/30">
                     <button
                       onClick={() => handleCancelRequest(request._id)}
-                      className="flex-1 bg-red-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-red-700 transition-colors text-xs sm:text-sm"
+                      className="flex-1 bg-red-500 text-white py-2 px-4 rounded-lg font-medium hover:bg-red-600 transition-colors text-xs sm:text-sm"
                     >
                       Cancel Request
                     </button>
@@ -177,10 +189,10 @@ const ClientJobsPage = () => {
                 )}
 
                 {request.status === 'accepted' && (
-                  <div className="flex gap-3 mt-4 sm:mt-5 pt-4 sm:pt-5 border-t border-border">
+                  <div className="flex gap-3 mt-4 sm:mt-5 pt-4 sm:pt-5 border-t border-white/30">
                     <button
                       onClick={() => handleMarkComplete(request._id)}
-                      className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-blue-700 transition-colors text-xs sm:text-sm"
+                      className="flex-1 bg-blue-500 text-white py-2 px-4 rounded-lg font-medium hover:bg-blue-600 transition-colors text-xs sm:text-sm"
                     >
                       Mark as Completed
                     </button>
@@ -188,25 +200,25 @@ const ClientJobsPage = () => {
                 )}
 
                 {request.status === 'rejected' && (
-                  <div className="mt-4 sm:mt-5 pt-4 sm:pt-5 border-t border-border">
-                    <p className="text-red-600 font-medium text-sm sm:text-base">Worker has declined your request.</p>
+                  <div className="mt-4 sm:mt-5 pt-4 sm:pt-5 border-t border-white/30">
+                    <p className="text-red-300 font-medium text-sm sm:text-base">Worker has declined your request.</p>
                   </div>
                 )}
 
                 {request.status === 'completed' && (
-                  <div className="mt-4 sm:mt-5 pt-4 sm:pt-5 border-t border-border">
+                  <div className="mt-4 sm:mt-5 pt-4 sm:pt-5 border-t border-white/30">
                     {reviews[request._id] ? (
-                      <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 sm:p-4">
+                      <div className="bg-yellow-500/20 backdrop-blur-sm border border-yellow-400/30 rounded-lg p-3 sm:p-4">
                         <div className="flex items-center gap-2 mb-2">
-                          <span className="text-yellow-500 text-base sm:text-lg">
+                          <span className="text-yellow-300 text-base sm:text-lg">
                             {'★'.repeat(reviews[request._id].rating)}
                             {'☆'.repeat(5 - reviews[request._id].rating)}
                           </span>
-                          <span className="text-xs sm:text-sm text-text-secondary">
+                          <span className="text-xs sm:text-sm text-white/80">
                             Your Review
                           </span>
                         </div>
-                        <p className="text-text-secondary text-sm sm:text-base">{reviews[request._id].comment}</p>
+                        <p className="text-white/90 text-sm sm:text-base">{reviews[request._id].comment}</p>
                       </div>
                     ) : (
                       <button
@@ -227,7 +239,7 @@ const ClientJobsPage = () => {
                             setError('Failed to load worker profile');
                           }
                         }}
-                        className="w-full bg-yellow-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-yellow-700 transition-colors text-xs sm:text-sm"
+                        className="w-full bg-yellow-500 text-white py-2 px-4 rounded-lg font-medium hover:bg-yellow-600 transition-colors text-xs sm:text-sm"
                       >
                         Rate & Review Worker
                       </button>
@@ -238,6 +250,7 @@ const ClientJobsPage = () => {
             ))}
           </div>
         )}
+      </div>
       </div>
     </div>
   );

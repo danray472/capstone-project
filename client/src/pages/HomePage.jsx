@@ -2,8 +2,21 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import heroImage from '../assets/hero.png';
 import image1 from '../assets/image1.jpg';
-import image2 from '../assets/image2.jpg';
-import image3 from '../assets/image3.jpg';
+import electricianImage from '../assets/electrician.jpg';
+import electrician2Image from '../assets/electrician2.jpg';
+import cleanerImage from '../assets/cleaner.jpg';
+import gardenerImage from '../assets/gardener.jpg';
+import mamafuaImage from '../assets/mamafua.jpg';
+import carpenterImage from '../assets/capenter.jpg';
+import mechanicImage from '../assets/mechanic.jpg';
+import mechanic2Image from '../assets/mechanic2.jpg';
+import painterImage from '../assets/painter.jpg';
+import welderImage from '../assets/Welder.jpg';
+import hairdresserImage from '../assets/hairdresser.jpg';
+import mjengoImage from '../assets/mjengo.jpg';
+import moversImage from '../assets/movers.jpg';
+import fumigationImage from '../assets/General Fumigation.jpg';
+import manImage from '../assets/man.jpg';
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -13,19 +26,19 @@ const HomePage = () => {
       icon: '🔍',
       title: 'Find Trusted Workers',
       description: 'Browse verified professionals with ratings and reviews to find the perfect match for your needs.',
-      image: image1
+      image: electrician2Image
     },
     {
       icon: '⚡',
       title: 'Quick & Easy',
       description: 'Post a job request in minutes and get responses from available workers in your area.',
-      image: image2
+      image: mamafuaImage
     },
     {
       icon: '💰',
       title: 'Fair Pricing',
       description: 'Transparent pricing with no hidden fees. Negotiate directly with workers for the best rates.',
-      image: image3
+      image: carpenterImage
     },
     {
       icon: '🛡️',
@@ -39,27 +52,36 @@ const HomePage = () => {
     {
       step: '1',
       title: 'Post Your Job',
-      description: 'Describe what you need and when you need it done. Be specific for better matches.'
+      description: 'Describe what you need and when you need it done. Be specific for better matches.',
+      image: manImage
     },
     {
       step: '2',
       title: 'Get Matched',
-      description: 'Receive requests from interested workers. Review their profiles and ratings.'
+      description: 'Receive requests from interested workers. Review their profiles and ratings.',
+      image: mechanicImage
     },
     {
       step: '3',
       title: 'Hire & Complete',
-      description: 'Choose your worker, track progress, and pay securely when satisfied.'
+      description: 'Choose your worker, track progress, and pay securely when satisfied.',
+      image: mjengoImage
     }
   ];
 
   const categories = [
-    { name: 'Mama Fua / Laundry', icon: '🧺', count: '150+' },
-    { name: 'House Cleaning', icon: '🧹', count: '200+' },
-    { name: 'Plumbers', icon: '🔧', count: '80+' },
-    { name: 'Electricians', icon: '⚡', count: '90+' },
-    { name: 'Carpenters', icon: '🪚', count: '60+' },
-    { name: 'Private Chefs', icon: '👨‍🍳', count: '45+' }
+    { name: 'Mama Fua / Laundry', icon: '🧺', count: '150+', image: mamafuaImage },
+    { name: 'House Cleaning', icon: '🧹', count: '200+', image: cleanerImage },
+    { name: 'Plumbers', icon: '🔧', count: '80+', image: mechanicImage },
+    { name: 'Electricians', icon: '⚡', count: '90+', image: electricianImage },
+    { name: 'Carpenters', icon: '🪚', count: '60+', image: carpenterImage },
+    { name: 'Private Chefs', icon: '👨‍🍳', count: '45+', image: gardenerImage },
+    { name: 'Painters', icon: '🎨', count: '35+', image: painterImage },
+    { name: 'Welders', icon: '⚙️', count: '30+', image: welderImage },
+    { name: 'Hairdressers', icon: '💇', count: '70+', image: hairdresserImage },
+    { name: 'Movers', icon: '📦', count: '40+', image: moversImage },
+    { name: 'Fumigation', icon: '🪲', count: '25+', image: fumigationImage },
+    { name: 'Mason / Mjengo', icon: '🧱', count: '55+', image: mjengoImage },
   ];
 
   const testimonials = [
@@ -67,19 +89,22 @@ const HomePage = () => {
       name: 'Sarah M.',
       role: 'Homeowner',
       text: 'Found an amazing plumber within minutes. The platform made it so easy to compare ratings and prices.',
-      rating: 5
+      rating: 5,
+      image: mechanic2Image
     },
     {
       name: 'John K.',
       role: 'Business Owner',
       text: 'I use Vibarua for all my casual labor needs. Reliable workers and great customer support.',
-      rating: 5
+      rating: 5,
+      image: mjengoImage
     },
     {
       name: 'Grace W.',
       role: 'Working Mom',
       text: 'Finally found trustworthy cleaners for my home. The review system gives me peace of mind.',
-      rating: 5
+      rating: 5,
+      image: cleanerImage
     }
   ];
 
@@ -94,7 +119,10 @@ const HomePage = () => {
             alt="Hero Background"
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/80 via-primary/70 to-accent/80"></div>
+          {/* Dark gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/70 to-black/85"></div>
+          {/* Subtle dot pattern on top */}
+          <div className="absolute inset-0 bg-pattern-dots-dark"></div>
         </div>
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
@@ -133,7 +161,7 @@ const HomePage = () => {
               </button>
               <button
                 onClick={() => navigate('/register')}
-                className="px-8 py-4 bg-white/20 backdrop-blur-md text-white rounded-xl font-semibold border-2 border-white/30 hover:bg-white/30 transition-all duration-200"
+                className="px-8 py-4 bg-white/20 backdrop-blur-md text-white rounded-xl font-semibold border-2 border-white/30 hover:shadow-lg transition-all duration-200"
               >
                 Join as Worker
               </button>
@@ -163,7 +191,7 @@ const HomePage = () => {
       </div>
 
       {/* Features Section */}
-      <div className="py-20 bg-white">
+      <div className="py-20 bg-white bg-pattern-dots">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-text-primary mb-4">Why Choose Vibarua?</h2>
@@ -198,7 +226,7 @@ const HomePage = () => {
       </div>
 
       {/* How It Works Section */}
-      <div className="py-20 bg-surface-light/50">
+      <div className="py-20 bg-surface-light/50 bg-pattern-grid">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-text-primary mb-4">How It Works</h2>
@@ -209,16 +237,28 @@ const HomePage = () => {
 
           <div className="grid md:grid-cols-3 gap-8">
             {steps.map((step, index) => (
-              <div key={index} className="relative">
-                <div className="bg-white rounded-2xl p-8 shadow-lg border border-border hover:shadow-xl transition-all duration-300">
-                  <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center text-3xl font-bold text-primary mb-6">
-                    {step.step}
+              <div key={index} className="relative group">
+                <div className="relative rounded-2xl overflow-hidden shadow-lg border border-border hover:shadow-xl transition-all duration-300">
+                  {/* Background image */}
+                  <div className="absolute inset-0">
+                    <img
+                      src={step.image}
+                      alt={step.title}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/50 to-black/20"></div>
                   </div>
-                  <h3 className="text-2xl font-semibold text-text-primary mb-3">{step.title}</h3>
-                  <p className="text-text-secondary leading-relaxed">{step.description}</p>
+                  {/* Content */}
+                  <div className="relative p-8 flex flex-col justify-end min-h-[260px]">
+                    <div className="w-14 h-14 bg-primary rounded-2xl flex items-center justify-center text-2xl font-bold text-white mb-4 shadow-lg">
+                      {step.step}
+                    </div>
+                    <h3 className="text-2xl font-semibold text-white mb-3">{step.title}</h3>
+                    <p className="text-white/85 leading-relaxed text-sm">{step.description}</p>
+                  </div>
                 </div>
                 {index < steps.length - 1 && (
-                  <div className="hidden md:block absolute top-1/2 -right-4 transform -translate-y-1/2 text-4xl text-primary/30">
+                  <div className="hidden md:block absolute top-1/2 -right-4 transform -translate-y-1/2 text-4xl text-primary/60 z-10">
                     →
                   </div>
                 )}
@@ -229,7 +269,7 @@ const HomePage = () => {
       </div>
 
       {/* Categories Section */}
-      <div className="py-20 bg-white">
+      <div className="py-20 bg-white bg-pattern-dots">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-text-primary mb-4">Popular Categories</h2>
@@ -238,16 +278,28 @@ const HomePage = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
             {categories.map((category, index) => (
               <div
                 key={index}
                 onClick={() => navigate('/workers')}
-                className="bg-surface-light rounded-2xl p-6 text-center cursor-pointer hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-border"
+                className="relative group rounded-2xl overflow-hidden cursor-pointer hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-border"
               >
-                <div className="text-5xl mb-3">{category.icon}</div>
-                <h3 className="font-semibold text-text-primary mb-1">{category.name}</h3>
-                <p className="text-sm text-text-secondary">{category.count} workers</p>
+                {/* Background image */}
+                <div className="absolute inset-0">
+                  <img
+                    src={category.image}
+                    alt={category.name}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/10"></div>
+                </div>
+                {/* Content */}
+                <div className="relative p-5 flex flex-col justify-end min-h-[160px]">
+                  <div className="text-4xl mb-2">{category.icon}</div>
+                  <h3 className="font-semibold text-white text-sm leading-tight mb-0.5">{category.name}</h3>
+                  <p className="text-xs text-white/80">{category.count} workers</p>
+                </div>
               </div>
             ))}
           </div>
@@ -264,7 +316,7 @@ const HomePage = () => {
       </div>
 
       {/* Testimonials Section */}
-      <div className="py-20 bg-gradient-to-br from-primary/5 to-accent/5">
+      <div className="py-20 bg-gradient-to-br from-primary/5 to-accent/5 bg-pattern-grid">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-text-primary mb-4">What Our Users Say</h2>
@@ -279,7 +331,7 @@ const HomePage = () => {
                 {/* Background Image */}
                 <div className="absolute inset-0">
                   <img
-                    src={index === 0 ? image1 : index === 1 ? image2 : image3}
+                    src={testimonial.image}
                     alt={testimonial.name}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                   />
@@ -309,6 +361,8 @@ const HomePage = () => {
       <div className="relative overflow-hidden">
         {/* Background with gradient */}
         <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/90 to-accent"></div>
+        {/* Subtle diagonal pattern overlay */}
+        <div className="absolute inset-0 bg-pattern-diagonal"></div>
         {/* Decorative elements */}
         <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-white/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>
@@ -342,7 +396,7 @@ const HomePage = () => {
               </button>
               <button
                 onClick={() => navigate('/workers')}
-                className="px-8 py-4 bg-white/20 backdrop-blur-sm text-white rounded-xl font-semibold border-2 border-white/30 hover:bg-white/30 transition-all duration-300 hover:-translate-y-1"
+                className="px-8 py-4 bg-white/20 backdrop-blur-sm text-white rounded-xl font-semibold border-2 border-white/30 hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
               >
                 Browse Workers
               </button>

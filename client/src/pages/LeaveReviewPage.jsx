@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import API_BASE_URL from '../services/api';
+import painter2Image from '../assets/painter2.jpg';
 
 const LeaveReviewPage = () => {
   const [rating, setRating] = useState(0);
@@ -80,25 +81,36 @@ const LeaveReviewPage = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-[calc(100vh-8rem)] px-6 sm:px-12 md:px-20 lg:px-32 py-10 sm:py-16 md:py-20">
-      <div className="w-full max-w-3xl">
-        <div className="bg-white rounded-2xl shadow-lg border border-border p-12">
-          <h1 className="text-4xl font-bold text-text-primary mb-3 text-center">
-            Leave a Review
-          </h1>
-          <p className="text-lg text-text-secondary text-center mb-10">
-            Share your experience with this worker
-          </p>
+    <div className="min-h-[calc(100vh-8rem)] relative overflow-hidden">
+      {/* Background Image */}
+      <div className="absolute inset-0">
+        <img
+          src={painter2Image}
+          alt="Review Background"
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/75 via-black/60 to-black/80"></div>
+      </div>
+
+      <div className="relative flex items-center justify-center min-h-[calc(100vh-8rem)] px-6 sm:px-12 md:px-20 lg:px-32 py-10 sm:py-16 md:py-20">
+        <div className="w-full max-w-3xl">
+          <div className="bg-white/10 backdrop-blur-md rounded-2xl shadow-2xl border border-white/30 p-12">
+            <h1 className="text-4xl font-bold text-white mb-3 text-center">
+              Leave a Review
+            </h1>
+            <p className="text-lg text-white/90 text-center mb-10">
+              Share your experience with this worker
+            </p>
 
           {error && (
-            <div className="bg-red-50 border border-red-200 text-red-600 px-5 py-4 rounded-xl mb-10">
+            <div className="bg-red-500/20 backdrop-blur-sm border border-red-400/30 text-white px-5 py-4 rounded-xl mb-10">
               {error}
             </div>
           )}
 
           <form onSubmit={handleSubmit} className="space-y-8">
             <div>
-              <label className="block text-sm font-medium text-text-secondary mb-4">
+              <label className="block text-sm font-medium text-white/90 mb-4">
                 Rating
               </label>
               <div className="flex gap-3">
@@ -115,13 +127,13 @@ const LeaveReviewPage = () => {
                   </button>
                 ))}
               </div>
-              <p className="text-sm text-text-secondary mt-3">
+              <p className="text-sm text-white/70 mt-3">
                 {rating > 0 ? `${rating} star${rating > 1 ? 's' : ''}` : 'Select a rating'}
               </p>
             </div>
 
             <div>
-              <label htmlFor="comment" className="block text-sm font-medium text-text-secondary mb-3">
+              <label htmlFor="comment" className="block text-sm font-medium text-white/90 mb-3">
                 Your Review
               </label>
               <textarea
@@ -131,10 +143,10 @@ const LeaveReviewPage = () => {
                 required
                 maxLength={500}
                 rows={6}
-                className="w-full px-5 py-4 border-2 border-border rounded-xl focus:outline-none focus:border-primary transition-all resize-none"
+                className="w-full px-5 py-4 border-2 border-white/30 rounded-xl focus:outline-none focus:border-primary transition-all resize-none bg-white/5 text-white placeholder-white/60"
                 placeholder="Share your experience with this worker (e.g., Great work, very professional, completed on time)"
               />
-              <p className="text-xs text-text-secondary mt-2">{comment.length}/500 characters</p>
+              <p className="text-xs text-white/70 mt-2">{comment.length}/500 characters</p>
             </div>
 
             <button
@@ -146,6 +158,7 @@ const LeaveReviewPage = () => {
             </button>
           </form>
         </div>
+      </div>
       </div>
     </div>
   );

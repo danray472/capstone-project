@@ -12,8 +12,8 @@ const { strictLimiter } = require('../middleware/rateLimiter');
 
 // @route   POST /api/profiles
 // @desc    Create worker profile
-// @access  Private (temporarily removed for testing)
-router.post('/', strictLimiter, createProfile);
+// @access  Private
+router.post('/', protect, strictLimiter, createProfile);
 
 // Test endpoint
 router.post('/test', (req, res) => {
@@ -23,8 +23,8 @@ router.post('/test', (req, res) => {
 
 // @route   PUT /api/profiles
 // @desc    Update worker profile
-// @access  Private (temporarily removed for testing)
-router.put('/', strictLimiter, updateProfile);
+// @access  Private
+router.put('/', protect, strictLimiter, updateProfile);
 
 // @route   GET /api/profiles/me
 // @desc    Get current user's profile

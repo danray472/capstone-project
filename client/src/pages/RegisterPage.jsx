@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import API_BASE_URL from '../services/api';
+import mjengoImage from '../assets/mjengo.jpg';
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
@@ -99,25 +100,36 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-[calc(100vh-8rem)] px-4">
-      <div className="w-full max-w-md">
-        <div className="bg-white rounded-xl shadow-lg border border-border p-8">
-          <h1 className="text-3xl font-bold text-text-primary mb-2 text-center">
-            Create Account
-          </h1>
-          <p className="text-text-secondary text-center mb-8">
-            Join Vibarua Marketplace today
-          </p>
+    <div className="min-h-[calc(100vh-8rem)] relative overflow-hidden">
+      {/* Background Image */}
+      <div className="absolute inset-0">
+        <img
+          src={mjengoImage}
+          alt="Register Background"
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/75 via-black/60 to-black/80"></div>
+      </div>
+
+      <div className="relative flex items-center justify-center min-h-[calc(100vh-8rem)] px-4 py-8">
+        <div className="w-full max-w-md">
+          <div className="bg-white/10 backdrop-blur-md rounded-2xl shadow-2xl border border-white/30 p-8">
+            <h1 className="text-3xl font-bold text-white mb-2 text-center">
+              Create Account
+            </h1>
+            <p className="text-white/90 text-center mb-8">
+              Join Vibarua Marketplace today
+            </p>
 
           {error && (
-            <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg mb-6">
+            <div className="bg-red-500/20 backdrop-blur-sm border border-red-400/30 text-white px-4 py-3 rounded-lg mb-6">
               {error}
             </div>
           )}
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label htmlFor="fullName" className="block text-sm font-medium text-text-secondary mb-2">
+              <label htmlFor="fullName" className="block text-sm font-medium text-white/90 mb-2">
                 Full Name
               </label>
               <input
@@ -127,13 +139,13 @@ const RegisterPage = () => {
                 value={formData.fullName}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+                className="w-full px-4 py-3 border border-white/30 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all bg-white/5 text-white placeholder-white/60"
                 placeholder="Enter your full name"
               />
             </div>
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-text-secondary mb-2">
+              <label htmlFor="email" className="block text-sm font-medium text-white/90 mb-2">
                 Email Address
               </label>
               <input
@@ -143,13 +155,13 @@ const RegisterPage = () => {
                 value={formData.email}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+                className="w-full px-4 py-3 border border-white/30 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all bg-white/5 text-white placeholder-white/60"
                 placeholder="Enter your email"
               />
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-text-secondary mb-2">
+              <label htmlFor="password" className="block text-sm font-medium text-white/90 mb-2">
                 Password
               </label>
               <div className="relative">
@@ -161,13 +173,13 @@ const RegisterPage = () => {
                   onChange={handleChange}
                   required
                   minLength="6"
-                  className="w-full px-4 py-3 pr-12 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+                  className="w-full px-4 py-3 pr-12 border border-white/30 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all bg-white/5 text-white placeholder-white/60"
                   placeholder="Create a password (min 6 characters)"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-text-secondary hover:text-text-primary transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-white/70 hover:text-white transition-colors"
                 >
                   {showPassword ? '👁️' : '👁️‍🗨️'}
                 </button>
@@ -181,21 +193,21 @@ const RegisterPage = () => {
                         style={{ width: `${(getPasswordStrength(formData.password) / 6) * 100}%` }}
                       />
                     </div>
-                    <span className="text-xs text-text-secondary">{getStrengthText(getPasswordStrength(formData.password))}</span>
+                    <span className="text-xs text-white/70">{getStrengthText(getPasswordStrength(formData.password))}</span>
                   </div>
-                  <ul className="text-xs text-text-secondary space-y-1">
-                    <li className={formData.password.length >= 8 ? 'text-green-600' : ''}>• At least 8 characters</li>
-                    <li className={/[A-Z]/.test(formData.password) ? 'text-green-600' : ''}>• Uppercase letter</li>
-                    <li className={/[a-z]/.test(formData.password) ? 'text-green-600' : ''}>• Lowercase letter</li>
-                    <li className={/[0-9]/.test(formData.password) ? 'text-green-600' : ''}>• Number</li>
-                    <li className={/[^A-Za-z0-9]/.test(formData.password) ? 'text-green-600' : ''}>• Special character</li>
+                  <ul className="text-xs text-white/70 space-y-1">
+                    <li className={formData.password.length >= 8 ? 'text-green-400' : ''}>• At least 8 characters</li>
+                    <li className={/[A-Z]/.test(formData.password) ? 'text-green-400' : ''}>• Uppercase letter</li>
+                    <li className={/[a-z]/.test(formData.password) ? 'text-green-400' : ''}>• Lowercase letter</li>
+                    <li className={/[0-9]/.test(formData.password) ? 'text-green-400' : ''}>• Number</li>
+                    <li className={/[^A-Za-z0-9]/.test(formData.password) ? 'text-green-400' : ''}>• Special character</li>
                   </ul>
                 </div>
               )}
             </div>
 
             <div>
-              <label htmlFor="confirmPassword" className="block text-sm font-medium text-text-secondary mb-2">
+              <label htmlFor="confirmPassword" className="block text-sm font-medium text-white/90 mb-2">
                 Confirm Password
               </label>
               <div className="relative">
@@ -207,26 +219,26 @@ const RegisterPage = () => {
                   onChange={handleChange}
                   required
                   minLength="6"
-                  className="w-full px-4 py-3 pr-12 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+                  className="w-full px-4 py-3 pr-12 border border-white/30 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all bg-white/5 text-white placeholder-white/60"
                   placeholder="Confirm your password"
                 />
                 <button
                   type="button"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-text-secondary hover:text-text-primary transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-white/70 hover:text-white transition-colors"
                 >
                   {showConfirmPassword ? '👁️' : '👁️‍🗨️'}
                 </button>
               </div>
               {formData.confirmPassword && (
-                <p className={`text-xs mt-1 ${formData.password === formData.confirmPassword ? 'text-green-600' : 'text-red-600'}`}>
+                <p className={`text-xs mt-1 ${formData.password === formData.confirmPassword ? 'text-green-400' : 'text-red-400'}`}>
                   {formData.password === formData.confirmPassword ? '✓ Passwords match' : '✗ Passwords do not match'}
                 </p>
               )}
             </div>
 
             <div>
-              <label htmlFor="role" className="block text-sm font-medium text-text-secondary mb-2">
+              <label htmlFor="role" className="block text-sm font-medium text-white/90 mb-2">
                 I am a
               </label>
               <select
@@ -234,7 +246,7 @@ const RegisterPage = () => {
                 name="role"
                 value={formData.role}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all bg-white"
+                className="w-full px-4 py-3 border border-white/30 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all bg-white/5 text-white"
               >
                 <option value="client">Client (looking for workers)</option>
                 <option value="worker">Worker (offering services)</option>
@@ -242,9 +254,9 @@ const RegisterPage = () => {
             </div>
 
             {formData.role === 'worker' && (
-              <div className="bg-primary/5 border border-primary/20 rounded-xl p-4 transition-all">
-                <label htmlFor="idNumber" className="block text-sm font-medium text-text-primary mb-1.5 flex items-center justify-between">
-                  <span>National ID / Passport Number <span className="text-red-500">*</span></span>
+              <div className="bg-white/5 border border-white/20 rounded-xl p-4 transition-all">
+                <label htmlFor="idNumber" className="block text-sm font-medium text-white mb-1.5 flex items-center justify-between">
+                  <span>National ID / Passport Number <span className="text-red-400">*</span></span>
                   <span className="text-xs text-primary font-semibold">Required for Workers</span>
                 </label>
                 <input
@@ -254,10 +266,10 @@ const RegisterPage = () => {
                   value={formData.idNumber}
                   onChange={handleChange}
                   required={formData.role === 'worker'}
-                  className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all bg-white text-text-primary"
+                  className="w-full px-4 py-3 border border-white/30 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all bg-white/5 text-white placeholder-white/60"
                   placeholder="e.g. 12345678"
                 />
-                <p className="text-xs text-text-secondary mt-1.5">
+                <p className="text-xs text-white/70 mt-1.5">
                   You will upload a scanned copy of this ID during profile verification.
                 </p>
               </div>
@@ -272,13 +284,14 @@ const RegisterPage = () => {
             </button>
           </form>
 
-          <p className="text-center text-text-secondary mt-6">
+          <p className="text-center text-white/90 mt-6">
             Already have an account?{' '}
             <Link to="/login" className="text-primary font-medium hover:underline">
               Sign In
             </Link>
           </p>
         </div>
+      </div>
       </div>
     </div>
   );

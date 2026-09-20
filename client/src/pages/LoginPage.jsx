@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import API_BASE_URL from '../services/api';
+import mamafuaImage from '../assets/mamafua.jpg';
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
@@ -48,25 +49,36 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-[calc(100vh-8rem)] px-4">
-      <div className="w-full max-w-md">
-        <div className="bg-white rounded-xl shadow-lg border border-border p-8">
-          <h1 className="text-3xl font-bold text-text-primary mb-2 text-center">
-            Welcome Back
-          </h1>
-          <p className="text-text-secondary text-center mb-8">
-            Sign in to your Vibarua account
-          </p>
+    <div className="min-h-[calc(100vh-8rem)] relative overflow-hidden">
+      {/* Background Image */}
+      <div className="absolute inset-0">
+        <img
+          src={mamafuaImage}
+          alt="Login Background"
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/75 via-black/60 to-black/80"></div>
+      </div>
+
+      <div className="relative flex items-center justify-center min-h-[calc(100vh-8rem)] px-4">
+        <div className="w-full max-w-md">
+          <div className="bg-white/10 backdrop-blur-md rounded-2xl shadow-2xl border border-white/30 p-8">
+            <h1 className="text-3xl font-bold text-white mb-2 text-center">
+              Welcome Back
+            </h1>
+            <p className="text-white/90 text-center mb-8">
+              Sign in to your Vibarua account
+            </p>
 
           {error && (
-            <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg mb-6">
+            <div className="bg-red-500/20 backdrop-blur-sm border border-red-400/30 text-white px-4 py-3 rounded-lg mb-6">
               {error}
             </div>
           )}
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-text-secondary mb-2">
+              <label htmlFor="email" className="block text-sm font-medium text-white/90 mb-2">
                 Email Address
               </label>
               <input
@@ -76,13 +88,13 @@ const LoginPage = () => {
                 value={formData.email}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+                className="w-full px-4 py-3 border border-white/30 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all bg-white/5 text-white placeholder-white/60"
                 placeholder="Enter your email"
               />
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-text-secondary mb-2">
+              <label htmlFor="password" className="block text-sm font-medium text-white/90 mb-2">
                 Password
               </label>
               <input
@@ -92,7 +104,7 @@ const LoginPage = () => {
                 value={formData.password}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+                className="w-full px-4 py-3 border border-white/30 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all bg-white/5 text-white placeholder-white/60"
                 placeholder="Enter your password"
               />
             </div>
@@ -106,13 +118,14 @@ const LoginPage = () => {
             </button>
           </form>
 
-          <p className="text-center text-text-secondary mt-6">
+          <p className="text-center text-white/90 mt-6">
             Don't have an account?{' '}
             <Link to="/register" className="text-primary font-medium hover:underline">
               Create Account
             </Link>
           </p>
         </div>
+      </div>
       </div>
     </div>
   );

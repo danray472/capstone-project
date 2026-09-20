@@ -29,7 +29,16 @@ const Navbar = () => {
 
   const checkWorkerProfile = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/profiles/me`);
+      const user = JSON.parse(localStorage.getItem('userInfo'));
+      if (!user || !user.token) {
+        setHasProfile(false);
+        return;
+      }
+      const response = await fetch(`${API_BASE_URL}/profiles/me`, {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
       setHasProfile(response.ok);
     } catch (err) {
       setHasProfile(false);

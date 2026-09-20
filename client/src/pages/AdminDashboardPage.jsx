@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import API_BASE_URL from '../services/api';
+import electrician5Image from '../assets/electrician5.jpg';
 
 const AdminDashboardPage = () => {
   const [activeTab, setActiveTab] = useState('users'); // 'users' or 'audit-logs'
@@ -388,23 +389,34 @@ const AdminDashboardPage = () => {
   };
 
   return (
-    <div className="min-h-[calc(100vh-8rem)] px-4 sm:px-8 md:px-16 lg:px-24 py-8 sm:py-12">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
-          <div>
-            <h1 className="text-4xl font-bold text-text-primary tracking-tight">Admin Console</h1>
-            <p className="text-text-secondary mt-1">
-              Manage platform users, suspend/unblock accounts, and audit security events
-            </p>
-          </div>
+    <div className="min-h-[calc(100vh-8rem)] relative overflow-hidden">
+      {/* Background Image */}
+      <div className="absolute inset-0">
+        <img
+          src={electrician5Image}
+          alt="Admin Dashboard Background"
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/75 via-black/60 to-black/80"></div>
+      </div>
+
+      <div className="relative px-4 sm:px-8 md:px-16 lg:px-24 py-8 sm:py-12">
+        <div className="max-w-7xl mx-auto">
+          {/* Header */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+            <div>
+              <h1 className="text-4xl font-bold text-white tracking-tight">Admin Console</h1>
+              <p className="text-white/90 mt-1">
+                Manage platform users, suspend/unblock accounts, and audit security events
+              </p>
+            </div>
 
           {/* Quick status pill */}
           {currentUser && (
-            <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-xl border border-border shadow-sm">
-              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
-              <span className="text-xs font-medium text-text-secondary">
-                Logged in as <strong className="text-text-primary">{currentUser.fullName}</strong> ({currentUser.email})
+            <div className="flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-xl border border-white/30 shadow-sm">
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span className="text-xs font-medium text-white/90">
+                Logged in as <strong className="text-white">{currentUser.fullName}</strong> ({currentUser.email})
               </span>
             </div>
           )}
@@ -412,8 +424,8 @@ const AdminDashboardPage = () => {
 
         {/* Global Feedback Notifications */}
         {userSuccessMessage && (
-          <div className="flex items-center gap-3 bg-emerald-50 border border-emerald-200 text-emerald-800 px-5 py-4 rounded-xl mb-6 shadow-sm animate-fade-in">
-            <svg className="w-5 h-5 text-emerald-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="flex items-center gap-3 bg-emerald-500/20 backdrop-blur-sm border border-emerald-400/30 text-white px-5 py-4 rounded-xl mb-6 shadow-sm animate-fade-in">
+            <svg className="w-5 h-5 text-emerald-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
             </svg>
             <p className="text-sm font-medium">{userSuccessMessage}</p>
@@ -421,8 +433,8 @@ const AdminDashboardPage = () => {
         )}
 
         {userError && (
-          <div className="flex items-center gap-3 bg-red-50 border border-red-200 text-red-700 px-5 py-4 rounded-xl mb-6 shadow-sm">
-            <svg className="w-5 h-5 text-red-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="flex items-center gap-3 bg-red-500/20 backdrop-blur-sm border border-red-400/30 text-white px-5 py-4 rounded-xl mb-6 shadow-sm">
+            <svg className="w-5 h-5 text-red-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             <p className="text-sm font-medium">{userError}</p>
@@ -430,12 +442,12 @@ const AdminDashboardPage = () => {
         )}
 
         {/* Tabs Bar */}
-        <div className="flex items-center border-b border-border mb-8 gap-2">
+        <div className="flex items-center border-b border-white/30 mb-8 gap-2">
           <button
             onClick={() => setActiveTab('users')}
             className={`flex items-center gap-2 pb-3 px-4 font-semibold text-sm transition-all border-b-2 ${activeTab === 'users'
-                ? 'border-primary text-primary font-bold'
-                : 'border-transparent text-text-secondary hover:text-text-primary hover:border-border'
+                ? 'border-white text-white font-bold'
+                : 'border-transparent text-white/80 hover:text-white hover:border-white/50'
               }`}
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -443,7 +455,7 @@ const AdminDashboardPage = () => {
             </svg>
             User Management
             {userStats && (
-              <span className="ml-1.5 px-2 py-0.5 rounded-full text-xs bg-primary/10 text-primary font-bold">
+              <span className="ml-1.5 px-2 py-0.5 rounded-full text-xs bg-white/20 text-white font-bold">
                 {userStats.totalUsers}
               </span>
             )}
@@ -452,8 +464,8 @@ const AdminDashboardPage = () => {
           <button
             onClick={() => setActiveTab('audit-logs')}
             className={`flex items-center gap-2 pb-3 px-4 font-semibold text-sm transition-all border-b-2 ${activeTab === 'audit-logs'
-                ? 'border-primary text-primary font-bold'
-                : 'border-transparent text-text-secondary hover:text-text-primary hover:border-border'
+                ? 'border-white text-white font-bold'
+                : 'border-transparent text-white/80 hover:text-white hover:border-white/50'
               }`}
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -461,7 +473,7 @@ const AdminDashboardPage = () => {
             </svg>
             Audit Logs & Security
             {stats && (
-              <span className="ml-1.5 px-2 py-0.5 rounded-full text-xs bg-gray-100 text-text-secondary">
+              <span className="ml-1.5 px-2 py-0.5 rounded-full text-xs bg-white/20 text-white/80">
                 {stats.totalLogs}
               </span>
             )}
@@ -474,63 +486,63 @@ const AdminDashboardPage = () => {
             {/* User Statistics Cards */}
             {userStats && (
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8">
-                <div className="bg-white rounded-2xl shadow-sm border border-border p-6 hover-card">
+                <div className="bg-white/10 backdrop-blur-md rounded-2xl shadow-sm border border-white/30 p-6 hover-card">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-xs font-semibold text-text-secondary uppercase tracking-wider mb-1">
+                      <p className="text-xs font-semibold text-white/80 uppercase tracking-wider mb-1">
                         Total Users
                       </p>
-                      <p className="text-3xl font-extrabold text-text-primary">{userStats.totalUsers}</p>
+                      <p className="text-3xl font-extrabold text-white">{userStats.totalUsers}</p>
                     </div>
-                    <div className="w-12 h-12 rounded-xl bg-blue-50 text-primary flex items-center justify-center">
+                    <div className="w-12 h-12 rounded-xl bg-white/20 text-white flex items-center justify-center">
                       <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                       </svg>
                     </div>
                   </div>
-                  <div className="mt-3 flex items-center gap-2 text-xs text-text-secondary">
+                  <div className="mt-3 flex items-center gap-2 text-xs text-white/80">
                     <span>{userStats.workerCount} workers</span> • <span>{userStats.clientCount} clients</span>
                   </div>
                 </div>
 
-                <div className="bg-white rounded-2xl shadow-sm border border-border p-6 hover-card">
+                <div className="bg-white/10 backdrop-blur-md rounded-2xl shadow-sm border border-white/30 p-6 hover-card">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-xs font-semibold text-text-secondary uppercase tracking-wider mb-1">
+                      <p className="text-xs font-semibold text-white/80 uppercase tracking-wider mb-1">
                         Active Accounts
                       </p>
-                      <p className="text-3xl font-extrabold text-emerald-600">{userStats.activeUsers}</p>
+                      <p className="text-3xl font-extrabold text-emerald-300">{userStats.activeUsers}</p>
                     </div>
-                    <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                    <div className="w-12 h-12 rounded-xl bg-emerald-500/20 text-emerald-300 flex items-center justify-center">
                       <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
                     </div>
                   </div>
-                  <p className="mt-3 text-xs text-emerald-700">Healthy standing accounts</p>
+                  <p className="mt-3 text-xs text-emerald-200">Healthy standing accounts</p>
                 </div>
 
-                <div className="bg-white rounded-2xl shadow-sm border border-border p-6 hover-card">
+                <div className="bg-white/10 backdrop-blur-md rounded-2xl shadow-sm border border-white/30 p-6 hover-card">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-xs font-semibold text-text-secondary uppercase tracking-wider mb-1">
+                      <p className="text-xs font-semibold text-white/80 uppercase tracking-wider mb-1">
                         Suspended / Blocked
                       </p>
-                      <p className="text-3xl font-extrabold text-red-600">{userStats.blockedUsers}</p>
+                      <p className="text-3xl font-extrabold text-red-300">{userStats.blockedUsers}</p>
                     </div>
-                    <div className="w-12 h-12 rounded-xl bg-red-50 text-red-600 flex items-center justify-center">
+                    <div className="w-12 h-12 rounded-xl bg-red-500/20 text-red-300 flex items-center justify-center">
                       <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
                       </svg>
                     </div>
                   </div>
-                  <p className="mt-3 text-xs text-red-600">Restricted from login & actions</p>
+                  <p className="mt-3 text-xs text-red-200">Restricted from login & actions</p>
                 </div>
 
-                <div className="bg-white rounded-2xl shadow-sm border border-border p-6 hover-card">
+                <div className="bg-white/10 backdrop-blur-md rounded-2xl shadow-sm border border-white/30 p-6 hover-card">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-xs font-semibold text-text-secondary uppercase tracking-wider mb-1">
+                      <p className="text-xs font-semibold text-white/80 uppercase tracking-wider mb-1">
                         Soft Deactivated
                       </p>
                       <p className="text-3xl font-extrabold text-slate-600">{userStats.inactiveUsers}</p>
@@ -1276,6 +1288,7 @@ const AdminDashboardPage = () => {
             </div>
           </div>
         )}
+      </div>
       </div>
     </div>
   );

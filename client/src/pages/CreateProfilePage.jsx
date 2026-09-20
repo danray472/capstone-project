@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import API_BASE_URL from '../services/api';
+import carpenterImage from '../assets/capenter.jpg';
 
 const CreateProfilePage = () => {
   const [formData, setFormData] = useState({
@@ -33,6 +34,25 @@ const CreateProfilePage = () => {
   const [docTitle, setDocTitle] = useState('');
   const [docFile, setDocFile] = useState(null);
   const [uploadingDoc, setUploadingDoc] = useState(false);
+
+  // Custom Profession Selection Dropdown state
+  const [isProfessionOpen, setIsProfessionOpen] = useState(false);
+  const professionDropdownRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (professionDropdownRef.current && !professionDropdownRef.current.contains(event.target)) {
+        setIsProfessionOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const handleSelectProfession = (cat) => {
+    setFormData((prev) => ({ ...prev, profession: cat }));
+    setIsProfessionOpen(false);
+  };
 
   const navigate = useNavigate();
 
@@ -258,43 +278,107 @@ const CreateProfilePage = () => {
     e.preventDefault();
     setError('');
 
-    // Validation
-    if (imageFile && !formData.profilePhoto) {
-      setError('Please click "Upload" to upload your profile photo');
-      return;
-    }
-
-    if (!formData.idNumber || !formData.idNumber.trim()) {
-      setError('National ID Number is required');
-      return;
-    }
-
-    if (!formData.idDocument) {
-      setError('A scanned copy of your National ID / Passport is required for verification');
+    const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+    if (!userInfo) {
+      setError('Please login first');
       return;
     }
 
     setLoading(true);
 
-    const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-    if (!userInfo) {
-      setError('Please login first');
-      setLoading(false);
-      return;
-    }
-
-    const skillsArray = formData.skills
-      ? formData.skills.split(',').map((skill) => skill.trim()).filter((skill) => skill)
-      : [];
-
-    const payload = {
-      userId: userInfo._id,
-      ...formData,
-      skills: skillsArray,
-      experience: parseInt(formData.experience) || 0,
-    };
+    let updatedProfilePhoto = formData.profilePhoto;
+    let updatedIdDoc = formData.idDocument;
+    let updatedDocs = Array.isArray(formData.documents) ? [...formData.documents] : [];
 
     try {
+      // Auto-upload profile photo if file selected but not yet uploaded
+      if (imageFile && !updatedProfilePhoto) {
+        const uploadFormData = new FormData();
+        uploadFormData.append('image', imageFile);
+        const photoRes = await fetch(`${API_BASE_URL}/upload/image`, {
+          method: 'POST',
+          body: uploadFormData,
+        });
+        const photoData = await photoRes.json();
+        if (photoRes.ok && photoData.url) {
+          updatedProfilePhoto = photoData.url;
+          setImagePreview(photoData.url);
+          setFormData((prev) => ({ ...prev, profilePhoto: photoData.url }));
+        }
+      }
+
+      // Auto-upload Scanned ID document if file selected but not yet uploaded
+      if (idDocFile && !updatedIdDoc) {
+        const docFormData = new FormData();
+        docFormData.append('document', idDocFile);
+        const idRes = await fetch(`${API_BASE_URL}/upload/document`, {
+          method: 'POST',
+          body: docFormData,
+        });
+        const idData = await idRes.json();
+        if (idRes.ok && idData.url) {
+          updatedIdDoc = idData.url;
+          setFormData((prev) => ({ ...prev, idDocument: idData.url }));
+        } else {
+          setError(idData.message || 'Failed to upload scanned ID document');
+          setLoading(false);
+          return;
+        }
+      }
+
+      // Auto-upload supportive / academic document if pending in input fields
+      if (docFile && docTitle.trim()) {
+        const supFormData = new FormData();
+        supFormData.append('document', docFile);
+        const docRes = await fetch(`${API_BASE_URL}/upload/document`, {
+          method: 'POST',
+          body: supFormData,
+        });
+        const docData = await docRes.json();
+        if (docRes.ok && docData.url) {
+          const newDoc = {
+            title: docTitle.trim(),
+            url: docData.url,
+            fileType: docFile.type.includes('pdf') ? 'pdf' : 'image',
+            uploadedAt: new Date(),
+          };
+          updatedDocs.push(newDoc);
+          setFormData((prev) => ({ ...prev, documents: updatedDocs }));
+          setDocTitle('');
+          setDocFile(null);
+          const fileInput = document.getElementById('supportiveDocInput');
+          if (fileInput) fileInput.value = '';
+        }
+      }
+
+      // Validate required fields
+      if (!formData.idNumber || !formData.idNumber.trim()) {
+        setError('National ID Number is required');
+        setLoading(false);
+        return;
+      }
+
+      if (!updatedIdDoc) {
+        setError('A scanned copy of your National ID / Passport is required for verification');
+        setLoading(false);
+        return;
+      }
+
+      const skillsArray = formData.skills
+        ? (Array.isArray(formData.skills) ? formData.skills : formData.skills.split(',').map((skill) => skill.trim()).filter(Boolean))
+        : [];
+
+      const payload = {
+        userId: userInfo._id,
+        profileId: existingProfile?._id,
+        ...formData,
+        profilePhoto: updatedProfilePhoto,
+        idDocument: updatedIdDoc,
+        documents: updatedDocs,
+        skills: skillsArray,
+        experience: parseInt(formData.experience) || 0,
+      };
+
       const url = `${API_BASE_URL}/profiles`;
       const method = existingProfile ? 'PUT' : 'POST';
 
@@ -315,7 +399,7 @@ const CreateProfilePage = () => {
           userInfo.idNumber = formData.idNumber;
           localStorage.setItem('userInfo', JSON.stringify(userInfo));
         }
-        navigate(`/profile/${data._id}`);
+        navigate(`/profile/${data._id || existingProfile?._id || 'me'}`);
       } else {
         setError(data.message || 'Failed to save profile');
       }
@@ -327,51 +411,102 @@ const CreateProfilePage = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-[calc(100vh-8rem)] px-4 sm:px-8 md:px-16 lg:px-24 py-8 sm:py-12 md:py-16">
-      <div className="w-full max-w-3xl">
-        <div className="bg-white rounded-2xl shadow-lg border border-border p-6 sm:p-8 md:p-12">
+    <div className="min-h-[calc(100vh-8rem)] relative overflow-hidden">
+      {/* Background Image */}
+      <div className="absolute inset-0">
+        <img
+          src={carpenterImage}
+          alt="Create Profile Background"
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/75 via-black/60 to-black/80"></div>
+      </div>
+
+      <div className="relative flex items-center justify-center min-h-[calc(100vh-8rem)] px-4 sm:px-8 md:px-16 lg:px-24 py-8 sm:py-12 md:py-16">
+        <div className="w-full max-w-3xl">
+          <div className="bg-white/10 backdrop-blur-md rounded-2xl shadow-lg border border-white/30 p-6 sm:p-8 md:p-12">
           <div className="text-center mb-8 sm:mb-10">
-            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-text-primary mb-2">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-2">
               {existingProfile ? 'Edit Worker Profile' : 'Create Worker Profile'}
             </h1>
-            <p className="text-sm sm:text-base text-text-secondary">
+            <p className="text-sm sm:text-base text-white/90">
               Set up your professional credentials, upload supportive documents, and showcase your skills to clients
             </p>
           </div>
 
           {error && (
-            <div className="bg-red-50 border border-red-200 text-red-700 px-4 sm:px-5 py-3.5 rounded-xl mb-6 text-sm flex items-start gap-2">
+            <div className="bg-red-500/20 backdrop-blur-sm border border-red-400/30 text-white px-4 sm:px-5 py-3.5 rounded-xl mb-6 text-sm flex items-start gap-2">
               <span className="font-bold">Error:</span> {error}
             </div>
           )}
 
           <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Profession Dropdown */}
-            <div>
-              <label htmlFor="profession" className="block text-sm font-medium text-text-primary mb-2">
-                Profession / Service Category <span className="text-red-500">*</span>
+            {/* Profession Dropdown with Custom Translucent Dropdown */}
+            <div className="relative" ref={professionDropdownRef}>
+              <label htmlFor="profession-btn" className="block text-sm font-medium text-white mb-2">
+                Profession / Service Category <span className="text-red-400">*</span>
               </label>
-              <select
-                id="profession"
+              
+              <button
+                type="button"
+                id="profession-btn"
+                onClick={() => setIsProfessionOpen(!isProfessionOpen)}
+                className="w-full px-3.5 py-2.5 sm:py-3 border border-white/30 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all text-sm sm:text-base bg-white/10 backdrop-blur-md text-white flex items-center justify-between shadow-sm hover:bg-white/15 cursor-pointer text-left"
+              >
+                <span className={formData.profession ? 'text-white font-medium' : 'text-white/60'}>
+                  {formData.profession || 'Select your profession'}
+                </span>
+                <svg
+                  className={`w-5 h-5 text-white/70 transition-transform duration-200 ${isProfessionOpen ? 'rotate-180 text-white' : ''}`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+
+              {/* Hidden native input so HTML form validation and values persist */}
+              <input
+                type="hidden"
                 name="profession"
                 value={formData.profession}
-                onChange={handleChange}
                 required
-                className="w-full px-3.5 py-2.5 sm:py-3 border border-border rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all text-sm sm:text-base bg-white"
-              >
-                <option value="">Select your profession</option>
-                {professionCategories.map((cat) => (
-                  <option key={cat} value={cat}>
-                    {cat}
-                  </option>
-                ))}
-              </select>
+              />
+
+              {/* Translucent Options Dropdown Menu */}
+              {isProfessionOpen && (
+                <div className="absolute left-0 right-0 top-full mt-2 max-h-64 overflow-y-auto bg-slate-900/95 backdrop-blur-xl border border-white/20 rounded-xl shadow-2xl z-50 p-1.5 space-y-1">
+                  <div
+                    onClick={() => handleSelectProfession('')}
+                    className="px-3.5 py-2.5 rounded-lg text-sm text-white/60 hover:bg-white/10 hover:text-white cursor-pointer transition-colors"
+                  >
+                    Select your profession
+                  </div>
+                  {professionCategories.map((cat) => (
+                    <div
+                      key={cat}
+                      onClick={() => handleSelectProfession(cat)}
+                      className={`px-3.5 py-2.5 rounded-lg text-sm transition-colors cursor-pointer flex items-center justify-between ${
+                        formData.profession === cat
+                          ? 'bg-primary/40 text-white font-semibold border border-primary/40'
+                          : 'text-white hover:bg-white/10'
+                      }`}
+                    >
+                      <span>{cat}</span>
+                      {formData.profession === cat && (
+                        <span className="text-emerald-400 font-bold text-sm">✓</span>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Bio */}
             <div>
-              <label htmlFor="bio" className="block text-sm font-medium text-text-primary mb-2">
-                Professional Bio <span className="text-red-500">*</span>
+              <label htmlFor="bio" className="block text-sm font-medium text-white mb-2">
+                Professional Bio <span className="text-red-400">*</span>
               </label>
               <textarea
                 id="bio"
@@ -381,17 +516,17 @@ const CreateProfilePage = () => {
                 required
                 rows="4"
                 maxLength="500"
-                className="w-full px-3.5 py-2.5 sm:py-3 border border-border rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all text-sm sm:text-base"
+                className="w-full px-3.5 py-2.5 sm:py-3 border border-white/30 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all text-sm sm:text-base bg-white/5 text-white placeholder-white/60"
                 placeholder="Describe your expertise, experience, and the quality of services you offer..."
               />
-              <p className="text-xs text-text-secondary mt-1">{formData.bio.length}/500 characters</p>
+              <p className="text-xs text-white/70 mt-1">{formData.bio.length}/500 characters</p>
             </div>
 
             {/* Location & Phone */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
               <div>
-                <label htmlFor="location" className="block text-sm font-medium text-text-primary mb-2">
-                  Operating Location / City <span className="text-red-500">*</span>
+                <label htmlFor="location" className="block text-sm font-medium text-white mb-2">
+                  Operating Location / City <span className="text-red-400">*</span>
                 </label>
                 <input
                   type="text"
@@ -400,14 +535,14 @@ const CreateProfilePage = () => {
                   value={formData.location}
                   onChange={handleChange}
                   required
-                  className="w-full px-3.5 py-2.5 sm:py-3 border border-border rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all text-sm sm:text-base"
+                  className="w-full px-3.5 py-2.5 sm:py-3 border border-white/30 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all text-sm sm:text-base bg-white/5 text-white placeholder-white/60"
                   placeholder="e.g. Nairobi, Westlands"
                 />
               </div>
 
               <div>
-                <label htmlFor="phone" className="block text-sm font-medium text-text-primary mb-2">
-                  Contact Phone Number <span className="text-red-500">*</span>
+                <label htmlFor="phone" className="block text-sm font-medium text-white mb-2">
+                  Contact Phone Number <span className="text-red-400">*</span>
                 </label>
                 <input
                   type="text"
@@ -416,7 +551,7 @@ const CreateProfilePage = () => {
                   value={formData.phone}
                   onChange={handleChange}
                   required
-                  className="w-full px-3.5 py-2.5 sm:py-3 border border-border rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all text-sm sm:text-base"
+                  className="w-full px-3.5 py-2.5 sm:py-3 border border-white/30 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all text-sm sm:text-base bg-white/5 text-white placeholder-white/60"
                   placeholder="e.g. 0712345678"
                 />
               </div>
@@ -425,7 +560,7 @@ const CreateProfilePage = () => {
             {/* Skills & Experience */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
               <div>
-                <label htmlFor="skills" className="block text-sm font-medium text-text-primary mb-2">
+                <label htmlFor="skills" className="block text-sm font-medium text-white mb-2">
                   Key Skills (comma separated)
                 </label>
                 <input
@@ -434,14 +569,14 @@ const CreateProfilePage = () => {
                   name="skills"
                   value={formData.skills}
                   onChange={handleChange}
-                  className="w-full px-3.5 py-2.5 sm:py-3 border border-border rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all text-sm sm:text-base"
+                  className="w-full px-3.5 py-2.5 sm:py-3 border border-white/30 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all text-sm sm:text-base bg-white/5 text-white placeholder-white/60"
                   placeholder="e.g. Wiring, Repairs, Installation"
                 />
               </div>
 
               <div>
-                <label htmlFor="experience" className="block text-sm font-medium text-text-primary mb-2">
-                  Years of Experience <span className="text-red-500">*</span>
+                <label htmlFor="experience" className="block text-sm font-medium text-white mb-2">
+                  Years of Experience <span className="text-red-400">*</span>
                 </label>
                 <input
                   type="number"
@@ -451,23 +586,23 @@ const CreateProfilePage = () => {
                   onChange={handleChange}
                   required
                   min="0"
-                  className="w-full px-3.5 py-2.5 sm:py-3 border border-border rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all text-sm sm:text-base"
+                  className="w-full px-3.5 py-2.5 sm:py-3 border border-white/30 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all text-sm sm:text-base bg-white/5 text-white placeholder-white/60"
                   placeholder="e.g. 5"
                 />
               </div>
             </div>
 
             {/* ================= SECTION: NATIONAL ID VERIFICATION ================= */}
-            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5 sm:p-6 space-y-4">
-              <div className="flex items-center gap-2.5 border-b border-slate-200 pb-3">
-                <span className="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center font-bold text-sm">
+            <div className="bg-white/5 backdrop-blur-sm border border-white/20 rounded-2xl p-5 sm:p-6 space-y-4">
+              <div className="flex items-center gap-2.5 border-b border-white/20 pb-3">
+                <span className="w-8 h-8 rounded-lg bg-primary/20 backdrop-blur-sm text-primary flex items-center justify-center font-bold text-sm">
                   🪪
                 </span>
                 <div>
-                  <h3 className="text-base font-bold text-text-primary">
+                  <h3 className="text-base font-bold text-white">
                     Identity Verification (Required)
                   </h3>
-                  <p className="text-xs text-text-secondary">
+                  <p className="text-xs text-white/70">
                     Your official identity document builds trust and is visible to clients for verification
                   </p>
                 </div>
@@ -475,8 +610,8 @@ const CreateProfilePage = () => {
 
               {/* ID Number */}
               <div>
-                <label htmlFor="idNumber" className="block text-sm font-medium text-text-primary mb-1.5">
-                  National ID / Passport Number <span className="text-red-500">*</span>
+                <label htmlFor="idNumber" className="block text-sm font-medium text-white mb-1.5">
+                  National ID / Passport Number <span className="text-red-400">*</span>
                 </label>
                 <input
                   type="text"
@@ -485,17 +620,17 @@ const CreateProfilePage = () => {
                   value={formData.idNumber}
                   onChange={handleChange}
                   required
-                  className="w-full px-3.5 py-2.5 border border-border rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all text-sm bg-white"
+                  className="w-full px-3.5 py-2.5 border border-white/30 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all text-sm bg-white/5 text-white placeholder-white/60"
                   placeholder="e.g. 12345678"
                 />
               </div>
 
               {/* Scanned ID Upload */}
               <div>
-                <label className="block text-sm font-medium text-text-primary mb-1.5 flex items-center justify-between">
-                  <span>Scanned Copy of National ID / Passport <span className="text-red-500">*</span></span>
+                <label className="block text-sm font-medium text-white mb-1.5 flex items-center justify-between">
+                  <span>Scanned Copy of National ID / Passport <span className="text-red-400">*</span></span>
                   {formData.idDocument && (
-                    <span className="text-xs font-semibold text-emerald-600 flex items-center gap-1">
+                    <span className="text-xs font-semibold text-emerald-400 flex items-center gap-1">
                       ✓ Scanned ID Attached
                     </span>
                   )}
@@ -506,7 +641,7 @@ const CreateProfilePage = () => {
                     type="file"
                     accept="image/png,image/jpeg,image/jpg,image/webp,application/pdf"
                     onChange={handleIdDocChange}
-                    className="flex-1 px-3 py-2 border border-border rounded-xl text-xs sm:text-sm bg-white file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20 cursor-pointer"
+                    className="flex-1 px-3 py-2 border border-white/30 rounded-xl text-xs sm:text-sm bg-white/5 text-white file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-primary/20 backdrop-blur-sm file:text-primary hover:file:bg-primary/30 cursor-pointer"
                   />
                   <button
                     type="button"
@@ -520,22 +655,22 @@ const CreateProfilePage = () => {
 
                 {/* ID Preview */}
                 {formData.idDocument && (
-                  <div className="mt-3 p-3 bg-emerald-50 border border-emerald-200 rounded-xl flex items-center justify-between">
+                  <div className="mt-3 p-3 bg-emerald-500/20 backdrop-blur-sm border border-emerald-400/30 rounded-xl flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <span className="text-emerald-600 text-lg">📄</span>
+                      <span className="text-emerald-400 text-lg">📄</span>
                       <div>
-                        <p className="text-xs font-semibold text-emerald-800">Scanned ID Verified & Uploaded</p>
+                        <p className="text-xs font-semibold text-emerald-300">Scanned ID Verified & Uploaded</p>
                         <a
                           href={formData.idDocument}
                           target="_blank"
                           rel="noreferrer"
-                          className="text-[11px] text-primary underline font-medium"
+                          className="text-[11px] text-white underline font-medium hover:text-white/80"
                         >
                           View Uploaded ID Scan
                         </a>
                       </div>
                     </div>
-                    <span className="text-[10px] bg-emerald-200 text-emerald-800 font-bold px-2 py-0.5 rounded-full">
+                    <span className="text-[10px] bg-emerald-400/30 backdrop-blur-sm text-emerald-300 font-bold px-2 py-0.5 rounded-full">
                       Ready
                     </span>
                   </div>
@@ -544,26 +679,26 @@ const CreateProfilePage = () => {
             </div>
 
             {/* ================= SECTION: ACADEMIC & SUPPORTIVE DOCUMENTS ================= */}
-            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5 sm:p-6 space-y-4">
-              <div className="flex items-center gap-2.5 border-b border-slate-200 pb-3">
-                <span className="w-8 h-8 rounded-lg bg-purple-100 text-purple-700 flex items-center justify-center font-bold text-sm">
+            <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-5 sm:p-6 space-y-4">
+              <div className="flex items-center gap-2.5 border-b border-white/20 pb-3">
+                <span className="w-8 h-8 rounded-lg bg-purple-500/20 backdrop-blur-sm text-purple-300 flex items-center justify-center font-bold text-sm">
                   🎓
                 </span>
                 <div>
-                  <h3 className="text-base font-bold text-text-primary">
+                  <h3 className="text-base font-bold text-white">
                     Academic & Supportive Documents (Optional)
                   </h3>
-                  <p className="text-xs text-text-secondary">
+                  <p className="text-xs text-white/70">
                     Add certificates, licenses, diplomas, or professional accreditations to stand out to clients
                   </p>
                 </div>
               </div>
 
               {/* Upload New Supportive Document */}
-              <div className="space-y-3 bg-white p-4 rounded-xl border border-slate-200">
+              <div className="space-y-3 bg-white/5 backdrop-blur-sm p-4 rounded-xl border border-white/20">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-xs font-semibold text-text-secondary mb-1">
+                    <label className="block text-xs font-semibold text-white/70 mb-1">
                       Certificate / Document Title
                     </label>
                     <input
@@ -571,12 +706,12 @@ const CreateProfilePage = () => {
                       value={docTitle}
                       onChange={(e) => setDocTitle(e.target.value)}
                       placeholder="e.g. Electrical Wireman License Grade 2"
-                      className="w-full px-3 py-2 border border-border rounded-xl text-xs sm:text-sm focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+                      className="w-full px-3 py-2 border border-white/30 rounded-xl text-xs sm:text-sm focus:ring-2 focus:ring-primary focus:border-transparent outline-none bg-white/5 text-white placeholder-white/60"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-text-secondary mb-1">
+                    <label className="block text-xs font-semibold text-white/70 mb-1">
                       Select Document File (PDF, PNG, JPG, WebP)
                     </label>
                     <input
@@ -584,7 +719,7 @@ const CreateProfilePage = () => {
                       id="supportiveDocInput"
                       accept="image/png,image/jpeg,image/jpg,image/webp,application/pdf"
                       onChange={(e) => setDocFile(e.target.files[0])}
-                      className="w-full px-3 py-1.5 border border-border rounded-xl text-xs bg-white file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-purple-100 file:text-purple-700 hover:file:bg-purple-200 cursor-pointer"
+                      className="w-full px-3 py-1.5 border border-white/30 rounded-xl text-xs bg-white/5 text-white file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-purple-500/20 backdrop-blur-sm file:text-purple-300 hover:file:bg-purple-500/30 cursor-pointer"
                     />
                   </div>
                 </div>
@@ -611,24 +746,24 @@ const CreateProfilePage = () => {
               {/* Uploaded Supportive Documents List */}
               {formData.documents && formData.documents.length > 0 && (
                 <div className="space-y-2 mt-4">
-                  <h4 className="text-xs font-bold text-text-secondary uppercase tracking-wider">
+                  <h4 className="text-xs font-bold text-white/70 uppercase tracking-wider">
                     Attached Documents ({formData.documents.length})
                   </h4>
                   <div className="space-y-2">
                     {formData.documents.map((doc, idx) => (
                       <div
                         key={idx}
-                        className="flex items-center justify-between p-3 bg-white border border-border rounded-xl shadow-sm hover:border-purple-200 transition-all"
+                        className="flex items-center justify-between p-3 bg-white/5 backdrop-blur-sm border border-white/20 rounded-xl shadow-sm hover:border-purple-400/30 transition-all"
                       >
                         <div className="flex items-center gap-3">
                           <span className="text-xl">📜</span>
                           <div>
-                            <p className="text-xs font-bold text-text-primary">{doc.title}</p>
+                            <p className="text-xs font-bold text-white">{doc.title}</p>
                             <a
                               href={doc.url}
                               target="_blank"
                               rel="noreferrer"
-                              className="text-[11px] text-primary hover:underline"
+                              className="text-[11px] text-white hover:underline font-medium"
                             >
                               Preview Document ({doc.fileType?.toUpperCase() || 'DOCUMENT'})
                             </a>
@@ -638,7 +773,7 @@ const CreateProfilePage = () => {
                         <button
                           type="button"
                           onClick={() => handleRemoveDoc(idx)}
-                          className="text-xs text-red-500 hover:text-red-700 font-semibold px-2 py-1 rounded hover:bg-red-50 transition-colors"
+                          className="text-xs text-red-400 hover:text-red-300 font-semibold px-2 py-1 rounded hover:bg-red-500/10 backdrop-blur-sm transition-colors"
                         >
                           Remove
                         </button>
@@ -651,7 +786,7 @@ const CreateProfilePage = () => {
 
             {/* Profile Photo Section */}
             <div>
-              <label className="block text-sm font-medium text-text-primary mb-2">
+              <label className="block text-sm font-medium text-white mb-2">
                 Profile Photo (Optional)
               </label>
 
@@ -672,7 +807,7 @@ const CreateProfilePage = () => {
                     id="imageUpload"
                     accept="image/png,image/jpeg,image/jpg,image/gif,image/webp"
                     onChange={handleImageChange}
-                    className="flex-1 px-3.5 py-2.5 border border-border rounded-xl text-xs sm:text-sm bg-white file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20 cursor-pointer"
+                    className="flex-1 px-3.5 py-2.5 border border-white/30 rounded-xl text-xs sm:text-sm bg-white/5 text-white file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-primary/20 backdrop-blur-sm file:text-primary hover:file:bg-primary/30 cursor-pointer"
                   />
                   <button
                     type="button"
@@ -700,6 +835,7 @@ const CreateProfilePage = () => {
             </button>
           </form>
         </div>
+      </div>
       </div>
     </div>
   );
