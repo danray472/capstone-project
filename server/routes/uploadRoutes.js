@@ -12,8 +12,13 @@ const normalizeDocumentUrl = (file) => {
   const url = file.path;
   const isPdfLike = /\.(pdf)(\?|$)/i.test(url) || file.format === 'pdf' || file.mimetype === 'application/pdf';
 
-  if (isPdfLike && url.includes('/image/upload/')) {
-    return url.replace('/image/upload/', '/raw/upload/');
+  if (isPdfLike) {
+    if (url.includes('/image/upload/')) {
+      return url.replace('/image/upload/', '/raw/upload/');
+    }
+    if (url.includes('/upload/') && !url.includes('/raw/upload/')) {
+      return url.replace('/upload/', '/raw/upload/');
+    }
   }
 
   return url;

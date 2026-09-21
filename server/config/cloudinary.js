@@ -42,6 +42,16 @@ const documentStorage = isCloudinaryConfigured()
         allowed_formats: ['jpg', 'jpeg', 'png', 'webp', 'pdf'],
         invalidate: true,
       },
+      filename: (req, file, cb) => {
+        const safeName = file.originalname
+          .replace(/\.[^/.]+$/, '')
+          .toLowerCase()
+          .replace(/[^a-z0-9-_]+/g, '-')
+          .replace(/-+/g, '-')
+          .slice(0, 80);
+        const extension = file.originalname.split('.').pop();
+        cb(null, `${Date.now()}-${safeName}.${extension || 'pdf'}`);
+      },
     })
   : null;
 
