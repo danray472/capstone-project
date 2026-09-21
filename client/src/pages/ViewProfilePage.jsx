@@ -250,7 +250,7 @@ const ViewProfilePage = () => {
 
                 {profile.idDocument ? (
                   <a
-                    href={profile.idDocument}
+                    href={`${API_BASE_URL}/upload/document/download?url=${encodeURIComponent(profile.idDocument)}`}
                     download
                     className="inline-flex items-center justify-center gap-1.5 w-full px-3 py-2 bg-white/15 hover:bg-white/25 border border-white/30 backdrop-blur-sm text-white font-semibold rounded-lg text-xs transition-colors shadow-sm"
                   >
@@ -296,7 +296,7 @@ const ViewProfilePage = () => {
                           </span>
                         </div>
                         <a
-                          href={doc.url}
+                          href={`${API_BASE_URL}/upload/document/download?url=${encodeURIComponent(doc.url)}`}
                           download
                           className="text-white hover:text-white/80 underline font-bold flex-shrink-0 text-[11px]"
                         >

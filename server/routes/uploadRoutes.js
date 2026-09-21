@@ -19,6 +19,19 @@ const normalizeDocumentUrl = (file) => {
   return url;
 };
 
+const getDownloadFilename = (url, fallback = 'document') => {
+  try {
+    const parsed = new URL(url);
+    const parts = parsed.pathname.split('/');
+    const rawName = decodeURIComponent(parts[parts.length - 1] || '');
+    if (rawName && rawName.includes('.')) return rawName;
+  } catch (error) {
+    // Ignore invalid URLs and use fallback.
+  }
+
+  return fallback;
+};
+
 const requireCloudinaryConfig = (res) => {
   if (!isCloudinaryConfigured()) {
     return res.status(500).json({
@@ -74,6 +87,43 @@ router.post('/document', (req, res, next) => {
     format: req.file.format,
     resourceType: req.file.resource_type || (req.file.format === 'pdf' ? 'raw' : 'image'),
   });
+});
+
+// @route   GET /api/upload/document/download
+// @desc    Force document downloads instead of inline browser viewing
+// @access  Public
+router.get('/document/download', async (req, res) => {
+  const fileUrl = req.query.url;
+
+  if (!fileUrl) {
+    return res.status(400).json({ message: 'Missing document URL to download.' });
+  }
+
+  try {
+    const sourceUrl = decodeURIComponent(String(fileUrl));
+    const response = await fetch(sourceUrl);
+
+    if (!response.ok) {
+      return res.status(502).json({ message: 'Failed to fetch document for download.' });
+    }
+
+    const contentType = response.headers.get('content-type') || 'application/octet-stream';
+    const filename = getDownloadFilename(sourceUrl, 'document.pdf');
+
+    res.setHeader('Content-Type', contentType);
+    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+    res.setHeader('Cache-Control', 'no-store');
+
+    if (response.body) {
+      return response.body.pipe(res);
+    }
+
+    const buffer = Buffer.from(await response.arrayBuffer());
+    return res.send(buffer);
+  } catch (error) {
+    console.error('[Upload] Download error:', error);
+    return res.status(500).json({ message: 'Unable to download document.' });
+  }
 });
 
 // Error handler for multer

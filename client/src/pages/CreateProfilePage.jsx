@@ -671,7 +671,7 @@ const CreateProfilePage = () => {
                       <div>
                         <p className="text-xs font-semibold text-emerald-300">Scanned ID Verified & Uploaded</p>
                         <a
-                          href={formData.idDocument}
+                          href={`${API_BASE_URL}/upload/document/download?url=${encodeURIComponent(formData.idDocument)}`}
                           download
                           className="text-[11px] text-white underline font-medium hover:text-white/80"
                         >
@@ -769,7 +769,7 @@ const CreateProfilePage = () => {
                           <div>
                             <p className="text-xs font-bold text-white">{doc.title}</p>
                             <a
-                              href={doc.url}
+                              href={`${API_BASE_URL}/upload/document/download?url=${encodeURIComponent(doc.url)}`}
                               download
                               className="text-[11px] text-white hover:underline font-medium"
                             >
