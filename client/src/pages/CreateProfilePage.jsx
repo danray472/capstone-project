@@ -672,11 +672,10 @@ const CreateProfilePage = () => {
                         <p className="text-xs font-semibold text-emerald-300">Scanned ID Verified & Uploaded</p>
                         <a
                           href={formData.idDocument}
-                          target="_blank"
-                          rel="noreferrer"
+                          download
                           className="text-[11px] text-white underline font-medium hover:text-white/80"
                         >
-                          View Uploaded ID Scan
+                          Download Uploaded ID Scan
                         </a>
                       </div>
                     </div>
@@ -771,11 +770,10 @@ const CreateProfilePage = () => {
                             <p className="text-xs font-bold text-white">{doc.title}</p>
                             <a
                               href={doc.url}
-                              target="_blank"
-                              rel="noreferrer"
+                              download
                               className="text-[11px] text-white hover:underline font-medium"
                             >
-                              Preview Document ({doc.fileType?.toUpperCase() || 'DOCUMENT'})
+                              Download Document ({doc.fileType?.toUpperCase() || 'DOCUMENT'})
                             </a>
                           </div>
                         </div>
