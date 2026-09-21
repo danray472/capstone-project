@@ -671,12 +671,12 @@ const CreateProfilePage = () => {
                       <div>
                         <p className="text-xs font-semibold text-emerald-300">Scanned ID Verified & Uploaded</p>
                         <a
-                          href={formData.idDocument.includes('?') ? `${formData.idDocument}&fl_attachment=true` : `${formData.idDocument}?fl_attachment=true`}
+                          href={formData.idDocument}
                           target="_blank"
                           rel="noreferrer"
                           className="text-[11px] text-white underline font-medium hover:text-white/80"
                         >
-                          Download Uploaded ID Scan
+                          View Uploaded ID Scan
                         </a>
                       </div>
                     </div>
@@ -770,12 +770,12 @@ const CreateProfilePage = () => {
                           <div>
                             <p className="text-xs font-bold text-white">{doc.title}</p>
                             <a
-                              href={doc.url.includes('?') ? `${doc.url}&fl_attachment=true` : `${doc.url}?fl_attachment=true`}
+                              href={doc.url}
                               target="_blank"
                               rel="noreferrer"
                               className="text-[11px] text-white hover:underline font-medium"
                             >
-                              Download Document ({doc.fileType?.toUpperCase() || 'DOCUMENT'})
+                              View Document ({doc.fileType?.toUpperCase() || 'DOCUMENT'})
                             </a>
                           </div>
                         </div>
