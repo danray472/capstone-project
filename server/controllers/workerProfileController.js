@@ -181,19 +181,22 @@ const getMyProfile = async (req, res) => {
       return res.status(400).json({ message: 'User ID is required' });
     }
 
+    const user = await User.findById(userId).select('fullName email idNumber');
+
     const profile = await WorkerProfile.findOne({
       $or: [
         { userId: userId },
         ...(req.userId ? [{ userId: req.userId }] : [])
       ]
     });
-    
-    if (!profile) {
-      return res.status(404).json({ message: 'Profile not found' });
-    }
 
-    // Fetch user data to get fullName and idNumber
-    const user = await User.findById(userId).select('fullName email idNumber');
+    if (!profile) {
+      return res.status(200).json({
+        profile: null,
+        message: 'Profile not found for this user',
+        userData: user,
+      });
+    }
 
     res.json({
       ...profile.toObject(),
