@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import API_BASE_URL from '../services/api';
-import electrician5Image from '../assets/electrician5.jpg';
 
 const AdminDashboardPage = () => {
   const [activeTab, setActiveTab] = useState('users'); // 'users' or 'audit-logs'
@@ -389,16 +388,9 @@ const AdminDashboardPage = () => {
   };
 
   return (
-    <div className="min-h-[calc(100vh-8rem)] relative overflow-hidden">
-      {/* Background Image */}
-      <div className="absolute inset-0">
-        <img
-          src={electrician5Image}
-          alt="Admin Dashboard Background"
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/75 via-black/60 to-black/80"></div>
-      </div>
+    <div className="admin-modern-shell min-h-[calc(100vh-8rem)] relative overflow-hidden">
+      <div className="admin-glow admin-glow-one" />
+      <div className="admin-glow admin-glow-two" />
 
       <div className="relative px-4 sm:px-8 md:px-16 lg:px-24 py-8 sm:py-12">
         <div className="max-w-7xl mx-auto">
@@ -545,25 +537,25 @@ const AdminDashboardPage = () => {
                       <p className="text-xs font-semibold text-white/80 uppercase tracking-wider mb-1">
                         Soft Deactivated
                       </p>
-                      <p className="text-3xl font-extrabold text-slate-600">{userStats.inactiveUsers}</p>
+                      <p className="text-3xl font-extrabold text-slate-200">{userStats.inactiveUsers}</p>
                     </div>
-                    <div className="w-12 h-12 rounded-xl bg-slate-100 text-slate-600 flex items-center justify-center">
+                    <div className="w-12 h-12 rounded-xl bg-slate-500/20 text-slate-200 flex items-center justify-center">
                       <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                       </svg>
                     </div>
                   </div>
-                  <p className="mt-3 text-xs text-slate-500">Deactivated without hard delete</p>
+                  <p className="mt-3 text-xs text-slate-300">Deactivated without hard delete</p>
                 </div>
               </div>
             )}
 
             {/* Filter and Search Bar */}
-            <div className="bg-white rounded-2xl shadow-sm border border-border p-6 mb-6">
+            <div className="admin-dark-panel rounded-2xl shadow-sm border border-white/20 p-6 mb-6">
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 {/* Search */}
                 <div className="md:col-span-2">
-                  <label className="block text-xs font-semibold text-text-secondary uppercase tracking-wider mb-2">
+                  <label className="block text-xs font-semibold text-white/75 uppercase tracking-wider mb-2">
                     Search Users
                   </label>
                   <div className="relative">
@@ -574,10 +566,10 @@ const AdminDashboardPage = () => {
                       onChange={(e) =>
                         setUserFilter((prev) => ({ ...prev, search: e.target.value, page: 1 }))
                       }
-                      className="w-full pl-10 pr-4 py-2.5 border border-border rounded-xl text-sm focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                      className="w-full pl-10 pr-4 py-2.5 border border-white/20 bg-white/5 rounded-xl text-sm text-white placeholder:text-white/50 focus:ring-2 focus:ring-primary focus:border-primary/40 transition-all"
                     />
                     <svg
-                      className="w-4 h-4 text-text-secondary absolute left-3.5 top-3"
+                      className="w-4 h-4 text-white/70 absolute left-3.5 top-3"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -594,7 +586,7 @@ const AdminDashboardPage = () => {
 
                 {/* Role Filter */}
                 <div>
-                  <label className="block text-xs font-semibold text-text-secondary uppercase tracking-wider mb-2">
+                  <label className="block text-xs font-semibold text-white/75 uppercase tracking-wider mb-2">
                     Role
                   </label>
                   <select
@@ -602,7 +594,7 @@ const AdminDashboardPage = () => {
                     onChange={(e) =>
                       setUserFilter((prev) => ({ ...prev, role: e.target.value, page: 1 }))
                     }
-                    className="w-full px-3.5 py-2.5 border border-border rounded-xl text-sm focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                    className="w-full px-3.5 py-2.5 border border-white/20 bg-white/5 rounded-xl text-sm text-white focus:ring-2 focus:ring-primary focus:border-primary/40 transition-all"
                   >
                     <option value="">All Roles</option>
                     <option value="worker">Worker</option>
@@ -613,7 +605,7 @@ const AdminDashboardPage = () => {
 
                 {/* Status Filter */}
                 <div>
-                  <label className="block text-xs font-semibold text-text-secondary uppercase tracking-wider mb-2">
+                  <label className="block text-xs font-semibold text-white/75 uppercase tracking-wider mb-2">
                     Account Status
                   </label>
                   <select
@@ -621,7 +613,7 @@ const AdminDashboardPage = () => {
                     onChange={(e) =>
                       setUserFilter((prev) => ({ ...prev, status: e.target.value, page: 1 }))
                     }
-                    className="w-full px-3.5 py-2.5 border border-border rounded-xl text-sm focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                    className="w-full px-3.5 py-2.5 border border-white/20 bg-white/5 rounded-xl text-sm text-white focus:ring-2 focus:ring-primary focus:border-primary/40 transition-all"
                   >
                     <option value="">All Statuses</option>
                     <option value="active">Active Accounts</option>
@@ -632,13 +624,13 @@ const AdminDashboardPage = () => {
               </div>
 
               {(userFilter.search || userFilter.role || userFilter.status) && (
-                <div className="mt-4 flex items-center justify-between pt-4 border-t border-border/60">
-                  <span className="text-xs text-text-secondary">
+                <div className="mt-4 flex items-center justify-between pt-4 border-t border-white/10">
+                  <span className="text-xs text-white/70">
                     Active filters applied
                   </span>
                   <button
                     onClick={() => setUserFilter({ search: '', role: '', status: '', page: 1, limit: 10 })}
-                    className="text-xs font-semibold text-primary hover:underline"
+                    className="text-xs font-semibold text-white hover:underline"
                   >
                     Clear all filters
                   </button>
@@ -647,15 +639,15 @@ const AdminDashboardPage = () => {
             </div>
 
             {/* Users Table Card */}
-            <div className="bg-white rounded-2xl shadow-sm border border-border p-6 mb-8">
+            <div className="admin-dark-panel rounded-2xl shadow-sm border border-white/20 p-6 mb-8">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
                 <div>
-                  <h2 className="text-lg font-bold text-text-primary">Platform Users</h2>
-                  <p className="text-xs text-text-secondary mt-0.5">
+                  <h2 className="text-lg font-bold text-white">Platform Users</h2>
+                  <p className="text-xs text-white/70 mt-0.5">
                     View account status and manage suspension or deactivation
                   </p>
                 </div>
-                <span className="text-xs font-medium px-3 py-1 bg-surface-light border border-border rounded-lg text-text-secondary">
+                <span className="text-xs font-medium px-3 py-1 bg-white/10 border border-white/20 rounded-lg text-white/80">
                   Showing {users.length} of {userPagination.total} accounts
                 </span>
               </div>
@@ -663,51 +655,51 @@ const AdminDashboardPage = () => {
               {usersLoading ? (
                 <div className="text-center py-16">
                   <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary mx-auto mb-3"></div>
-                  <p className="text-sm text-text-secondary">Loading users...</p>
+                  <p className="text-sm text-white/75">Loading users...</p>
                 </div>
               ) : users.length === 0 ? (
                 <div className="text-center py-16">
-                  <div className="w-12 h-12 rounded-full bg-surface-light border border-border text-text-secondary flex items-center justify-center mx-auto mb-3">
+                  <div className="w-12 h-12 rounded-full bg-white/5 border border-white/15 text-white/75 flex items-center justify-center mx-auto mb-3">
                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                     </svg>
                   </div>
-                  <h3 className="text-sm font-semibold text-text-primary">No users found</h3>
-                  <p className="text-xs text-text-secondary mt-1">Try adjusting your search criteria or filters</p>
+                  <h3 className="text-sm font-semibold text-white">No users found</h3>
+                  <p className="text-xs text-white/70 mt-1">Try adjusting your search criteria or filters</p>
                 </div>
               ) : (
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead>
-                      <tr className="border-b border-border text-left">
-                        <th className="py-3 px-4 text-xs font-semibold text-text-secondary uppercase tracking-wider">
+                      <tr className="border-b border-white/20 text-left">
+                        <th className="py-3 px-4 text-xs font-semibold text-white/70 uppercase tracking-wider">
                           User Details
                         </th>
-                        <th className="py-3 px-4 text-xs font-semibold text-text-secondary uppercase tracking-wider">
+                        <th className="py-3 px-4 text-xs font-semibold text-white/70 uppercase tracking-wider">
                           Role
                         </th>
-                        <th className="py-3 px-4 text-xs font-semibold text-text-secondary uppercase tracking-wider">
+                        <th className="py-3 px-4 text-xs font-semibold text-white/70 uppercase tracking-wider">
                           Status
                         </th>
-                        <th className="py-3 px-4 text-xs font-semibold text-text-secondary uppercase tracking-wider">
+                        <th className="py-3 px-4 text-xs font-semibold text-white/70 uppercase tracking-wider">
                           Suspension Reason
                         </th>
-                        <th className="py-3 px-4 text-xs font-semibold text-text-secondary uppercase tracking-wider">
+                        <th className="py-3 px-4 text-xs font-semibold text-white/70 uppercase tracking-wider">
                           Registered
                         </th>
-                        <th className="py-3 px-4 text-right text-xs font-semibold text-text-secondary uppercase tracking-wider">
+                        <th className="py-3 px-4 text-right text-xs font-semibold text-white/70 uppercase tracking-wider">
                           Actions
                         </th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-border">
+                    <tbody className="divide-y divide-white/10">
                       {users.map((u) => {
                         const isSelf = currentUser && currentUser._id === u._id;
                         const isSuspended = u.isBlocked === true;
                         const isDeactivated = u.isActive === false;
 
                         return (
-                          <tr key={u._id} className="hover:bg-surface-light/60 transition-colors">
+                          <tr key={u._id} className="hover:bg-white/5 transition-colors">
                             {/* User Avatar + Name & Email */}
                             <td className="py-4 px-4">
                               <div className="flex items-center gap-3">
@@ -715,15 +707,15 @@ const AdminDashboardPage = () => {
                                   {getInitials(u.fullName)}
                                 </div>
                                 <div>
-                                  <div className="font-semibold text-text-primary text-sm flex items-center gap-1.5">
+                                  <div className="font-semibold text-white text-sm flex items-center gap-1.5">
                                     {u.fullName}
                                     {isSelf && (
-                                      <span className="text-[10px] bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded font-medium">
+                                      <span className="text-[10px] bg-blue-500/20 text-blue-200 px-1.5 py-0.5 rounded font-medium">
                                         You
                                       </span>
                                     )}
                                   </div>
-                                  <div className="text-xs text-text-secondary font-mono mt-0.5">
+                                  <div className="text-xs text-white/70 font-mono mt-0.5">
                                     {u.email}
                                   </div>
                                 </div>
@@ -762,18 +754,18 @@ const AdminDashboardPage = () => {
                             </td>
 
                             {/* Reason */}
-                            <td className="py-4 px-4 text-xs text-text-secondary max-w-xs">
+                            <td className="py-4 px-4 text-xs text-white/75 max-w-xs">
                               {u.blockReason ? (
-                                <span className="text-red-700 bg-red-50/70 px-2 py-1 rounded border border-red-100 block truncate" title={u.blockReason}>
+                                <span className="text-red-200 bg-red-500/15 px-2 py-1 rounded border border-red-300/20 block truncate" title={u.blockReason}>
                                   {u.blockReason}
                                 </span>
                               ) : (
-                                <span className="text-text-light">—</span>
+                                <span className="text-white/50">—</span>
                               )}
                             </td>
 
                             {/* Registered Date */}
-                            <td className="py-4 px-4 text-xs text-text-secondary">
+                            <td className="py-4 px-4 text-xs text-white/75">
                               {new Date(u.createdAt).toLocaleDateString(undefined, {
                                 year: 'numeric',
                                 month: 'short',
@@ -784,7 +776,7 @@ const AdminDashboardPage = () => {
                             {/* Action Buttons */}
                             <td className="py-4 px-4 text-right">
                               {isSelf ? (
-                                <span className="text-xs text-text-light italic">
+                                <span className="text-xs text-white/60 italic">
                                   Admin Protected
                                 </span>
                               ) : (
@@ -793,7 +785,7 @@ const AdminDashboardPage = () => {
                                   {isSuspended ? (
                                     <button
                                       onClick={() => handleUnblockUser(u)}
-                                      className="inline-flex items-center gap-1 text-xs font-semibold px-3 py-1.5 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-300 hover:bg-emerald-100 transition-colors"
+                                      className="inline-flex items-center gap-1 text-xs font-semibold px-3 py-1.5 rounded-lg bg-emerald-500/15 text-emerald-200 border border-emerald-300/30 hover:bg-emerald-500/20 transition-colors"
                                       title="Restore full account access"
                                     >
                                       <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -804,7 +796,7 @@ const AdminDashboardPage = () => {
                                   ) : (
                                     <button
                                       onClick={() => openBlockModal(u)}
-                                      className="inline-flex items-center gap-1 text-xs font-semibold px-3 py-1.5 rounded-lg bg-red-50 text-red-700 border border-red-300 hover:bg-red-100 transition-colors"
+                                      className="inline-flex items-center gap-1 text-xs font-semibold px-3 py-1.5 rounded-lg bg-red-500/15 text-red-200 border border-red-300/30 hover:bg-red-500/20 transition-colors"
                                       title="Suspend this user account"
                                     >
                                       <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -818,8 +810,8 @@ const AdminDashboardPage = () => {
                                   <button
                                     onClick={() => openDeactivateModal(u)}
                                     className={`inline-flex items-center gap-1 text-xs font-medium px-2.5 py-1.5 rounded-lg border transition-colors ${isDeactivated
-                                        ? 'bg-slate-100 text-slate-700 border-slate-300 hover:bg-slate-200'
-                                        : 'bg-white text-text-secondary border-border hover:bg-surface-light hover:text-red-700'
+                                        ? 'bg-slate-500/15 text-slate-200 border-slate-300/30 hover:bg-slate-500/20'
+                                        : 'bg-white/5 text-white/80 border-white/15 hover:bg-white/10 hover:text-white'
                                       }`}
                                     title={isDeactivated ? 'Reactivate account' : 'Soft deactivate account'}
                                   >
@@ -838,18 +830,18 @@ const AdminDashboardPage = () => {
 
               {/* Pagination Controls */}
               {userPagination.pages > 1 && (
-                <div className="flex items-center justify-between mt-6 pt-4 border-t border-border">
+                <div className="flex items-center justify-between mt-6 pt-4 border-t border-white/10">
                   <button
                     onClick={() =>
                       setUserFilter((prev) => ({ ...prev, page: prev.page - 1 }))
                     }
                     disabled={!userPagination.hasPrev}
-                    className="px-4 py-2 rounded-xl border border-border text-xs font-semibold disabled:opacity-40 disabled:cursor-not-allowed hover:bg-surface-light transition-all"
+                    className="px-4 py-2 rounded-xl border border-white/15 text-xs font-semibold text-white/80 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-white/5 transition-all"
                   >
                     Previous
                   </button>
-                  <span className="text-xs text-text-secondary">
-                    Page <strong className="text-text-primary">{userPagination.page}</strong> of{' '}
+                  <span className="text-xs text-white/70">
+                    Page <strong className="text-white">{userPagination.page}</strong> of{' '}
                     <strong>{userPagination.pages}</strong>
                   </span>
                   <button
@@ -857,7 +849,7 @@ const AdminDashboardPage = () => {
                       setUserFilter((prev) => ({ ...prev, page: prev.page + 1 }))
                     }
                     disabled={!userPagination.hasNext}
-                    className="px-4 py-2 rounded-xl border border-border text-xs font-semibold disabled:opacity-40 disabled:cursor-not-allowed hover:bg-surface-light transition-all"
+                    className="px-4 py-2 rounded-xl border border-white/15 text-xs font-semibold text-white/80 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-white/5 transition-all"
                   >
                     Next
                   </button>
@@ -871,7 +863,7 @@ const AdminDashboardPage = () => {
         {activeTab === 'audit-logs' && (
           <div>
             {logsError && (
-              <div className="bg-red-50 border border-red-200 text-red-600 px-5 py-4 rounded-xl mb-8">
+              <div className="bg-red-500/20 border border-red-400/30 text-white px-5 py-4 rounded-xl mb-8">
                 {logsError}
               </div>
             )}
@@ -879,33 +871,33 @@ const AdminDashboardPage = () => {
             {/* Audit Log Stats Cards */}
             {stats && (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                <div className="bg-white rounded-2xl shadow-sm border border-border p-6 hover-card">
-                  <h3 className="text-xs font-semibold text-text-secondary uppercase tracking-wider mb-2">
+                <div className="admin-dark-panel rounded-2xl shadow-sm border border-white/20 p-6 hover-card">
+                  <h3 className="text-xs font-semibold text-white/70 uppercase tracking-wider mb-2">
                     Total Audit Logs
                   </h3>
-                  <p className="text-4xl font-extrabold text-primary">{stats.totalLogs}</p>
+                  <p className="text-4xl font-extrabold text-white">{stats.totalLogs}</p>
                 </div>
-                <div className="bg-white rounded-2xl shadow-sm border border-border p-6 hover-card">
-                  <h3 className="text-xs font-semibold text-text-secondary uppercase tracking-wider mb-2">
+                <div className="admin-dark-panel rounded-2xl shadow-sm border border-white/20 p-6 hover-card">
+                  <h3 className="text-xs font-semibold text-white/70 uppercase tracking-wider mb-2">
                     Successful Events
                   </h3>
-                  <p className="text-4xl font-extrabold text-emerald-600">
+                  <p className="text-4xl font-extrabold text-emerald-300">
                     {stats.statusStats.find((s) => s._id === 'success')?.count || 0}
                   </p>
                 </div>
-                <div className="bg-white rounded-2xl shadow-sm border border-border p-6 hover-card">
-                  <h3 className="text-xs font-semibold text-text-secondary uppercase tracking-wider mb-2">
+                <div className="admin-dark-panel rounded-2xl shadow-sm border border-white/20 p-6 hover-card">
+                  <h3 className="text-xs font-semibold text-white/70 uppercase tracking-wider mb-2">
                     Failed Events
                   </h3>
-                  <p className="text-4xl font-extrabold text-red-600">
+                  <p className="text-4xl font-extrabold text-red-300">
                     {stats.statusStats.find((s) => s._id === 'failure')?.count || 0}
                   </p>
                 </div>
-                <div className="bg-white rounded-2xl shadow-sm border border-border p-6 hover-card">
-                  <h3 className="text-xs font-semibold text-text-secondary uppercase tracking-wider mb-2">
+                <div className="admin-dark-panel rounded-2xl shadow-sm border border-white/20 p-6 hover-card">
+                  <h3 className="text-xs font-semibold text-white/70 uppercase tracking-wider mb-2">
                     Warnings / Suspensions
                   </h3>
-                  <p className="text-4xl font-extrabold text-amber-600">
+                  <p className="text-4xl font-extrabold text-amber-300">
                     {stats.statusStats.find((s) => s._id === 'warning')?.count || 0}
                   </p>
                 </div>
@@ -913,11 +905,11 @@ const AdminDashboardPage = () => {
             )}
 
             {/* Audit Log Filters */}
-            <div className="bg-white rounded-2xl shadow-sm border border-border p-6 mb-8">
-              <h2 className="text-lg font-bold text-text-primary mb-4">Filter Audit Logs</h2>
+            <div className="admin-dark-panel rounded-2xl shadow-sm border border-white/20 p-6 mb-8">
+              <h2 className="text-lg font-bold text-white mb-4">Filter Audit Logs</h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-text-secondary uppercase tracking-wider mb-2">
+                  <label className="block text-xs font-semibold text-white/75 uppercase tracking-wider mb-2">
                     Status
                   </label>
                   <select
@@ -925,7 +917,7 @@ const AdminDashboardPage = () => {
                     onChange={(e) =>
                       setLogFilter((prev) => ({ ...prev, status: e.target.value, page: 1 }))
                     }
-                    className="w-full px-3.5 py-2.5 border border-border rounded-xl text-sm focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                    className="w-full px-3.5 py-2.5 border border-white/20 bg-white/5 rounded-xl text-sm text-white focus:ring-2 focus:ring-primary focus:border-primary/40 transition-all"
                   >
                     <option value="">All Statuses</option>
                     <option value="success">Success</option>
@@ -934,7 +926,7 @@ const AdminDashboardPage = () => {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-text-secondary uppercase tracking-wider mb-2">
+                  <label className="block text-xs font-semibold text-white/75 uppercase tracking-wider mb-2">
                     Action
                   </label>
                   <select
@@ -942,7 +934,7 @@ const AdminDashboardPage = () => {
                     onChange={(e) =>
                       setLogFilter((prev) => ({ ...prev, action: e.target.value, page: 1 }))
                     }
-                    className="w-full px-3.5 py-2.5 border border-border rounded-xl text-sm focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                    className="w-full px-3.5 py-2.5 border border-white/20 bg-white/5 rounded-xl text-sm text-white focus:ring-2 focus:ring-primary focus:border-primary/40 transition-all"
                   >
                     <option value="">All Actions</option>
                     <option value="ACCOUNT_BLOCKED">Account Blocked</option>
@@ -959,7 +951,7 @@ const AdminDashboardPage = () => {
                 <div className="flex items-end">
                   <button
                     onClick={() => setLogFilter({ status: '', action: '', page: 1, limit: 20 })}
-                    className="w-full bg-surface-light border border-border text-text-primary py-2.5 px-4 rounded-xl text-sm font-semibold hover:bg-gray-200 transition-colors"
+                    className="w-full bg-white/10 border border-white/20 text-white py-2.5 px-4 rounded-xl text-sm font-semibold hover:bg-white/15 transition-colors"
                   >
                     Clear Filters
                   </button>
@@ -968,10 +960,10 @@ const AdminDashboardPage = () => {
             </div>
 
             {/* Logs Table */}
-            <div className="bg-white rounded-2xl shadow-sm border border-border p-6 mb-8">
+            <div className="admin-dark-panel rounded-2xl shadow-sm border border-white/20 p-6 mb-8">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-lg font-bold text-text-primary">Recorded Security Logs</h2>
-                <span className="text-xs font-medium px-3 py-1 bg-surface-light border border-border rounded-lg text-text-secondary">
+                <h2 className="text-lg font-bold text-white">Recorded Security Logs</h2>
+                <span className="text-xs font-medium px-3 py-1 bg-white/10 border border-white/20 rounded-lg text-white/80">
                   Showing {logs.length} of {logPagination.total} logs
                 </span>
               </div>
@@ -979,39 +971,39 @@ const AdminDashboardPage = () => {
               {logsLoading ? (
                 <div className="text-center py-16">
                   <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary mx-auto mb-3"></div>
-                  <p className="text-sm text-text-secondary">Loading audit logs...</p>
+                  <p className="text-sm text-white/75">Loading audit logs...</p>
                 </div>
               ) : logs.length === 0 ? (
-                <p className="text-text-secondary text-center py-12">No audit logs found.</p>
+                <p className="text-white/75 text-center py-12">No audit logs found.</p>
               ) : (
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead>
-                      <tr className="border-b border-border text-left">
-                        <th className="py-3 px-4 text-xs font-semibold text-text-secondary uppercase tracking-wider">
+                      <tr className="border-b border-white/15 text-left">
+                        <th className="py-3 px-4 text-xs font-semibold text-white/70 uppercase tracking-wider">
                           Timestamp
                         </th>
-                        <th className="py-3 px-4 text-xs font-semibold text-text-secondary uppercase tracking-wider">
+                        <th className="py-3 px-4 text-xs font-semibold text-white/70 uppercase tracking-wider">
                           Action
                         </th>
-                        <th className="py-3 px-4 text-xs font-semibold text-text-secondary uppercase tracking-wider">
+                        <th className="py-3 px-4 text-xs font-semibold text-white/70 uppercase tracking-wider">
                           Status
                         </th>
-                        <th className="py-3 px-4 text-xs font-semibold text-text-secondary uppercase tracking-wider">
+                        <th className="py-3 px-4 text-xs font-semibold text-white/70 uppercase tracking-wider">
                           User
                         </th>
-                        <th className="py-3 px-4 text-xs font-semibold text-text-secondary uppercase tracking-wider">
+                        <th className="py-3 px-4 text-xs font-semibold text-white/70 uppercase tracking-wider">
                           IP Address
                         </th>
-                        <th className="py-3 px-4 text-xs font-semibold text-text-secondary uppercase tracking-wider">
+                        <th className="py-3 px-4 text-xs font-semibold text-white/70 uppercase tracking-wider">
                           Details
                         </th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-border">
+                    <tbody className="divide-y divide-white/10">
                       {logs.map((log) => (
-                        <tr key={log._id} className="hover:bg-surface-light/60 transition-colors">
-                          <td className="py-3.5 px-4 text-xs text-text-secondary font-mono">
+                        <tr key={log._id} className="hover:bg-white/5 transition-colors">
+                          <td className="py-3.5 px-4 text-xs text-white/75 font-mono">
                             {new Date(log.timestamp).toLocaleString()}
                           </td>
                           <td className="py-3.5 px-4 text-xs font-bold">
@@ -1028,38 +1020,38 @@ const AdminDashboardPage = () => {
                               {log.status}
                             </span>
                           </td>
-                          <td className="py-3.5 px-4 text-xs text-text-secondary">
+                          <td className="py-3.5 px-4 text-xs text-white/75">
                             {log.userId ? (
                               <div>
-                                <div className="font-semibold text-text-primary">
+                                <div className="font-semibold text-white">
                                   {log.userId.fullName}
                                 </div>
-                                <div className="text-[11px] text-text-light font-mono">
+                                <div className="text-[11px] text-white/55 font-mono">
                                   {log.userId.email}
                                 </div>
                               </div>
                             ) : (
-                              <span className="text-text-light italic">Anonymous / System</span>
+                              <span className="text-white/50 italic">Anonymous / System</span>
                             )}
                           </td>
-                          <td className="py-3.5 px-4 text-xs text-text-secondary font-mono">
+                          <td className="py-3.5 px-4 text-xs text-white/75 font-mono">
                             {log.ipAddress || 'N/A'}
                           </td>
-                          <td className="py-3.5 px-4 text-xs text-text-secondary">
+                          <td className="py-3.5 px-4 text-xs text-white/75">
                             <div className="max-w-xs overflow-hidden">
                               {log.details && typeof log.details === 'object' ? (
                                 <div className="space-y-0.5">
                                   {Object.entries(log.details).map(([key, value]) => (
                                     <div key={key} className="truncate">
-                                      <span className="font-medium text-text-primary">{key}:</span>{' '}
-                                      <span className="text-text-secondary">
+                                      <span className="font-medium text-white">{key}:</span>{' '}
+                                      <span className="text-white/70">
                                         {typeof value === 'string' ? value : JSON.stringify(value)}
                                       </span>
                                     </div>
                                   ))}
                                 </div>
                               ) : (
-                                <span className="text-text-light italic">No details</span>
+                                <span className="text-white/50 italic">No details</span>
                               )}
                             </div>
                           </td>
@@ -1072,18 +1064,18 @@ const AdminDashboardPage = () => {
 
               {/* Log Pagination */}
               {logPagination.pages > 1 && (
-                <div className="flex items-center justify-between mt-6 pt-4 border-t border-border">
+                <div className="flex items-center justify-between mt-6 pt-4 border-t border-white/10">
                   <button
                     onClick={() =>
                       setLogFilter((prev) => ({ ...prev, page: prev.page - 1 }))
                     }
                     disabled={!logPagination.hasPrev}
-                    className="px-4 py-2 rounded-xl border border-border text-xs font-semibold disabled:opacity-40 disabled:cursor-not-allowed hover:bg-surface-light transition-all"
+                    className="px-4 py-2 rounded-xl border border-white/15 text-xs font-semibold text-white/80 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-white/5 transition-all"
                   >
                     Previous
                   </button>
-                  <span className="text-xs text-text-secondary">
-                    Page <strong className="text-text-primary">{logPagination.page}</strong> of{' '}
+                  <span className="text-xs text-white/70">
+                    Page <strong className="text-white">{logPagination.page}</strong> of{' '}
                     <strong>{logPagination.pages}</strong>
                   </span>
                   <button
@@ -1091,7 +1083,7 @@ const AdminDashboardPage = () => {
                       setLogFilter((prev) => ({ ...prev, page: prev.page + 1 }))
                     }
                     disabled={!logPagination.hasNext}
-                    className="px-4 py-2 rounded-xl border border-border text-xs font-semibold disabled:opacity-40 disabled:cursor-not-allowed hover:bg-surface-light transition-all"
+                    className="px-4 py-2 rounded-xl border border-white/15 text-xs font-semibold text-white/80 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-white/5 transition-all"
                   >
                     Next
                   </button>
@@ -1101,15 +1093,15 @@ const AdminDashboardPage = () => {
 
             {/* Action Statistics Breakdown */}
             {stats && stats.actionStats.length > 0 && (
-              <div className="bg-white rounded-2xl shadow-sm border border-border p-6">
-                <h2 className="text-lg font-bold text-text-primary mb-4">Event Types Breakdown</h2>
+              <div className="admin-dark-panel rounded-2xl shadow-sm border border-white/20 p-6">
+                <h2 className="text-lg font-bold text-white mb-4">Event Types Breakdown</h2>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   {stats.actionStats.map((stat) => (
-                    <div key={stat._id} className="bg-surface-light/80 rounded-xl p-4 border border-border/50">
-                      <div className="text-xs text-text-secondary mb-1 truncate" title={stat._id}>
+                    <div key={stat._id} className="bg-white/5 rounded-xl p-4 border border-white/10">
+                      <div className="text-xs text-white/75 mb-1 truncate" title={stat._id}>
                         {stat._id.replace(/_/g, ' ')}
                       </div>
-                      <div className="text-2xl font-bold text-primary">{stat.count}</div>
+                      <div className="text-2xl font-bold text-white">{stat.count}</div>
                     </div>
                   ))}
                 </div>
@@ -1121,22 +1113,22 @@ const AdminDashboardPage = () => {
         {/* ======================= SUSPENSION / BLOCK MODAL ======================= */}
         {blockModalOpen && selectedUser && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-fade-in">
-            <div className="bg-white rounded-2xl shadow-2xl border border-border max-w-md w-full p-6 relative">
-              <div className="flex items-center gap-3 text-red-600 mb-4">
-                <div className="w-10 h-10 rounded-xl bg-red-100 flex items-center justify-center flex-shrink-0">
+            <div className="admin-dark-panel rounded-2xl shadow-2xl border border-white/20 max-w-md w-full p-6 relative">
+              <div className="flex items-center gap-3 text-red-300 mb-4">
+                <div className="w-10 h-10 rounded-xl bg-red-500/15 border border-red-300/20 flex items-center justify-center flex-shrink-0">
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                   </svg>
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-text-primary">Suspend User Account</h3>
-                  <p className="text-xs text-text-secondary">
+                  <h3 className="text-lg font-bold text-white">Suspend User Account</h3>
+                  <p className="text-xs text-white/70">
                     Block {selectedUser.fullName} ({selectedUser.email})
                   </p>
                 </div>
               </div>
 
-              <p className="text-sm text-text-secondary mb-4 leading-relaxed">
+              <p className="text-sm text-white/75 mb-4 leading-relaxed">
                 Suspending this account will immediately revoke access and prevent login. Please specify a reason for this administrative action:
               </p>
 
@@ -1152,8 +1144,8 @@ const AdminDashboardPage = () => {
                   <label
                     key={reason}
                     className={`flex items-center gap-3 p-2.5 rounded-xl border text-xs font-medium cursor-pointer transition-colors ${suspensionReason === reason
-                        ? 'border-red-400 bg-red-50/50 text-red-900'
-                        : 'border-border hover:bg-surface-light text-text-primary'
+                        ? 'border-red-400 bg-red-500/10 text-red-100'
+                        : 'border-white/15 hover:bg-white/5 text-white/85'
                       }`}
                   >
                     <input
@@ -1177,7 +1169,7 @@ const AdminDashboardPage = () => {
                     value={customReason}
                     onChange={(e) => setCustomReason(e.target.value)}
                     placeholder="Provide detailed reason for suspending this user..."
-                    className="w-full px-3 py-2 border border-border rounded-xl text-xs focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all"
+                    className="w-full px-3 py-2 border border-white/15 bg-white/5 rounded-xl text-xs text-white placeholder:text-white/45 focus:ring-2 focus:ring-red-500 focus:border-red-400/40 transition-all"
                   ></textarea>
                 </div>
               )}
@@ -1187,7 +1179,7 @@ const AdminDashboardPage = () => {
                 <button
                   onClick={closeBlockModal}
                   disabled={isSubmittingBlock}
-                  className="px-4 py-2 rounded-xl border border-border text-xs font-semibold text-text-secondary hover:bg-surface-light transition-colors"
+                  className="px-4 py-2 rounded-xl border border-white/15 text-xs font-semibold text-white/80 hover:bg-white/5 transition-colors"
                 >
                   Cancel
                 </button>
@@ -1213,37 +1205,37 @@ const AdminDashboardPage = () => {
         {/* ======================= SOFT DEACTIVATION MODAL ======================= */}
         {deactivateModalOpen && selectedUserForDeactivate && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-fade-in">
-            <div className="bg-white rounded-2xl shadow-2xl border border-border max-w-md w-full p-6 relative">
-              <div className="flex items-center gap-3 text-slate-700 mb-4">
-                <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center flex-shrink-0">
+            <div className="admin-dark-panel rounded-2xl shadow-2xl border border-white/20 max-w-md w-full p-6 relative">
+              <div className="flex items-center gap-3 text-slate-200 mb-4">
+                <div className="w-10 h-10 rounded-xl bg-slate-500/15 border border-slate-300/20 flex items-center justify-center flex-shrink-0">
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                   </svg>
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-text-primary">
+                  <h3 className="text-lg font-bold text-white">
                     {selectedUserForDeactivate.isActive ? 'Soft Deactivate Account' : 'Reactivate Account'}
                   </h3>
-                  <p className="text-xs text-text-secondary">
+                  <p className="text-xs text-white/70">
                     {selectedUserForDeactivate.fullName} ({selectedUserForDeactivate.email})
                   </p>
                 </div>
               </div>
 
-              <div className="text-sm text-text-secondary mb-4 leading-relaxed space-y-2">
+              <div className="text-sm text-white/75 mb-4 leading-relaxed space-y-2">
                 <p>
                   {selectedUserForDeactivate.isActive
                     ? 'Account soft deactivation preserves all historical reviews, jobs, and audit trails while disabling future access.'
                     : 'Reactivating this account will restore access and enable normal platform activity.'}
                 </p>
-                <p className="text-xs text-text-light">
+                <p className="text-xs text-white/55">
                   (Preferred over permanent deletion to maintain data integrity and compliance).
                 </p>
               </div>
 
               {selectedUserForDeactivate.isActive && (
                 <div className="mb-4">
-                  <label className="block text-xs font-semibold text-text-secondary uppercase tracking-wider mb-1.5">
+                  <label className="block text-xs font-semibold text-white/75 uppercase tracking-wider mb-1.5">
                     Deactivation Reason (Optional)
                   </label>
                   <input
@@ -1251,7 +1243,7 @@ const AdminDashboardPage = () => {
                     value={deactivateReason}
                     onChange={(e) => setDeactivateReason(e.target.value)}
                     placeholder="e.g., Requested by user, inactive account"
-                    className="w-full px-3 py-2 border border-border rounded-xl text-xs focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                    className="w-full px-3 py-2 border border-white/15 bg-white/5 rounded-xl text-xs text-white placeholder:text-white/45 focus:ring-2 focus:ring-primary focus:border-primary/40 transition-all"
                   />
                 </div>
               )}
@@ -1261,7 +1253,7 @@ const AdminDashboardPage = () => {
                 <button
                   onClick={closeDeactivateModal}
                   disabled={isSubmittingDeactivate}
-                  className="px-4 py-2 rounded-xl border border-border text-xs font-semibold text-text-secondary hover:bg-surface-light transition-colors"
+                  className="px-4 py-2 rounded-xl border border-white/15 text-xs font-semibold text-white/80 hover:bg-white/5 transition-colors"
                 >
                   Cancel
                 </button>
