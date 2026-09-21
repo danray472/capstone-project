@@ -671,8 +671,9 @@ const CreateProfilePage = () => {
                       <div>
                         <p className="text-xs font-semibold text-emerald-300">Scanned ID Verified & Uploaded</p>
                         <a
-                          href={`${API_BASE_URL}/upload/document/download?url=${encodeURIComponent(formData.idDocument)}`}
-                          download
+                          href={formData.idDocument.includes('?') ? `${formData.idDocument}&fl_attachment=true` : `${formData.idDocument}?fl_attachment=true`}
+                          target="_blank"
+                          rel="noreferrer"
                           className="text-[11px] text-white underline font-medium hover:text-white/80"
                         >
                           Download Uploaded ID Scan
@@ -769,8 +770,9 @@ const CreateProfilePage = () => {
                           <div>
                             <p className="text-xs font-bold text-white">{doc.title}</p>
                             <a
-                              href={`${API_BASE_URL}/upload/document/download?url=${encodeURIComponent(doc.url)}`}
-                              download
+                              href={doc.url.includes('?') ? `${doc.url}&fl_attachment=true` : `${doc.url}?fl_attachment=true`}
+                              target="_blank"
+                              rel="noreferrer"
                               className="text-[11px] text-white hover:underline font-medium"
                             >
                               Download Document ({doc.fileType?.toUpperCase() || 'DOCUMENT'})

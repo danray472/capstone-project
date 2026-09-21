@@ -250,8 +250,9 @@ const ViewProfilePage = () => {
 
                 {profile.idDocument ? (
                   <a
-                    href={`${API_BASE_URL}/upload/document/download?url=${encodeURIComponent(profile.idDocument)}`}
-                    download
+                    href={profile.idDocument.includes('?') ? `${profile.idDocument}&fl_attachment=true` : `${profile.idDocument}?fl_attachment=true`}
+                    target="_blank"
+                    rel="noreferrer"
                     className="inline-flex items-center justify-center gap-1.5 w-full px-3 py-2 bg-white/15 hover:bg-white/25 border border-white/30 backdrop-blur-sm text-white font-semibold rounded-lg text-xs transition-colors shadow-sm"
                   >
                     <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -296,8 +297,9 @@ const ViewProfilePage = () => {
                           </span>
                         </div>
                         <a
-                          href={`${API_BASE_URL}/upload/document/download?url=${encodeURIComponent(doc.url)}`}
-                          download
+                          href={doc.url.includes('?') ? `${doc.url}&fl_attachment=true` : `${doc.url}?fl_attachment=true`}
+                          target="_blank"
+                          rel="noreferrer"
                           className="text-white hover:text-white/80 underline font-bold flex-shrink-0 text-[11px]"
                         >
                           Download Document &rarr;
