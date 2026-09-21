@@ -40,6 +40,7 @@ const documentStorage = isCloudinaryConfigured()
         folder: 'vibarua-documents',
         resource_type: 'auto',
         allowed_formats: ['jpg', 'jpeg', 'png', 'webp', 'pdf'],
+        invalidate: true,
       },
     })
   : null;

@@ -6,6 +6,19 @@ const { storage, documentStorage, isCloudinaryConfigured } = require('../config/
 const upload = multer({ storage: storage || multer.memoryStorage() });
 const uploadDocument = multer({ storage: documentStorage || multer.memoryStorage() });
 
+const normalizeDocumentUrl = (file) => {
+  if (!file || !file.path) return file?.path || '';
+
+  const url = file.path;
+  const isPdfLike = /\.(pdf)(\?|$)/i.test(url) || file.format === 'pdf' || file.mimetype === 'application/pdf';
+
+  if (isPdfLike && url.includes('/image/upload/')) {
+    return url.replace('/image/upload/', '/raw/upload/');
+  }
+
+  return url;
+};
+
 const requireCloudinaryConfig = (res) => {
   if (!isCloudinaryConfigured()) {
     return res.status(500).json({
@@ -52,11 +65,14 @@ router.post('/document', (req, res, next) => {
     return res.status(400).json({ message: 'No document file uploaded' });
   }
 
+  const normalizedUrl = normalizeDocumentUrl(req.file);
+
   res.json({
-    url: req.file.path,
+    url: normalizedUrl,
     publicId: req.file.filename,
     originalName: req.file.originalname,
     format: req.file.format,
+    resourceType: req.file.resource_type || (req.file.format === 'pdf' ? 'raw' : 'image'),
   });
 });
 
