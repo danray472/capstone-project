@@ -92,6 +92,12 @@ const Navbar = () => {
             >
               Home
             </Link>
+            <Link
+              to="/about"
+              className="glass-nav-link"
+            >
+              About
+            </Link>
             
             {userInfo ? (
               <>
@@ -192,6 +198,13 @@ const Navbar = () => {
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Home
+              </Link>
+              <Link
+                to="/about"
+                className="block text-white/80 hover:text-white transition-colors duration-200 text-sm font-medium py-2"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                About
               </Link>
               
               {userInfo ? (

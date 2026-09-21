@@ -13,6 +13,7 @@ import LeaveReviewPage from './pages/LeaveReviewPage';
 import ClientDashboardPage from './pages/ClientDashboardPage';
 import WorkerDashboardPage from './pages/WorkerDashboardPage';
 import AdminDashboardPage from './pages/AdminDashboardPage';
+import AboutPage from './pages/AboutPage';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
       <Routes>
         <Route path="/" element={<MainLayout />}>
           <Route index element={<HomePage />} />
+          <Route path="about" element={<AboutPage />} />
           <Route path="register" element={<RegisterPage />} />
           <Route path="login" element={<LoginPage />} />
           <Route path="workers" element={<WorkerDiscoveryPage />} />
