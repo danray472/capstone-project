@@ -1,16 +1,19 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import heroImage from '../assets/hero.png';
+import heroImage from '../assets/home.jpg';
 import image1 from '../assets/image1.jpg';
 import electricianImage from '../assets/electrician.jpg';
 import electrician2Image from '../assets/electrician2.jpg';
 import cleanerImage from '../assets/cleaner.jpg';
+import chefImage from '../assets/chef.jpg';
 import gardenerImage from '../assets/gardener.jpg';
+import gardener2Image from '../assets/gardener2.jpg';
 import mamafuaImage from '../assets/mamafua.jpg';
 import carpenterImage from '../assets/capenter.jpg';
 import mechanicImage from '../assets/mechanic.jpg';
 import mechanic2Image from '../assets/mechanic2.jpg';
 import painterImage from '../assets/painter.jpg';
+import plumberImage from '../assets/plumber.jpg';
 import welderImage from '../assets/Welder.jpg';
 import hairdresserImage from '../assets/hairdresser.jpg';
 import mjengoImage from '../assets/mjengo.jpg';
@@ -72,10 +75,12 @@ const HomePage = () => {
   const categories = [
     { name: 'Mama Fua / Laundry', icon: '🧺', count: '150+', image: mamafuaImage },
     { name: 'House Cleaning', icon: '🧹', count: '200+', image: cleanerImage },
-    { name: 'Plumbers', icon: '🔧', count: '80+', image: mechanicImage },
+    { name: 'Mechanics', icon: '🚗', count: '70+', image: mechanicImage },
+    { name: 'Plumbers', icon: '🔧', count: '80+', image: plumberImage },
     { name: 'Electricians', icon: '⚡', count: '90+', image: electricianImage },
     { name: 'Carpenters', icon: '🪚', count: '60+', image: carpenterImage },
-    { name: 'Private Chefs', icon: '👨‍🍳', count: '45+', image: gardenerImage },
+    { name: 'Private Chefs', icon: '👨‍🍳', count: '45+', image: chefImage },
+    { name: 'Gardeners', icon: '🌿', count: '50+', image: gardener2Image },
     { name: 'Painters', icon: '🎨', count: '35+', image: painterImage },
     { name: 'Welders', icon: '⚙️', count: '30+', image: welderImage },
     { name: 'Hairdressers', icon: '💇', count: '70+', image: hairdresserImage },
@@ -119,10 +124,10 @@ const HomePage = () => {
             alt="Hero Background"
             className="w-full h-full object-cover"
           />
-          {/* Dark gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/70 to-black/85"></div>
-          {/* Subtle dot pattern on top */}
-          <div className="absolute inset-0 bg-pattern-dots-dark"></div>
+          {/* Very light darkening so the image stays rich and vibrant */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/10 to-black/20"></div>
+          {/* Keep the pattern extremely subtle */}
+          <div className="absolute inset-0 opacity-20 bg-pattern-dots-dark"></div>
         </div>
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32">

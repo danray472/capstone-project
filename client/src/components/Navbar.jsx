@@ -68,19 +68,19 @@ const Navbar = () => {
 
   return (
     <nav className={`sticky top-0 z-50 transition-all duration-300 ${
-      scrolled 
-        ? 'bg-secondary/90 backdrop-blur-xl shadow-lg' 
-        : 'bg-secondary/60 backdrop-blur-md'
+      scrolled
+        ? 'bg-[linear-gradient(135deg,rgba(15,23,42,0.72),rgba(30,41,59,0.58),rgba(10,25,38,0.66))] shadow-[0_10px_30px_rgba(2,6,23,0.28)] backdrop-blur-xl'
+        : 'bg-[#071827] shadow-[0_8px_22px_rgba(2,6,23,0.18)]'
     }`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-16 border-b border-white/10">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 group">
-            <div className="w-9 h-9 bg-gradient-to-br from-primary to-accent rounded-lg flex items-center justify-center shadow-md group-hover:shadow-lg transition-shadow duration-300">
-              <span className="text-white font-bold text-lg">V</span>
+            <div className="w-9 h-9 bg-gradient-to-br from-blue-500/95 via-sky-400/90 to-cyan-300/80 rounded-lg flex items-center justify-center shadow-lg shadow-blue-500/20 ring-1 ring-white/15 group-hover:scale-105 transition-all duration-300">
+              <span className="text-white font-black text-lg">V</span>
             </div>
             <span className="text-white text-xl font-bold tracking-tight">
-              Vibarua<span className="text-accent font-light ml-1">Marketplace</span>
+              Vibarua<span className="text-blue-200 font-light ml-1">Marketplace</span>
             </span>
           </Link>
 
@@ -88,7 +88,7 @@ const Navbar = () => {
           <div className="hidden md:flex items-center gap-6">
             <Link
               to="/"
-              className="text-gray-300 hover:text-white transition-colors duration-200 text-sm font-medium"
+              className="glass-nav-link"
             >
               Home
             </Link>
@@ -98,14 +98,14 @@ const Navbar = () => {
                 {userInfo.role === 'admin' ? (
                   <Link
                     to="/dashboard/admin"
-                    className="text-gray-300 hover:text-white transition-colors duration-200 text-sm font-medium"
+                    className="glass-nav-link"
                   >
                     Admin Panel
                   </Link>
                 ) : (
                   <Link
                     to={userInfo.role === 'client' ? '/dashboard/client' : '/dashboard/worker'}
-                    className="text-gray-300 hover:text-white transition-colors duration-200 text-sm font-medium"
+                    className="glass-nav-link"
                   >
                     Dashboard
                   </Link>
@@ -113,7 +113,7 @@ const Navbar = () => {
                 {userInfo.role === 'client' && (
                   <Link
                     to="/workers"
-                    className="text-gray-300 hover:text-white transition-colors duration-200 text-sm font-medium"
+                    className="glass-nav-link"
                   >
                     Find Workers
                   </Link>
@@ -122,13 +122,13 @@ const Navbar = () => {
                   <>
                     <Link
                       to="/jobs/worker"
-                      className="text-gray-300 hover:text-white transition-colors duration-200 text-sm font-medium"
+                      className="glass-nav-link"
                     >
                       Job Requests
                     </Link>
                     <Link
                       to="/profile/me"
-                      className="text-gray-300 hover:text-white transition-colors duration-200 text-sm font-medium"
+                      className="glass-nav-link"
                     >
                       My Profile
                     </Link>
@@ -137,14 +137,14 @@ const Navbar = () => {
                 {userInfo.role === 'client' && (
                   <Link
                     to="/jobs/my"
-                    className="text-gray-300 hover:text-white transition-colors duration-200 text-sm font-medium"
+                    className="glass-nav-link"
                   >
                     My Jobs
                   </Link>
                 )}
                 <button
                   onClick={async () => await handleLogout()}
-                  className="text-gray-300 hover:text-white transition-colors duration-200 text-sm font-medium"
+                  className="nav-ghost-button rounded-xl"
                 >
                   Logout
                 </button>
@@ -153,13 +153,13 @@ const Navbar = () => {
               <>
                 <Link
                   to="/login"
-                  className="text-gray-300 hover:text-white transition-colors duration-200 text-sm font-medium"
+                  className="glass-nav-link"
                 >
                   Login
                 </Link>
                 <Link
                   to="/register"
-                  className="bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 hover:shadow-lg hover:shadow-primary/25"
+                  className="nav-primary-button rounded-xl"
                 >
                   Get Started
                 </Link>
@@ -170,7 +170,7 @@ const Navbar = () => {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden text-gray-300 hover:text-white focus:outline-none"
+            className="md:hidden text-white/90 hover:text-white focus:outline-none p-2 border border-white/10 bg-white/5"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               {mobileMenuOpen ? (
@@ -184,11 +184,11 @@ const Navbar = () => {
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden bg-secondary border-t border-gray-700">
+          <div className="glass-mobile-panel md:hidden mt-2 border border-white/10">
             <div className="px-4 py-4 space-y-3">
               <Link
                 to="/"
-                className="block text-gray-300 hover:text-white transition-colors duration-200 text-sm font-medium py-2"
+                className="block text-white/80 hover:text-white transition-colors duration-200 text-sm font-medium py-2"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Home
@@ -199,7 +199,7 @@ const Navbar = () => {
                   {userInfo.role === 'admin' ? (
                     <Link
                       to="/dashboard/admin"
-                      className="block text-gray-300 hover:text-white transition-colors duration-200 text-sm font-medium py-2"
+                      className="block text-white/80 hover:text-white transition-colors duration-200 text-sm font-medium py-2"
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       Admin Panel
@@ -207,7 +207,7 @@ const Navbar = () => {
                   ) : (
                     <Link
                       to={userInfo.role === 'client' ? '/dashboard/client' : '/dashboard/worker'}
-                      className="block text-gray-300 hover:text-white transition-colors duration-200 text-sm font-medium py-2"
+                      className="block text-white/80 hover:text-white transition-colors duration-200 text-sm font-medium py-2"
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       Dashboard
@@ -216,7 +216,7 @@ const Navbar = () => {
                   {userInfo.role === 'client' && (
                     <Link
                       to="/workers"
-                      className="block text-gray-300 hover:text-white transition-colors duration-200 text-sm font-medium py-2"
+                      className="block text-white/80 hover:text-white transition-colors duration-200 text-sm font-medium py-2"
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       Find Workers
@@ -226,14 +226,14 @@ const Navbar = () => {
                     <>
                       <Link
                         to="/jobs/worker"
-                        className="block text-gray-300 hover:text-white transition-colors duration-200 text-sm font-medium py-2"
+                        className="block text-white/80 hover:text-white transition-colors duration-200 text-sm font-medium py-2"
                         onClick={() => setMobileMenuOpen(false)}
                       >
                         Job Requests
                       </Link>
                       <Link
                         to="/profile/me"
-                        className="block text-gray-300 hover:text-white transition-colors duration-200 text-sm font-medium py-2"
+                        className="block text-white/80 hover:text-white transition-colors duration-200 text-sm font-medium py-2"
                         onClick={() => setMobileMenuOpen(false)}
                       >
                         My Profile
@@ -243,7 +243,7 @@ const Navbar = () => {
                   {userInfo.role === 'client' && (
                     <Link
                       to="/jobs/my"
-                      className="block text-gray-300 hover:text-white transition-colors duration-200 text-sm font-medium py-2"
+                      className="block text-white/80 hover:text-white transition-colors duration-200 text-sm font-medium py-2"
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       My Jobs
@@ -254,7 +254,7 @@ const Navbar = () => {
                       await handleLogout();
                       setMobileMenuOpen(false);
                     }}
-                    className="block text-gray-300 hover:text-white transition-colors duration-200 text-sm font-medium py-2 w-full text-left"
+                    className="block text-left w-full text-white/80 hover:text-white transition-colors duration-200 text-sm font-medium py-2"
                   >
                     Logout
                   </button>
@@ -263,14 +263,14 @@ const Navbar = () => {
                 <>
                   <Link
                     to="/login"
-                    className="block text-gray-300 hover:text-white transition-colors duration-200 text-sm font-medium py-2"
+                    className="block text-white/80 hover:text-white transition-colors duration-200 text-sm font-medium py-2"
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     Login
                   </Link>
                   <Link
                     to="/register"
-                    className="block bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 text-center"
+                    className="block nav-primary-button text-center rounded-xl"
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     Get Started
