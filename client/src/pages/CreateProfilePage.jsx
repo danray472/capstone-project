@@ -98,8 +98,18 @@ const CreateProfilePage = () => {
           },
         });
 
+        if (response.status === 404) {
+          setExistingProfile(null);
+          return;
+        }
+
         if (response.ok) {
           const data = await response.json();
+          if (!data || data.profile === null) {
+            setExistingProfile(null);
+            return;
+          }
+
           setExistingProfile(data);
           setFormData({
             profession: data.profession || '',

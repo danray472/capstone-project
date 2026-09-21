@@ -30,14 +30,14 @@ router.put('/', protect, updateProfile);
 // @access  Private
 router.get('/me', protect, getMyProfile);
 
-// @route   GET /api/profiles/:id
-// @desc    Get profile by ID
-// @access  Public
-router.get('/:id', getProfileById);
-
 // @route   GET /api/profiles
 // @desc    Get all worker profiles
 // @access  Public
 router.get('/', getAllProfiles);
+
+// @route   GET /api/profiles/:id
+// @desc    Get profile by ID
+// @access  Public
+router.get('/:id', getProfileById);
 
 module.exports = router;
