@@ -7,7 +7,7 @@ const { protect } = require('../middleware/authMiddleware');
 // @route   POST /api/auth/register
 // @desc    Register new user
 // @access  Public
-router.post('/register', authLimiter, register);
+router.post('/register', register);
 
 // @route   POST /api/auth/login
 // @desc    Login user

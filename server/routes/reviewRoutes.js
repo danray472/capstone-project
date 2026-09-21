@@ -5,12 +5,11 @@ const {
   getWorkerReviews,
   getReviewByJobRequest,
 } = require('../controllers/reviewController');
-const { strictLimiter } = require('../middleware/rateLimiter');
 
 // @route   POST /api/reviews
 // @desc    Create review
 // @access  Private (temporarily removed for testing)
-router.post('/', strictLimiter, createReview);
+router.post('/', createReview);
 
 // @route   GET /api/reviews/worker/:workerId
 // @desc    Get worker's reviews

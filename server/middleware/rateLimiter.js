@@ -1,35 +1,26 @@
-const rateLimit = require('express-rate-limit');
+const { rateLimit, ipKeyGenerator } = require('express-rate-limit');
 const { createAuditLog, extractIpAddress, extractUserAgent } = require('../utils/auditLogger');
 
-// General rate limiter for all API routes
-// Limits: 100 requests per 15 minutes per IP
-const generalLimiter = rateLimit({
-  windowMs: 1 * 60 * 1000,
-  max: 100, // Limit each IP to 100 requests per windowMs
-  message: {
-    error: 'Too many requests from this IP, please try again after 15 minutes'
-  },
-  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
-  handler: (req, res) => {
-    res.status(429).json({
-      error: 'Too many requests from this IP, please try again after 15 minutes'
-    });
-  },
-});
+// Keep the limiter focused on genuine brute-force bursts, not normal user mistakes.
+// This is intentionally higher than a strict production default so early deployment/testing
+// does not trigger lockouts from ordinary failed logins.
+const maxAttempts = 50;
 
-// Strict rate limiter for authentication routes
-// Limits: 5 requests per 15 minutes per IP (prevents brute force attacks)
 const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 5, // Limit each IP to 5 requests per windowMs
-  message: {
-    error: 'Too many login attempts from this IP, please try again after 15 minutes'
+  windowMs: 15 * 60 * 1000,
+  max: maxAttempts,
+  skipSuccessfulRequests: true,
+  keyGenerator: (req) => {
+    const ipKey = ipKeyGenerator(req.ip);
+    const userIdentifier = req.body?.email || req.body?.username || req.ip;
+    return `${ipKey}:${userIdentifier}`;
   },
   standardHeaders: true,
   legacyHeaders: false,
+  message: {
+    error: 'Too many login attempts from this IP, please try again after 15 minutes'
+  },
   handler: async (req, res) => {
-    // Log rate limit exceeded
     await createAuditLog({
       action: 'RATE_LIMIT_EXCEEDED',
       status: 'warning',
@@ -37,6 +28,8 @@ const authLimiter = rateLimit({
       details: {
         endpoint: req.path,
         method: req.method,
+        email: req.body?.email || null,
+        username: req.body?.username || null,
       },
       ipAddress: extractIpAddress(req),
       userAgent: extractUserAgent(req),
@@ -48,20 +41,6 @@ const authLimiter = rateLimit({
   },
 });
 
-// Rate limiter for sensitive operations (profile updates, job requests, etc.)
-// Limits: 20 requests per 15 minutes per IP
-const strictLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 20, // Limit each IP to 20 requests per windowMs
-  message: {
-    error: 'Too many requests from this IP, please try again after 15 minutes'
-  },
-  standardHeaders: true,
-  legacyHeaders: false,
-});
-
 module.exports = {
-  generalLimiter,
   authLimiter,
-  strictLimiter
 };
